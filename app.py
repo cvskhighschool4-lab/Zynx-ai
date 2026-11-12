@@ -1,27 +1,54 @@
 import os
+import re
 import time
+import sqlite3
 import requests
+from datetime import datetime, timedelta
 from collections import defaultdict, deque
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 
 # ------------------------------------------
-# SETTINGS
+# SETTINGS (real values go in Render's Environment tab, never in this file)
 # ------------------------------------------
-# Set your key in the same cmd window before running:
-#   set GROQ_API_KEY="gsk_yourkeyhere"
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "gsk_yourkeyhere").strip()
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
 GROQ_MODEL = "openai/gpt-oss-120b"
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 
+SECRET_KEY = os.environ.get("SECRET_KEY", "").strip()
+if not SECRET_KEY:
+    print("WARNING: SECRET_KEY is not set. Users will be signed out on every restart.")
+    SECRET_KEY = os.urandom(24).hex()
+app.secret_key = SECRET_KEY
+app.permanent_session_lifetime = timedelta(days=30)
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=bool(os.environ.get("RENDER")),
+)
+
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+USE_PG = DATABASE_URL.startswith("postgres")
+if USE_PG:
+    import psycopg
+
 MAX_MESSAGE_CHARS = 2000
 MAX_HISTORY = 20
-RATE_LIMIT = 20          # requests
-RATE_WINDOW = 60         # per this many seconds, per visitor
+CHAT_LIMIT = 20      # chat messages per minute, per user
+AUTH_LIMIT = 10      # sign-in / register attempts per minute, per visitor
 
 SYSTEM_PROMPT = (
-    "You are RAGEBOT AI, a witty, sarcastic, playful chatbot with a "
+    "You are ZYNX AI, a witty, sarcastic, playful chatbot with a "
     "mischievous personality. You tease the user in a light, funny way, "
     "like a sarcastic friend, but you ALWAYS still give a genuinely "
     "helpful and correct answer. Never be hateful and never insult people "
@@ -31,39 +58,151 @@ SYSTEM_PROMPT = (
     "Use the occasional emoji like 😈."
 )
 
-hits = defaultdict(deque)
+USERNAME_RE = re.compile(r"^[A-Za-z0-9_]{3,20}$")
 
 
-def rate_limited(ip):
+# ------------------------------------------
+# DATABASE (Postgres if DATABASE_URL is set, otherwise a local SQLite file)
+# ------------------------------------------
+def get_conn():
+    if USE_PG:
+        return psycopg.connect(DATABASE_URL)
+    return sqlite3.connect("users.db")
+
+
+def run(sql, params=(), fetch=False):
+    if USE_PG:
+        sql = sql.replace("?", "%s")
+    conn = get_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        row = cur.fetchone() if fetch else None
+        conn.commit()
+        return row
+    finally:
+        conn.close()
+
+
+run(
+    "CREATE TABLE IF NOT EXISTS users ("
+    "username TEXT PRIMARY KEY, pw_hash TEXT NOT NULL, created TEXT NOT NULL)"
+)
+
+
+# ------------------------------------------
+# RATE LIMITING
+# ------------------------------------------
+auth_hits = defaultdict(deque)
+chat_hits = defaultdict(deque)
+
+
+def limited(bucket, key, limit, window=60):
     now = time.time()
-    q = hits[ip]
-    while q and now - q[0] > RATE_WINDOW:
+    q = bucket[key]
+    while q and now - q[0] > window:
         q.popleft()
-    if len(q) >= RATE_LIMIT:
+    if len(q) >= limit:
         return True
     q.append(now)
     return False
 
 
+# ------------------------------------------
+# PAGES AND ACCOUNT ROUTES
+# ------------------------------------------
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
+@app.route("/api/me")
+def me():
+    return jsonify({"user": session.get("user")})
+
+
+@app.route("/api/register", methods=["POST"])
+def register():
+    if limited(auth_hits, request.remote_addr or "unknown", AUTH_LIMIT):
+        return jsonify({"error": "Too many attempts. Wait a minute and try again."}), 429
+
+    data = request.get_json(silent=True) or {}
+    username = str(data.get("username", "")).strip()
+    password = str(data.get("password", ""))
+
+    if not USERNAME_RE.match(username):
+        return jsonify({"error": "Username must be 3-20 letters, numbers or underscores."}), 400
+    if len(password) < 8 or len(password) > 100:
+        return jsonify({"error": "Password must be 8 to 100 characters."}), 400
+
+    key = username.lower()
+    if run("SELECT 1 FROM users WHERE username = ?", (key,), fetch=True):
+        return jsonify({"error": "That username is taken."}), 409
+
+    try:
+        run(
+            "INSERT INTO users (username, pw_hash, created) VALUES (?, ?, ?)",
+            (key, generate_password_hash(password), datetime.utcnow().isoformat()),
+        )
+    except Exception as e:
+        print("Register error:", e)
+        return jsonify({"error": "Could not create the account. Try another username."}), 409
+
+    session.clear()
+    session.permanent = True
+    session["user"] = key
+    return jsonify({"user": key})
+
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    if limited(auth_hits, request.remote_addr or "unknown", AUTH_LIMIT):
+        return jsonify({"error": "Too many attempts. Wait a minute and try again."}), 429
+
+    data = request.get_json(silent=True) or {}
+    key = str(data.get("username", "")).strip().lower()
+    password = str(data.get("password", ""))
+
+    row = run("SELECT pw_hash FROM users WHERE username = ?", (key,), fetch=True)
+    if not row or not check_password_hash(row[0], password):
+        return jsonify({"error": "Wrong username or password."}), 401
+
+    session.clear()
+    session.permanent = True
+    session["user"] = key
+    return jsonify({"user": key})
+
+
+@app.route("/api/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({"ok": True})
+
+
+# ------------------------------------------
+# CHAT (sign-in required)
+# ------------------------------------------
 @app.route("/chat", methods=["POST"])
 def chat():
-    if not GROQ_API_KEY:
-        return jsonify({"reply": "Server has no GROQ_API_KEY set. Set it in cmd and restart."}), 500
+    user = session.get("user")
+    if not user:
+        return jsonify({"reply": "Please sign in first."}), 401
 
-    if rate_limited(request.remote_addr):
+    if not GROQ_API_KEY:
+        return jsonify({"reply": "Server has no GROQ_API_KEY set."}), 500
+
+    if limited(chat_hits, user, CHAT_LIMIT):
         return jsonify({"reply": "Slow down a little. Too many messages. 😴"}), 429
 
     data = request.get_json(silent=True) or {}
     raw = data.get("messages", [])
+    if not isinstance(raw, list):
+        raw = []
 
-    # Clean and limit the history sent by the browser
     history = []
     for m in raw[-MAX_HISTORY:]:
+        if not isinstance(m, dict):
+            continue
         role = "assistant" if m.get("role") == "assistant" else "user"
         content = str(m.get("content", ""))[:MAX_MESSAGE_CHARS]
         if content.strip():
@@ -89,24 +228,24 @@ def chat():
         )
     except requests.exceptions.RequestException as e:
         print("Network error:", e)
-        return jsonify({"reply": "Can't reach Groq right now. Check your internet."}), 502
+        return jsonify({"reply": "Can't reach Groq right now. Try again in a moment."}), 502
 
     if r.status_code == 200:
         try:
             reply = r.json()["choices"][0]["message"]["content"].strip()
             return jsonify({"reply": reply})
-        except (KeyError, IndexError, ValueError):
+        except (KeyError, IndexError, ValueError, AttributeError):
             return jsonify({"reply": "Groq sent something I couldn't read."}), 502
 
     print("Groq error:", r.status_code, r.text[:500])
     if r.status_code == 401:
-        msg = "Groq rejected the API key. Check it."
+        msg = "Groq rejected the API key. Check it in Render's settings."
     elif r.status_code == 429:
         msg = "Groq rate limit reached. Try again soon."
     else:
-        msg = f"Groq error {r.status_code}. Check the cmd window for details."
+        msg = f"Groq error {r.status_code}. Check the Render logs for details."
     return jsonify({"reply": msg}), 502
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
