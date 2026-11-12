@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zynx AI</title>
+<style>
+  :root {
+    --text: #F2EEFF; --muted: #9a93b3; --accent: #8B5CF6; --accent2: #A855F7;
+    --glass: rgba(255,255,255,.05); --border: rgba(255,255,255,.09);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Arial, sans-serif; color: var(--text);
+    background:
+      radial-gradient(900px 500px at 15% 0%, #2a1650 0%, transparent 60%),
+      radial-gradient(800px 500px at 100% 100%, #14284d 0%, transparent 60%),
+      #07070d;
+    display: flex; gap: 16px; padding: 16px;
+  }
+  button { font-family: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+
+  aside {
+    width: 260px; flex-shrink: 0; display: flex; flex-direction: column; padding: 18px 14px;
+    background: rgba(16,14,28,.75); border: 1px solid var(--border); border-radius: 22px;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    width: 34px; height: 34px; border-radius: 10px; margin: 2px 6px 18px;
+    background: linear-gradient(135deg, var(--accent), #5b21b6);
+    display: grid; place-items: center; font-weight: 800; box-shadow: 0 0 18px rgba(139,92,246,.5);
+  }
+  .newchat {
+    width: 100%; padding: 13px 14px; border-radius: 14px; text-align: left; font-weight: 600;
+    background: linear-gradient(90deg, rgba(139,92,246,.55), rgba(88,28,135,.45));
+    border: 1px solid rgba(168,85,247,.5); margin-bottom: 18px;
+  }
+  .label { color: var(--muted); font-size: 13px; padding: 0 8px; margin-bottom: 8px; }
+  #recent { flex: 1; overflow-y: auto; margin-bottom: 10px; }
+  .item {
+    display: block; width: 100%; text-align: left; padding: 8px 10px; font-size: 13px;
+    color: var(--muted); border-radius: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .item:hover, .item.active { background: var(--glass); color: var(--text); }
+  .navbtn { display: flex; gap: 10px; align-items: center; padding: 10px; border-radius: 10px; font-size: 14px; width: 100%; color: #cfc9e6; }
+  .navbtn:hover { background: var(--glass); }
+  .power {
+    margin: 12px 0; padding: 14px; border-radius: 16px; font-size: 12px; color: var(--muted); line-height: 1.5;
+    background: var(--glass); border: 1px solid var(--border);
+  }
+  .power b { display: block; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+  .user { display: flex; align-items: center; gap: 10px; padding: 10px 6px 0; border-top: 1px solid var(--border); font-size: 13px; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #f0abfc, #8B5CF6); display: grid; place-items: center; font-weight: 700; color: #1a0b2e; }
+  .user small { display: block; color: var(--muted); font-size: 11px; }
+
+  main {
+    flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative;
+    background: rgba(18,16,32,.55); border: 1px solid var(--border); border-radius: 22px; backdrop-filter: blur(12px);
+  }
+  .topbar { display: flex; justify-content: space-between; padding: 16px 18px; }
+  .pill, .dots {
+    background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: 9px 14px; font-size: 14px;
+  }
+  .dots { width: 38px; text-align: center; padding: 9px 0; }
+  .stage { flex: 1; overflow-y: auto; padding: 0 24px; display: flex; flex-direction: column; }
+
+  #welcome { margin: auto; display: flex; flex-direction: column; align-items: center; text-align: center; padding-bottom: 30px; }
+  .orb {
+    width: 68px; height: 68px; border-radius: 50%; margin-bottom: 22px;
+    background: radial-gradient(circle at 35% 30%, #fff 0%, #e9a8ff 12%, #8B5CF6 40%, #2b1065 75%, #120830 100%);
+    box-shadow: 0 0 40px rgba(168,85,247,.65), 0 0 90px rgba(139,92,246,.35);
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 50% { transform: translateY(-6px); } }
+  #welcome h1 { font-size: 34px; font-weight: 600; margin: 0 0 10px; }
+  #welcome p { color: var(--muted); margin: 0 0 30px; font-size: 14px; }
+  .cards { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .card {
+    width: 200px; text-align: left; padding: 15px; border-radius: 16px; background: var(--glass);
+    border: 1px solid var(--border); transition: .2s;
+  }
+  .card:hover { border-color: rgba(168,85,247,.6); transform: translateY(-2px); }
+  .card b { display: block; font-size: 14px; margin-bottom: 8px; }
+  .card span { color: var(--muted); font-size: 12px; line-height: 1.4; display: block; }
+
+  #chat { display: none; width: 100%; max-width: 820px; margin: 0 auto; padding-bottom: 14px; }
+  .row { display: flex; gap: 12px; margin: 14px 0; }
+  .row.user { justify-content: flex-end; }
+  .mini { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; margin-top: 4px;
+    background: radial-gradient(circle at 35% 30%, #fff, #8B5CF6 45%, #2b1065); box-shadow: 0 0 12px rgba(168,85,247,.6); }
+  .bubble { max-width: 78%; padding: 11px 15px; border-radius: 16px; font-size: 14.5px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; background: var(--glass); border: 1px solid var(--border); }
+  .row.user .bubble { background: rgba(139,92,246,.28); border-color: rgba(168,85,247,.4); }
+  .typing span { display: inline-block; width: 7px; height: 7px; margin: 0 2px; border-radius: 50%; background: var(--accent2); animation: blink 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: .2s; } .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+  .composer { margin: 10px 24px 22px; padding: 14px 16px 12px; border-radius: 20px; background: rgba(10,9,20,.7); border: 1px solid var(--border); }
+  .composer:focus-within { border-color: rgba(168,85,247,.6); }
+  textarea { width: 100%; resize: none; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 14.5px; font-family: inherit; max-height: 140px; }
+  textarea::placeholder { color: #6f6a86; }
+  .tools { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .chip { padding: 7px 12px; border-radius: 10px; font-size: 13px; background: var(--glass); border: 1px solid var(--border); color: #cfc9e6; }
+  .chip:hover { border-color: rgba(168,85,247,.6); }
+  .chip.on { background: rgba(139,92,246,.35); border-color: var(--accent2); color: #fff; }
+  .spacer { flex: 1; }
+  .icon { width: 34px; height: 34px; border-radius: 50%; font-size: 15px; background: var(--glass); }
+  .icon.rec { background: #dc2626; }
+  .send { background: linear-gradient(135deg, var(--accent), #6d28d9); font-size: 16px; }
+  .send:disabled { opacity: .5; cursor: not-allowed; }
+
+  #toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0; pointer-events: none;
+    background: #1f1a35; border: 1px solid var(--accent2); padding: 10px 18px; border-radius: 12px; font-size: 13px; transition: .25s;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%); }
+
+  ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 8px; }
+  @media (max-width: 800px) { aside { display: none; } body { padding: 8px; } #welcome h1 { font-size: 26px; } .bubble { max-width: 90%; } }
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="logo">Z</div>
+  <button class="newchat" id="newchat">💬&nbsp; New Chat</button>
+  <div class="label">🕘&nbsp; Recent</div>
+  <div id="recent"></div>
+  <button class="navbtn" id="settings">⚙️&nbsp; Settings: <span id="voiceState">Voice off</span></button>
+  <button class="navbtn" id="help">❓&nbsp; Help &amp; Updates</button>
+  <div class="power"><b>⚡ Powered by Groq</b>Fast replies from the openai/gpt-oss-120b model.</div>
+  <div class="user"><div class="avatar">Y</div><div>You<small>Chats saved in this browser</small></div></div>
+</aside>
+
+<main>
+  <div class="topbar">
+    <div class="pill">Zynx 1.0 &nbsp;⌄</div>
+    <div class="dots">⋯</div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div id="welcome">
+      <div class="orb"></div>
+      <h1>Welcome to your cognitive co-pilot</h1>
+      <p>I am Zynx. You can ask me to write, code, plan, or explore any idea.</p>
+      <div class="cards">
+        <button class="card" data-p="Can you find the bug in this JavaScript snippet? I'll paste it next.">
+          <b>&lt;/&gt;&nbsp; Explain this Code</b><span>"Can you find the bug in this JavaScript snippet..."</span></button>
+        <button class="card" data-p="Create a 5-day, budget-friendly itinerary for Kyoto.">
+          <b>🧭&nbsp; Plan a Trip</b><span>"Create a 5-day, budget-friendly itinerary for Kyoto..."</span></button>
+        <button class="card" data-p="I want to start a podcast about sustainable tech. Help me brainstorm ideas.">
+          <b>💡&nbsp; Brainstorm Ideas</b><span>"I want to start a podcast about sustainable tech..."</span></button>
+      </div>
+    </div>
+    <div id="chat"></div>
+  </div>
+
+  <div class="composer">
+    <textarea id="input" rows="1" maxlength="2000" placeholder="Send a message or drop a file..."></textarea>
+    <div class="tools">
+      <button class="chip" id="files">📎 Files</button>
+      <button class="chip" id="images">🖼 Images</button>
+      <button class="chip" id="reasoning">💭 Reasoning</button>
+      <div class="spacer"></div>
+      <button class="icon" id="mic" title="Speak">🎤</button>
+      <button class="icon send" id="send" title="Send">➤</button>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const chatEl = $("chat"), welcome = $("welcome"), stage = $("stage"), input = $("input"),
+        sendBtn = $("send"), recentEl = $("recent");
+  const KEY = "zynx_convos_v1";
+
+  let convos = [], current = null, busy = false, voiceOn = false, reasoning = false;
+  try { convos = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { convos = []; }
+
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(convos.slice(0, 30))); } catch (e) {} }
+  function toast(t) { const x = $("toast"); x.textContent = t; x.classList.add("show"); setTimeout(() => x.classList.remove("show"), 2200); }
+  function newConvo() { current = { id: Date.now(), title: "New chat", messages: [] }; }
+
+  function renderRecent() {
+    recentEl.innerHTML = "";
+    convos.slice(0, 12).forEach((c) => {
+      const b = document.createElement("button");
+      b.className = "item" + (current && c.id === current.id ? " active" : "");
+      b.textContent = c.title;
+      b.onclick = () => { if (busy) return; current = c; render(); renderRecent(); };
+      recentEl.appendChild(b);
+    });
+  }
+
+  function bubble(role, text) {
+    const row = document.createElement("div");
+    row.className = "row " + role;
+    if (role === "assistant") { const m = document.createElement("div"); m.className = "mini"; row.appendChild(m); }
+    const b = document.createElement("div");
+    b.className = "bubble";
+    b.textContent = text;
+    row.appendChild(b);
+    chatEl.appendChild(row);
+    stage.scrollTop = stage.scrollHeight;
+    return row;
+  }
+
+  function render() {
+    chatEl.innerHTML = "";
+    const has = current.messages.length > 0;
+    welcome.style.display = has ? "none" : "flex";
+    chatEl.style.display = has ? "block" : "none";
+    current.messages.forEach((m) => bubble(m.role, m.content));
+  }
+
+  function speak(t) {
+    if (!voiceOn || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+  }
+
+  async function sendMessage(text) {
+    if (busy || !text.trim()) return;
+    if (!convos.includes(current)) convos.unshift(current);
+    if (current.messages.length === 0) current.title = text.slice(0, 32);
+
+    current.messages.push({ role: "user", content: text });
+    persist(); render(); renderRecent();
+
+    busy = true; sendBtn.disabled = true;
+    const typing = document.createElement("div");
+    typing.className = "row";
+    typing.innerHTML = '<div class="mini"></div><div class="bubble typing"><span></span><span></span><span></span></div>';
+    chatEl.appendChild(typing); stage.scrollTop = stage.scrollHeight;
+
+    const payload = current.messages.map((m) => ({ role: m.role, content: m.content }));
+    if (reasoning) payload[payload.length - 1].content = "Think step by step before answering.\n\n" + text;
+
+    let reply;
+    try {
+      const res = await fetch("/chat", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: payload })
+      });
+      const data = await res.json();
+      reply = data.reply || "No reply received.";
+    } catch (e) { reply = "Could not reach the server. Is it running?"; }
+
+    typing.remove();
+    current.messages.push({ role: "assistant", content: reply });
+    persist(); bubble("assistant", reply); speak(reply);
+    busy = false; sendBtn.disabled = false; input.focus();
+  }
+
+  function submit() { const t = input.value.trim(); if (!t) return; input.value = ""; input.style.height = "auto"; sendMessage(t); }
+
+  sendBtn.onclick = submit;
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } });
+  input.addEventListener("input", () => { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 140) + "px"; });
+
+  document.querySelectorAll(".card").forEach((c) => c.onclick = () => sendMessage(c.dataset.p));
+  $("newchat").onclick = () => { if (busy) return; newConvo(); render(); renderRecent(); input.focus(); };
+  $("files").onclick = () => toast("File upload is coming soon");
+  $("images").onclick = () => toast("Image input is coming soon");
+  $("help").onclick = () => toast("Zynx AI 1.0, powered by Groq");
+  $("reasoning").onclick = (e) => { reasoning = !reasoning; e.currentTarget.classList.toggle("on", reasoning); toast(reasoning ? "Reasoning mode on" : "Reasoning mode off"); };
+  $("settings").onclick = () => {
+    voiceOn = !voiceOn; $("voiceState").textContent = voiceOn ? "Voice on" : "Voice off";
+    if (!voiceOn && "speechSynthesis" in window) speechSynthesis.cancel();
+  };
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let rec = null;
+  $("mic").onclick = () => {
+    if (!SR) return toast("Voice input isn't supported in this browser");
+    if (rec) { rec.stop(); return; }
+    rec = new SR(); rec.lang = "en-US";
+    $("mic").classList.add("rec");
+    rec.onresult = (e) => { input.value = e.results[0][0].transcript; input.focus(); };
+    rec.onend = () => { rec = null; $("mic").classList.remove("rec"); };
+    rec.onerror = () => { rec = null; $("mic").classList.remove("rec"); };
+    rec.start();
+  };
+
+  newConvo(); render();
