@@ -1,4 +1,5 @@
-   flask
-   requests
-   python-dotenv
-   gunicorn
+flask
+requests
+python-dotenv
+gunicorn
+psycopg[binary]
