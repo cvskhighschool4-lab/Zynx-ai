@@ -1,5 +1,4 @@
-flask
-requests
-python-dotenv
-gunicorn
-psycopg[binary]
+flask>=3.0,<4
+flask-cors>=4.0
+groq>=0.11
+gunicorn>=22.0
