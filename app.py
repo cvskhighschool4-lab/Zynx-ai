@@ -313,9 +313,33 @@ def read_settings(db, owner_id):
 # --------------------------------------------------------------------------- #
 # Routes: static + health
 # --------------------------------------------------------------------------- #
+def find_index():
+    """Locate index.html (case-insensitive) next to app.py, in the cwd, or in common subfolders."""
+    roots = [BASE_DIR, os.getcwd()]
+    for sub in ("static", "public", "templates", "frontend", "web"):
+        roots.append(os.path.join(BASE_DIR, sub))
+    for root in roots:
+        try:
+            for name in os.listdir(root):
+                if name.lower() == "index.html":
+                    return root, name
+        except OSError:
+            continue
+    return None, None
+
+
 @app.route("/")
+@app.route("/index.html")
 def index():
-    return send_from_directory(BASE_DIR, "index.html")
+    root, name = find_index()
+    if not root:
+        log.error("index.html not found. Looked in %s (files: %s)", BASE_DIR, os.listdir(BASE_DIR))
+        return (
+            "Zynx AI server is running, but index.html was not found. "
+            "Make sure index.html is in the same folder as app.py in your GitHub repo.",
+            404,
+        )
+    return send_from_directory(root, name)
 
 
 @app.route("/api/health")
