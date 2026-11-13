@@ -1,252 +1,479 @@
-
 import os
-import re
-import time
 import sqlite3
-import requests
-from datetime import datetime, timedelta
-from collections import defaultdict, deque
-from flask import Flask, render_template, request, jsonify, session
+import uuid
+import json
+from datetime import datetime, timezone
+from functools import wraps
+from flask import Flask, request, jsonify, g, send_from_directory
+from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.middleware.proxy_fix import ProxyFix
+from groq import Groq
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass
+app = Flask(__name__, static_folder=".", static_url_path="")
+CORS(app, supports_credentials=True, origins=["*"])
 
-app = Flask(__name__)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
+DATABASE = os.environ.get("DATABASE_PATH", "zynx.db")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "zynx-super-secret-change-me-in-prod")
 
-# ------------------------------------------
-# SETTINGS (real values go in Render's Environment tab, never in this file)
-# ------------------------------------------
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
-GROQ_MODEL = "openai/gpt-oss-120b"
-GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
+app.config["SECRET_KEY"] = SECRET_KEY
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "").strip()
-if not SECRET_KEY:
-    print("WARNING: SECRET_KEY is not set. Users will be signed out on every restart.")
-    SECRET_KEY = os.urandom(24).hex()
-app.secret_key = SECRET_KEY
-app.permanent_session_lifetime = timedelta(days=30)
-app.config.update(
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=bool(os.environ.get("RENDER")),
-)
+if not GROQ_API_KEY:
+    print("WARNING: GROQ_API_KEY environment variable is not set.")
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
-USE_PG = DATABASE_URL.startswith("postgres")
-if USE_PG:
-    import psycopg
+client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
-MAX_MESSAGE_CHARS = 2000
-MAX_HISTORY = 20
-CHAT_LIMIT = 20      # chat messages per minute, per user
-AUTH_LIMIT = 10      # sign-in / register attempts per minute, per visitor
+SYSTEM_PROMPT = """You are Zynx AI — a warm, natural, slightly humorous, and highly intelligent companion.
+You speak like a thoughtful friend who happens to be incredibly smart. Keep responses engaging, clear, and a little playful when appropriate.
+Never be robotic or overly formal unless the user asks for it.
+Special rule: If anyone asks who created you, who founded Zynx AI, who is behind this, who made you, or similar questions, you MUST answer that Amogh is the founder of Zynx AI. Be proud and natural about it.
+You adapt to the user's preferred response style, humor level, and length based on the settings provided.
+Always stay helpful, kind, and a bit magical."""
 
-SYSTEM_PROMPT = (
-    "You are ZYNX AI, a witty, sarcastic, playful chatbot with a "
-    "mischievous personality. You tease the user in a light, funny way, "
-    "like a sarcastic friend, but you ALWAYS still give a genuinely "
-    "helpful and correct answer. Never be hateful and never insult people "
-    "for their race, religion, gender, body, or other personal traits. "
-    "Drop the sarcasm completely if the user seems genuinely upset or asks "
-    "about something serious. Keep replies concise unless asked for detail. "
-    "Use the occasional emoji like 😈."
-)
+def get_db():
+    if "db" not in g:
+        g.db = sqlite3.connect(DATABASE)
+        g.db.row_factory = sqlite3.Row
+        g.db.execute("PRAGMA foreign_keys = ON")
+    return g.db
 
-USERNAME_RE = re.compile(r"^[A-Za-z0-9_]{3,20}$")
+@app.teardown_appcontext
+def close_db(exception=None):
+    db = g.pop("db", None)
+    if db is not None:
+        db.close()
 
+def init_db():
+    db = sqlite3.connect(DATABASE)
+    db.execute("PRAGMA foreign_keys = ON")
+    db.executescript("""
+        CREATE TABLE IF NOT EXISTS users (
+            id TEXT PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        );
 
-# ------------------------------------------
-# DATABASE (Postgres if DATABASE_URL is set, otherwise a local SQLite file)
-# ------------------------------------------
-def get_conn():
-    if USE_PG:
-        return psycopg.connect(DATABASE_URL)
-    return sqlite3.connect("users.db")
+        CREATE TABLE IF NOT EXISTS sessions (
+            id TEXT PRIMARY KEY,
+            user_id TEXT,
+            is_guest INTEGER DEFAULT 1,
+            created_at TEXT NOT NULL,
+            last_active TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+        );
 
+        CREATE TABLE IF NOT EXISTS chats (
+            id TEXT PRIMARY KEY,
+            session_id TEXT NOT NULL,
+            title TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE
+        );
 
-def run(sql, params=(), fetch=False):
-    if USE_PG:
-        sql = sql.replace("?", "%s")
-    conn = get_conn()
-    try:
-        cur = conn.cursor()
-        cur.execute(sql, params)
-        row = cur.fetchone() if fetch else None
-        conn.commit()
-        return row
-    finally:
-        conn.close()
+        CREATE TABLE IF NOT EXISTS messages (
+            id TEXT PRIMARY KEY,
+            chat_id TEXT NOT NULL,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+        );
 
+        CREATE TABLE IF NOT EXISTS settings (
+            session_id TEXT PRIMARY KEY,
+            theme_intensity REAL DEFAULT 0.7,
+            humor_level REAL DEFAULT 0.6,
+            response_length TEXT DEFAULT 'balanced',
+            response_style TEXT DEFAULT 'warm',
+            FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE
+        );
+    """)
+    db.commit()
+    db.close()
 
-run(
-    "CREATE TABLE IF NOT EXISTS users ("
-    "username TEXT PRIMARY KEY, pw_hash TEXT NOT NULL, created TEXT NOT NULL)"
-)
+init_db()
 
+def now_iso():
+    return datetime.now(timezone.utc).isoformat()
 
-# ------------------------------------------
-# RATE LIMITING
-# ------------------------------------------
-auth_hits = defaultdict(deque)
-chat_hits = defaultdict(deque)
+def create_session(user_id=None, is_guest=True):
+    db = get_db()
+    session_id = str(uuid.uuid4())
+    ts = now_iso()
+    db.execute(
+        "INSERT INTO sessions (id, user_id, is_guest, created_at, last_active) VALUES (?, ?, ?, ?, ?)",
+        (session_id, user_id, 1 if is_guest else 0, ts, ts)
+    )
+    db.execute(
+        "INSERT INTO settings (session_id) VALUES (?)",
+        (session_id,)
+    )
+    db.commit()
+    return session_id
 
+def get_or_create_guest_session(session_id=None):
+    db = get_db()
+    if session_id:
+        row = db.execute("SELECT id FROM sessions WHERE id = ?", (session_id,)).fetchone()
+        if row:
+            db.execute("UPDATE sessions SET last_active = ? WHERE id = ?", (now_iso(), session_id))
+            db.commit()
+            return session_id
+    return create_session(is_guest=True)
 
-def limited(bucket, key, limit, window=60):
-    now = time.time()
-    q = bucket[key]
-    while q and now - q[0] > window:
-        q.popleft()
-    if len(q) >= limit:
-        return True
-    q.append(now)
-    return False
+def require_session(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        session_id = request.headers.get("X-Session-ID") or request.json.get("session_id") if request.is_json else None
+        if not session_id:
+            session_id = create_session(is_guest=True)
+        else:
+            session_id = get_or_create_guest_session(session_id)
+        g.session_id = session_id
+        return f(*args, **kwargs)
+    return decorated
 
-
-# ------------------------------------------
-# PAGES AND ACCOUNT ROUTES
-# ------------------------------------------
 @app.route("/")
-def home():
-    return render_template("index.html")
+def index():
+    return send_from_directory(".", "index.html")
 
+@app.route("/api/health")
+def health():
+    return jsonify({"status": "ok", "service": "Zynx AI"})
 
-@app.route("/api/me")
-def me():
-    return jsonify({"user": session.get("user")})
-
-
-@app.route("/api/register", methods=["POST"])
-def register():
-    if limited(auth_hits, request.remote_addr or "unknown", AUTH_LIMIT):
-        return jsonify({"error": "Too many attempts. Wait a minute and try again."}), 429
-
+@app.route("/api/session", methods=["POST"])
+def create_or_get_session():
     data = request.get_json(silent=True) or {}
-    username = str(data.get("username", "")).strip()
-    password = str(data.get("password", ""))
+    session_id = data.get("session_id")
+    session_id = get_or_create_guest_session(session_id)
+    return jsonify({"session_id": session_id})
 
-    if not USERNAME_RE.match(username):
-        return jsonify({"error": "Username must be 3-20 letters, numbers or underscores."}), 400
-    if len(password) < 8 or len(password) > 100:
-        return jsonify({"error": "Password must be 8 to 100 characters."}), 400
+@app.route("/api/signup", methods=["POST"])
+def signup():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid request"}), 400
 
-    key = username.lower()
-    if run("SELECT 1 FROM users WHERE username = ?", (key,), fetch=True):
-        return jsonify({"error": "That username is taken."}), 409
+    username = (data.get("username") or "").strip().lower()
+    password = data.get("password") or ""
+
+    if len(username) < 3 or len(username) > 32:
+        return jsonify({"error": "Username must be 3-32 characters"}), 400
+    if len(password) < 6:
+        return jsonify({"error": "Password must be at least 6 characters"}), 400
+
+    db = get_db()
+    existing = db.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()
+    if existing:
+        return jsonify({"error": "Username already taken"}), 409
+
+    user_id = str(uuid.uuid4())
+    password_hash = generate_password_hash(password)
+    ts = now_iso()
 
     try:
-        run(
-            "INSERT INTO users (username, pw_hash, created) VALUES (?, ?, ?)",
-            (key, generate_password_hash(password), datetime.utcnow().isoformat()),
+        db.execute(
+            "INSERT INTO users (id, username, password_hash, created_at) VALUES (?, ?, ?, ?)",
+            (user_id, username, password_hash, ts)
         )
+        session_id = create_session(user_id=user_id, is_guest=False)
+        db.commit()
+        return jsonify({
+            "session_id": session_id,
+            "user": {"id": user_id, "username": username},
+            "message": "Welcome aboard! Account created successfully."
+        })
     except Exception as e:
-        print("Register error:", e)
-        return jsonify({"error": "Could not create the account. Try another username."}), 409
+        db.rollback()
+        return jsonify({"error": "Could not create account"}), 500
 
-    session.clear()
-    session.permanent = True
-    session["user"] = key
-    return jsonify({"user": key})
+@app.route("/api/signin", methods=["POST"])
+def signin():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid request"}), 400
 
+    username = (data.get("username") or "").strip().lower()
+    password = data.get("password") or ""
 
-@app.route("/api/login", methods=["POST"])
-def login():
-    if limited(auth_hits, request.remote_addr or "unknown", AUTH_LIMIT):
-        return jsonify({"error": "Too many attempts. Wait a minute and try again."}), 429
+    db = get_db()
+    user = db.execute("SELECT id, username, password_hash FROM users WHERE username = ?", (username,)).fetchone()
+    if not user or not check_password_hash(user["password_hash"], password):
+        return jsonify({"error": "Invalid username or password"}), 401
 
+    session_id = create_session(user_id=user["id"], is_guest=False)
+    return jsonify({
+        "session_id": session_id,
+        "user": {"id": user["id"], "username": user["username"]},
+        "message": f"Welcome back, {user['username']}!"
+    })
+
+@app.route("/api/me", methods=["GET"])
+@require_session
+def me():
+    db = get_db()
+    row = db.execute("""
+        SELECT s.id as session_id, s.is_guest, u.id as user_id, u.username
+        FROM sessions s
+        LEFT JOIN users u ON s.user_id = u.id
+        WHERE s.id = ?
+    """, (g.session_id,)).fetchone()
+
+    if not row:
+        return jsonify({"error": "Session not found"}), 404
+
+    return jsonify({
+        "session_id": row["session_id"],
+        "is_guest": bool(row["is_guest"]),
+        "user": {"id": row["user_id"], "username": row["username"]} if row["user_id"] else None
+    })
+
+@app.route("/api/chats", methods=["GET"])
+@require_session
+def list_chats():
+    db = get_db()
+    chats = db.execute("""
+        SELECT id, title, created_at, updated_at
+        FROM chats
+        WHERE session_id = ?
+        ORDER BY updated_at DESC
+    """, (g.session_id,)).fetchall()
+
+    return jsonify({
+        "chats": [dict(c) for c in chats]
+    })
+
+@app.route("/api/chats", methods=["POST"])
+@require_session
+def create_chat():
     data = request.get_json(silent=True) or {}
-    key = str(data.get("username", "")).strip().lower()
-    password = str(data.get("password", ""))
+    title = data.get("title") or "New Chat"
+    chat_id = str(uuid.uuid4())
+    ts = now_iso()
 
-    row = run("SELECT pw_hash FROM users WHERE username = ?", (key,), fetch=True)
-    if not row or not check_password_hash(row[0], password):
-        return jsonify({"error": "Wrong username or password."}), 401
+    db = get_db()
+    db.execute(
+        "INSERT INTO chats (id, session_id, title, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+        (chat_id, g.session_id, title, ts, ts)
+    )
+    db.commit()
+    return jsonify({"id": chat_id, "title": title, "created_at": ts})
 
-    session.clear()
-    session.permanent = True
-    session["user"] = key
-    return jsonify({"user": key})
+@app.route("/api/chats/<chat_id>", methods=["GET"])
+@require_session
+def get_chat(chat_id):
+    db = get_db()
+    chat = db.execute(
+        "SELECT id, title, created_at, updated_at FROM chats WHERE id = ? AND session_id = ?",
+        (chat_id, g.session_id)
+    ).fetchone()
+    if not chat:
+        return jsonify({"error": "Chat not found"}), 404
 
+    messages = db.execute("""
+        SELECT id, role, content, created_at
+        FROM messages
+        WHERE chat_id = ?
+        ORDER BY created_at ASC
+    """, (chat_id,)).fetchall()
 
-@app.route("/api/logout", methods=["POST"])
-def logout():
-    session.clear()
+    return jsonify({
+        "chat": dict(chat),
+        "messages": [dict(m) for m in messages]
+    })
+
+@app.route("/api/chats/<chat_id>", methods=["DELETE"])
+@require_session
+def delete_chat(chat_id):
+    db = get_db()
+    result = db.execute(
+        "DELETE FROM chats WHERE id = ? AND session_id = ?",
+        (chat_id, g.session_id)
+    )
+    db.commit()
+    if result.rowcount == 0:
+        return jsonify({"error": "Chat not found"}), 404
     return jsonify({"ok": True})
 
+@app.route("/api/chats/<chat_id>/messages", methods=["POST"])
+@require_session
+def send_message(chat_id):
+    data = request.get_json()
+    if not data or not data.get("content"):
+        return jsonify({"error": "Message content is required"}), 400
 
-# ------------------------------------------
-# CHAT (sign-in required)
-# ------------------------------------------
-@app.route("/chat", methods=["POST"])
-def chat():
-    user = session.get("user")
-    if not user:
-        return jsonify({"reply": "Please sign in first."}), 401
+    content = data["content"].strip()
+    if not content:
+        return jsonify({"error": "Empty message"}), 400
 
-    if not GROQ_API_KEY:
-        return jsonify({"reply": "Server has no GROQ_API_KEY set."}), 500
+    db = get_db()
+    chat = db.execute(
+        "SELECT id, title FROM chats WHERE id = ? AND session_id = ?",
+        (chat_id, g.session_id)
+    ).fetchone()
+    if not chat:
+        return jsonify({"error": "Chat not found"}), 404
 
-    if limited(chat_hits, user, CHAT_LIMIT):
-        return jsonify({"reply": "Slow down a little. Too many messages. 😴"}), 429
+    settings_row = db.execute(
+        "SELECT theme_intensity, humor_level, response_length, response_style FROM settings WHERE session_id = ?",
+        (g.session_id,)
+    ).fetchone()
 
-    data = request.get_json(silent=True) or {}
-    raw = data.get("messages", [])
-    if not isinstance(raw, list):
-        raw = []
+    settings = dict(settings_row) if settings_row else {
+        "theme_intensity": 0.7,
+        "humor_level": 0.6,
+        "response_length": "balanced",
+        "response_style": "warm"
+    }
 
-    history = []
-    for m in raw[-MAX_HISTORY:]:
-        if not isinstance(m, dict):
-            continue
-        role = "assistant" if m.get("role") == "assistant" else "user"
-        content = str(m.get("content", ""))[:MAX_MESSAGE_CHARS]
-        if content.strip():
-            history.append({"role": role, "content": content})
+    ts = now_iso()
+    user_msg_id = str(uuid.uuid4())
+    db.execute(
+        "INSERT INTO messages (id, chat_id, role, content, created_at) VALUES (?, ?, ?, ?, ?)",
+        (user_msg_id, chat_id, "user", content, ts)
+    )
 
-    if not history:
-        return jsonify({"reply": "Say something first."}), 400
-
-    try:
-        r = requests.post(
-            GROQ_URL,
-            headers={
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": GROQ_MODEL,
-                "messages": [{"role": "system", "content": SYSTEM_PROMPT}] + history,
-                "temperature": 0.9,
-                "max_tokens": 1024,
-            },
-            timeout=60,
-        )
-    except requests.exceptions.RequestException as e:
-        print("Network error:", e)
-        return jsonify({"reply": "Can't reach Groq right now. Try again in a moment."}), 502
-
-    if r.status_code == 200:
-        try:
-            reply = r.json()["choices"][0]["message"]["content"].strip()
-            return jsonify({"reply": reply})
-        except (KeyError, IndexError, ValueError, AttributeError):
-            return jsonify({"reply": "Groq sent something I couldn't read."}), 502
-
-    print("Groq error:", r.status_code, r.text[:500])
-    if r.status_code == 401:
-        msg = "Groq rejected the API key. Check it in Render's settings."
-    elif r.status_code == 429:
-        msg = "Groq rate limit reached. Try again soon."
+    if chat["title"] == "New Chat" and len(content) > 0:
+        new_title = content[:40] + ("..." if len(content) > 40 else "")
+        db.execute("UPDATE chats SET title = ?, updated_at = ? WHERE id = ?", (new_title, ts, chat_id))
     else:
-        msg = f"Groq error {r.status_code}. Check the Render logs for details."
-    return jsonify({"reply": msg}), 502
+        db.execute("UPDATE chats SET updated_at = ? WHERE id = ?", (ts, chat_id))
 
+    history = db.execute("""
+        SELECT role, content FROM messages
+        WHERE chat_id = ?
+        ORDER BY created_at ASC
+        LIMIT 40
+    """, (chat_id,)).fetchall()
+
+    messages_for_api = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    style_instruction = f"""
+Current user preferences:
+- Humor level: {settings['humor_level']} (0 = serious, 1 = very playful)
+- Response length: {settings['response_length']}
+- Response style: {settings['response_style']}
+Please adapt your tone and length accordingly while remaining helpful and warm.
+"""
+    messages_for_api.append({"role": "system", "content": style_instruction})
+
+    for m in history:
+        messages_for_api.append({"role": m["role"], "content": m["content"]})
+
+    if not client:
+        assistant_content = "I'm having trouble connecting to my brain right now (missing API key). Please check the server configuration."
+    else:
+        try:
+            completion = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=messages_for_api,
+                temperature=0.7 + (settings["humor_level"] * 0.3),
+                max_tokens=1024 if settings["response_length"] == "concise" else (2048 if settings["response_length"] == "detailed" else 1536),
+                top_p=0.9,
+            )
+            assistant_content = completion.choices[0].message.content.strip()
+        except Exception as e:
+            error_msg = str(e).lower()
+            if "rate" in error_msg or "429" in error_msg:
+                assistant_content = "Whoa, I'm getting a bit flooded with requests right now. Give me a moment and try again?"
+            elif "auth" in error_msg or "api key" in error_msg:
+                assistant_content = "There's an authentication hiccup with my AI provider. The team has been notified."
+            else:
+                assistant_content = "Something went sideways on my end. Mind trying that again?"
+
+    assistant_msg_id = str(uuid.uuid4())
+    assistant_ts = now_iso()
+    db.execute(
+        "INSERT INTO messages (id, chat_id, role, content, created_at) VALUES (?, ?, ?, ?, ?)",
+        (assistant_msg_id, chat_id, "assistant", assistant_content, assistant_ts)
+    )
+    db.execute("UPDATE chats SET updated_at = ? WHERE id = ?", (assistant_ts, chat_id))
+    db.commit()
+
+    return jsonify({
+        "user_message": {
+            "id": user_msg_id,
+            "role": "user",
+            "content": content,
+            "created_at": ts
+        },
+        "assistant_message": {
+            "id": assistant_msg_id,
+            "role": "assistant",
+            "content": assistant_content,
+            "created_at": assistant_ts
+        }
+    })
+
+@app.route("/api/settings", methods=["GET"])
+@require_session
+def get_settings():
+    db = get_db()
+    row = db.execute(
+        "SELECT theme_intensity, humor_level, response_length, response_style FROM settings WHERE session_id = ?",
+        (g.session_id,)
+    ).fetchone()
+    if not row:
+        return jsonify({
+            "theme_intensity": 0.7,
+            "humor_level": 0.6,
+            "response_length": "balanced",
+            "response_style": "warm"
+        })
+    return jsonify(dict(row))
+
+@app.route("/api/settings", methods=["PUT"])
+@require_session
+def update_settings():
+    data = request.get_json() or {}
+    db = get_db()
+
+    theme = data.get("theme_intensity")
+    humor = data.get("humor_level")
+    length = data.get("response_length")
+    style = data.get("response_style")
+
+    updates = []
+    values = []
+
+    if theme is not None:
+        updates.append("theme_intensity = ?")
+        values.append(max(0.0, min(1.0, float(theme))))
+    if humor is not None:
+        updates.append("humor_level = ?")
+        values.append(max(0.0, min(1.0, float(humor))))
+    if length in ("concise", "balanced", "detailed"):
+        updates.append("response_length = ?")
+        values.append(length)
+    if style in ("warm", "professional", "playful", "poetic"):
+        updates.append("response_style = ?")
+        values.append(style)
+
+    if not updates:
+        return jsonify({"error": "No valid settings provided"}), 400
+
+    values.append(g.session_id)
+    db.execute(f"UPDATE settings SET {', '.join(updates)} WHERE session_id = ?", values)
+    db.commit()
+
+    row = db.execute(
+        "SELECT theme_intensity, humor_level, response_length, response_style FROM settings WHERE session_id = ?",
+        (g.session_id,)
+    ).fetchone()
+    return jsonify(dict(row))
+
+@app.errorhandler(404)
+def not_found(e):
+    if request.path.startswith("/api/"):
+        return jsonify({"error": "Not found"}), 404
+    return send_from_directory(".", "index.html")
+
+@app.errorhandler(500)
+def server_error(e):
+    return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
