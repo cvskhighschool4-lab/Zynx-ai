@@ -1,977 +1,296 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zynx AI</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f46e5'/%3E%3Cpath d='M20 22h23L21 42h23' fill='none' stroke='%23ffffff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg: #0b0d18;
-  --side-bg: #101324;
-  --main-bg: #14182d;
-  --card-bg: #1a1f3a;
-  --card-hover: #22284a;
-  --user-bubble: #313b75;
-  --bot-bubble: #181d36;
-  --input-bg: #181c34;
-  
-  --line: rgba(165, 180, 255, 0.14);
-  --line-strong: rgba(165, 180, 255, 0.3);
-  
-  --txt: #f6f8ff;
-  --txt-soft: #cbd2f0;
-  --mut: #8b95bf;
-  
-  --acc: #8b9dff;
-  --acc-glow: rgba(139, 157, 255, 0.25);
-  --cyan: #38bdf8;
-  --pink: #f472b6;
-  --ok: #34d399;
-  --danger: #fb7185;
-  
-  --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+:root {
+  --bg:#080b14;--panel:#101625;--panel2:#151e30;
+  --text:#edf2ff;--muted:#8995ad;--accent:#8b5cf6;
+  --accent2:#22d3ee;--border:#263149;
 }
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  font-family:var(--sans);
-  color:var(--txt);
-  background:var(--bg);
-  overflow:hidden;
-  -webkit-font-smoothing:antialiased;
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;height:100vh;overflow:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.app{height:100vh;display:flex}
+.sidebar{width:260px;background:#0c1120;border-right:1px solid var(--border);padding:18px;display:flex;flex-direction:column;gap:16px}
+.logo{font-size:25px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,#a78bfa,#22d3ee);background-clip:text;color:transparent}
+.new-chat,.side-button{border:1px solid var(--border);background:var(--panel);color:var(--text);padding:12px;border-radius:10px;text-align:left}
+.new-chat:hover,.side-button:hover{border-color:var(--accent)}
+.side-label{font-size:12px;color:var(--muted);margin-top:12px}
+.history{overflow:auto;flex:1}
+.history-item{padding:10px;border-radius:8px;color:#b9c4d8;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history-item:hover{background:var(--panel2)}
+.profile{border-top:1px solid var(--border);padding-top:15px;display:flex;align-items:center;justify-content:space-between}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:65px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.model{color:#b9c4d8;font-size:13px}
+.status{font-size:12px;color:#4ade80}
+.messages{flex:1;overflow-y:auto;padding:28px 20px}
+.welcome{max-width:760px;margin:10vh auto;text-align:center}
+.welcome h1{font-size:42px;margin-bottom:10px}
+.gradient{background:linear-gradient(90deg,#a78bfa,#22d3ee);background-clip:text;color:transparent}
+.welcome p{color:var(--muted)}
+.suggestions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}
+.suggestion{background:var(--panel);border:1px solid var(--border);padding:12px 15px;border-radius:12px;color:#cbd5e1}
+.suggestion:hover{border-color:var(--accent)}
+.message{max-width:850px;margin:0 auto 24px;display:flex;gap:13px;line-height:1.7}
+.avatar{width:34px;height:34px;flex:none;border-radius:10px;background:var(--panel2);display:grid;place-items:center}
+.content{min-width:0;overflow-wrap:anywhere}
+.content pre{background:#050914;padding:15px;border-radius:10px;overflow:auto}
+.content code{background:#202a40;padding:2px 5px;border-radius:5px}
+.content pre code{background:none;padding:0}
+.composer-wrap{padding:15px 20px 20px}
+.composer{max-width:850px;margin:auto;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;gap:10px;align-items:flex-end}
+textarea{flex:1;resize:none;min-height:44px;max-height:180px;background:transparent;border:0;outline:0;color:var(--text);padding:10px}
+.send{background:var(--accent);color:white;border:0;border-radius:11px;padding:12px 18px;font-weight:700}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.hint{text-align:center;font-size:11px;color:var(--muted);margin-top:9px}
+.auth-btn{background:transparent;color:#c4b5fd;border:1px solid var(--border);padding:9px 13px;border-radius:9px}
+.menu-btn{display:none}
+@media(max-width:700px){
+ .sidebar{display:none}.menu-btn{display:block}.topbar{padding:0 12px}
+ .welcome h1{font-size:32px}.messages{padding:20px 12px}
+ .composer-wrap{padding:10px}.message{gap:8px}
 }
-
-.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.ambient i{position:absolute;border-radius:50%;filter:blur(120px);opacity:.35}
-.ambient i:nth-child(1){width:48vw;height:48vw;left:-10vw;top:-15vw;background:#4338ca}
-.ambient i:nth-child(2){width:45vw;height:45vw;right:-10vw;bottom:-15vw;background:#2563eb}
-
-button,input,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-.hidden{display:none!important}
-body.booting .app,body.booting .auth{opacity:0}
-.app,.auth{transition:opacity .7s ease .1s}
-
-.lg{display:block;flex:none;border-radius:24%}
-.logo{display:flex;align-items:center;gap:11px;font-weight:700;font-size:1.1rem;letter-spacing:.01em;color:var(--txt)}
-.logo .lg{width:30px;height:30px}
-
-/* ---------- Bright, Vibrant & Light Animated Startup Sequence ---------- */
-.land{
-  position:fixed;inset:0;z-index:20;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:24px;text-align:center;color:#fff;
-  background:
-    radial-gradient(ellipse 75% 60% at 50% 10%, rgba(186, 198, 255, 0.9), transparent 65%),
-    radial-gradient(ellipse 60% 55% at 15% 40%, rgba(56, 189, 248, 0.7), transparent 65%),
-    radial-gradient(ellipse 60% 55% at 85% 35%, rgba(244, 114, 182, 0.65), transparent 65%),
-    linear-gradient(180deg, #6366f1 0%, #4f46e5 42%, #2e1065 82%, #130933 100%);
-  transition:opacity .8s ease, visibility .8s;
-}
-.land.done{opacity:0;visibility:hidden}
-
-.cloud{position:absolute;border-radius:50%;filter:blur(65px);pointer-events:none;mix-blend-mode:screen}
-.c1{width:54vw;height:42vw;left:-10vw;top:-6vh;background:rgba(125, 211, 252, 0.7);animation:floatA 9s ease-in-out infinite alternate}
-.c2{width:50vw;height:44vw;right:-8vw;top:4vh;background:rgba(244, 114, 182, 0.62);animation:floatB 11s ease-in-out infinite alternate}
-.c3{width:58vw;height:38vw;left:20vw;bottom:10vh;background:rgba(192, 132, 252, 0.68);animation:floatC 10s ease-in-out infinite alternate}
-@keyframes floatA{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,4vh) scale(1.14)}}
-@keyframes floatB{from{transform:translate(0,0) scale(1.05)}to{transform:translate(-6vw,5vh) scale(.95)}}
-@keyframes floatC{from{transform:translate(0,0) scale(.96)}to{transform:translate(4vw,-5vh) scale(1.12)}}
-
-.halo-wrap{position:relative;display:grid;place-items:center;margin-bottom:6px}
-.halo-ring{
-  position:absolute;width:136px;height:136px;border-radius:50%;
-  border:2px dashed rgba(255,255,255,0.7);
-  animation:spin 14s linear infinite;
-}
-.halo-ring.r2{
-  width:176px;height:176px;
-  border:1.5px solid rgba(125, 211, 252, 0.55);
-  border-top-color:#fff;border-bottom-color:#f472b6;
-  animation:spinRev 9s linear infinite;
-}
-.halo-glow{
-  position:absolute;width:120px;height:120px;border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(125,211,252,0.5) 55%, transparent 75%);
-  filter:blur(12px);
-  animation:pulseGlow 2.4s ease-in-out infinite alternate;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes spinRev{to{transform:rotate(-360deg)}}
-@keyframes pulseGlow{from{transform:scale(.9);opacity:.8}to{transform:scale(1.2);opacity:1}}
-
-.sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.sparkles span{
-  position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;
-  box-shadow:0 0 12px #fff, 0 0 24px #7dd3fc;
-  animation:twinkle 3.5s ease-in-out infinite alternate;
-}
-.sparkles span:nth-child(1){top:18%;left:22%;animation-delay:0s}
-.sparkles span:nth-child(2){top:28%;right:24%;width:6px;height:6px;animation-delay:.7s}
-.sparkles span:nth-child(3){top:62%;left:16%;animation-delay:1.3s}
-.sparkles span:nth-child(4){top:55%;right:18%;width:7px;height:7px;animation-delay:1.9s}
-.sparkles span:nth-child(5){top:14%;left:54%;animation-delay:2.4s}
-.sparkles span:nth-child(6){top:70%;left:68%;animation-delay:.4s}
-@keyframes twinkle{
-  0%{transform:translateY(0) scale(.6);opacity:.4}
-  100%{transform:translateY(-16px) scale(1.35);opacity:1}
-}
-
-.horizon{
-  position:absolute;left:50%;top:84%;width:168vw;height:168vw;transform:translateX(-50%);border-radius:50%;
-  background:radial-gradient(circle at 50% 0%, #2f277a 0%, #151042 26%, #080914 60%);
-  box-shadow:
-    inset 0 4px 3px rgba(255, 255, 255, 0.95),
-    inset 0 24px 80px -6px rgba(125, 211, 252, 0.9),
-    0 -16px 90px 12px rgba(192, 132, 252, 0.7);
-}
-
-.lc{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:660px;margin-top:-6vh}
-.boot-pill{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 15px;margin-bottom:26px;border-radius:999px;
-  background:rgba(255, 255, 255, 0.25);border:1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter:blur(12px);
-  font-family:var(--mono);font-size:.74rem;font-weight:600;color:#fff;letter-spacing:.05em;
-  box-shadow:0 8px 24px rgba(30, 27, 75, 0.3);
-  animation:rise .7s ease both;
-}
-.boot-pill i{width:8px;height:8px;border-radius:50%;background:#6ee7b7;box-shadow:0 0 12px #6ee7b7}
-.lg.big{position:relative;z-index:2;width:76px;height:76px;filter:drop-shadow(0 12px 28px rgba(30, 27, 75, 0.45));animation:rise .8s cubic-bezier(.2,.7,.2,1) .1s both}
-@keyframes rise{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-
-.lc h1{
-  margin-top:26px;font-size:clamp(2.3rem,5.8vw,4.1rem);font-weight:700;
-  letter-spacing:-.035em;line-height:1.05;color:#fff;
-  text-shadow:0 4px 30px rgba(30, 27, 75, 0.4);
-  animation:rise .8s cubic-bezier(.2,.7,.2,1) .18s both;
-}
-.lc p{
-  margin-top:14px;max-width:500px;font-size:clamp(1rem,1.7vw,1.15rem);
-  font-weight:500;line-height:1.55;color:rgba(255,255,255,.96);
-  animation:rise .8s cubic-bezier(.2,.7,.2,1) .28s both;
-}
-
-.boot-box{
-  margin-top:34px;width:100%;max-width:380px;
-  padding:16px 20px;border-radius:18px;
-  background:rgba(255, 255, 255, 0.2);
-  border:1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter:blur(18px);
-  box-shadow:0 20px 50px rgba(24, 18, 82, 0.4);
-  animation:fade .7s ease .35s both;
-}
-.boot-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.76rem;font-weight:600;color:#fff;margin-bottom:10px}
-.boot-track{width:100%;height:6px;border-radius:99px;background:rgba(255,255,255,.3);overflow:hidden}
-.boot-fill{
-  display:block;height:100%;width:0;border-radius:99px;
-  background:linear-gradient(90deg, #7dd3fc, #ffffff, #f9a8d4);
-  box-shadow:0 0 16px #fff;
-  transition:width .35s cubic-bezier(.2,.8,.2,1);
-}
-.boot-steps{display:flex;justify-content:space-between;margin-top:12px;font-family:var(--mono);font-size:.7rem;font-weight:600;color:rgba(255,255,255,.75)}
-.boot-steps span.active{color:#fff;text-shadow:0 0 10px #fff}
-.boot-steps span.done{color:#a7f3d0}
-
-.actions{margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:14px;animation:rise .65s cubic-bezier(.2,.7,.2,1) both}
-.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.cta,.ghost{padding:14px 28px;border-radius:14px;font-size:.96rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
-.cta{border:0;background:#ffffff;color:#1e1b4b;box-shadow:0 12px 32px rgba(24, 18, 82, 0.4)}
-.cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 16px 40px rgba(255, 255, 255, 0.5)}
-.ghost{color:#fff;background:rgba(255, 255, 255, 0.22);border:1px solid rgba(255, 255, 255, 0.6);backdrop-filter:blur(12px)}
-.ghost:hover{background:rgba(255, 255, 255, 0.32);transform:translateY(-2px)}
-.actions small{font-size:.79rem;color:rgba(255,255,255,.95);font-family:var(--mono)}
-.foot{position:absolute;z-index:2;left:0;right:0;bottom:22px;font-size:.79rem;font-family:var(--mono);color:rgba(255,255,255,.9)}
-
-/* ---------- Auth Modal ---------- */
-.auth{position:fixed;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6, 8, 16, 0.78);backdrop-filter:blur(8px)}
-.card{width:100%;max-width:400px;padding:32px 30px 26px;border-radius:20px;background:var(--side-bg);border:1px solid var(--line-strong);box-shadow:0 30px 80px rgba(0,0,0,.65)}
-.card .logo{margin-bottom:20px}
-.card h2{font-size:1.55rem;font-weight:600;letter-spacing:-.02em;margin-bottom:5px;color:var(--txt)}
-.sub{color:var(--mut);font-size:.87rem;margin-bottom:18px}
-.tabs{display:flex;padding:4px;border-radius:10px;background:var(--bg);border:1px solid var(--line);margin-bottom:18px}
-.tab{flex:1;padding:8px;border:0;border-radius:7px;background:none;color:var(--mut);font-weight:500;font-size:.86rem;cursor:pointer}
-.tab[aria-selected="true"]{background:var(--card-bg);color:var(--txt)}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
-.field label{font-size:.79rem;color:var(--txt-soft)}
-.field input{padding:11px 13px;border-radius:10px;background:var(--bg);border:1px solid var(--line);color:var(--txt);outline:none;transition:border-color .2s,box-shadow .2s}
-.field input::placeholder{color:var(--mut)}
-.field input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-glow)}
-.err{min-height:18px;font-size:.82rem;color:var(--danger);margin-bottom:8px}
-.btn{width:100%;padding:11px;border:0;border-radius:10px;cursor:pointer;font-weight:600;color:#0b0d1a;background:var(--acc);transition:background .15s,transform .15s}
-.btn:hover{background:#a3b2ff;transform:translateY(-1px)}
-.btn:disabled{opacity:.6;cursor:wait;transform:none}
-.gbtn{width:100%;margin-top:12px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card-bg);color:var(--txt-soft);font-size:.87rem;font-weight:500;cursor:pointer;transition:background .15s,color .15s}
-.gbtn:hover{background:var(--card-hover);color:var(--txt)}
-.switch{margin-top:16px;text-align:center;font-size:.84rem;color:var(--mut)}
-.switch button{background:none;border:0;color:var(--acc);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-
-/* ---------- Workspace App Shell ---------- */
-.app{position:fixed;inset:0;z-index:2;display:flex;gap:12px;padding:12px}
-
-.side{
-  width:276px;flex:none;display:flex;flex-direction:column;
-  padding:18px 14px 14px;
-  background:var(--side-bg);
-  border:1px solid var(--line);
-  border-radius:22px;
-  box-shadow:0 20px 50px rgba(0,0,0,.4);
-}
-.side-head{display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px;border-bottom:1px solid var(--line)}
-.ver-tag{font-family:var(--mono);font-size:.68rem;padding:3px 8px;border-radius:6px;background:var(--card-bg);border:1px solid var(--line);color:var(--acc)}
-
-.new{
-  display:flex;align-items:center;justify-content:space-between;
-  width:100%;margin-top:14px;padding:11px 14px;border-radius:12px;
-  border:1px solid var(--line-strong);
-  background:var(--card-bg);
-  color:var(--txt);font-size:.88rem;font-weight:600;cursor:pointer;
-  transition:background .15s,border-color .15s,transform .15s;
-}
-.new:hover{background:var(--card-hover);border-color:var(--acc);transform:translateY(-1px)}
-.new kbd{font-family:var(--mono);font-size:.69rem;padding:2px 6px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--mut)}
-
-.label-row{display:flex;align-items:center;justify-content:space-between;margin:20px 8px 8px}
-.label{font-size:.71rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600}
-.count-pill{font-family:var(--mono);font-size:.69rem;color:var(--txt-soft);background:var(--card-bg);padding:1px 7px;border-radius:99px;border:1px solid var(--line)}
-
-.tasks{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding-right:2px}
-.empty-tasks{padding:20px 12px;text-align:center;font-size:.8rem;line-height:1.5;color:var(--mut);border:1px dashed var(--line);border-radius:12px;margin-top:4px}
-
-.task{
-  display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;
-  border:1px solid transparent;border-radius:11px;background:none;
-  text-align:left;font-size:.86rem;color:var(--txt-soft);cursor:pointer;
-  transition:background .15s,border-color .15s,color .15s;
-}
-.task:hover{background:var(--card-bg);color:var(--txt)}
-.task.on{background:var(--card-hover);border-color:var(--line-strong);color:var(--txt)}
-.task i{width:7px;height:7px;flex:none;border-radius:50%;background:var(--mut);transition:background .15s,box-shadow .15s}
-.task.on i{background:var(--acc);box-shadow:0 0 8px var(--acc)}
-.task.run i{background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 1s infinite ease-in-out}
-@keyframes pulse{50%{opacity:.25}}
-.task-info{flex:1;min-width:0}
-.task-title{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
-.task-meta{display:block;font-family:var(--mono);font-size:.67rem;color:var(--mut);margin-top:2px}
-.del-task{opacity:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;width:22px;height:22px;display:grid;place-items:center;font-size:.85rem;color:var(--mut);cursor:pointer;transition:opacity .15s,background .15s,color .15s}
-.task:hover .del-task{opacity:1}
-.del-task:hover{background:rgba(251, 113, 133, 0.2);border-color:var(--danger);color:var(--danger)}
-
-.side-status{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:9px 12px;margin-top:10px;border-radius:11px;
-  background:var(--bg);border:1px solid var(--line);
-  font-family:var(--mono);font-size:.71rem;color:var(--mut);
-}
-.status-dot{display:inline-flex;align-items:center;gap:7px;color:var(--txt-soft)}
-.status-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
-
-.me{display:flex;align-items:center;gap:10px;padding:12px 4px 2px;margin-top:10px;border-top:1px solid var(--line)}
-.av{width:35px;height:35px;flex:none;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:.88rem;color:#0b0d1a;background:linear-gradient(135deg, var(--acc), var(--cyan))}
-.who{flex:1;min-width:0}
-.who-top{display:flex;align-items:center;gap:6px}
-.who b{font-size:.86rem;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.guest-badge{font-family:var(--mono);font-size:.61rem;padding:1px 6px;border-radius:5px;background:rgba(56, 189, 248, 0.14);border:1px solid rgba(56, 189, 248, 0.35);color:var(--cyan)}
-.who small{display:block;color:var(--mut);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
-.out{background:var(--card-bg);border:1px solid var(--line);border-radius:9px;padding:6px 11px;font-size:.75rem;font-weight:500;color:var(--txt-soft);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
-.out:hover{background:var(--card-hover);border-color:var(--line-strong);color:var(--txt)}
-
-/* ---------- Main Chat Workspace ---------- */
-.main{
-  flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;
-  background:var(--main-bg);
-  border:1px solid var(--line);
-  border-radius:22px;
-  box-shadow:0 20px 50px rgba(0,0,0,.4);
-}
-.top{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 24px;
-  border-bottom:1px solid var(--line);
-  background:var(--side-bg);
-}
-.top-left{display:flex;align-items:center;gap:10px;min-width:0}
-.top h3{font-size:.94rem;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mode-tag{font-family:var(--mono);font-size:.68rem;padding:3px 8px;border-radius:6px;background:var(--card-bg);border:1px solid var(--line);color:var(--acc);text-transform:uppercase}
-.pill{display:inline-flex;align-items:center;gap:6px;font-size:.73rem;font-family:var(--mono);color:var(--txt-soft);padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card-bg)}
-.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ok)}
-
-.hero{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:0 24px 4vh}
-.main.empty .hero{display:flex}
-.main.empty .msgs,.main.empty .dock{display:none}
-.hero-sub{font-family:var(--mono);font-size:.74rem;color:var(--acc);margin-bottom:10px;letter-spacing:.06em}
-.hero h1{font-size:clamp(1.85rem,3.6vw,2.55rem);font-weight:600;letter-spacing:-.03em;margin-bottom:24px;text-align:center;color:var(--txt)}
-.slot{width:100%;max-width:760px}
-
-.sugg{width:100%;max-width:760px;margin-top:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.sg{
-  display:flex;flex-direction:column;gap:5px;padding:13px 16px;
-  border-radius:14px;border:1px solid var(--line);
-  background:var(--card-bg);text-align:left;cursor:pointer;
-  transition:background .15s,border-color .15s,transform .15s;
-}
-.sg:hover{background:var(--card-hover);border-color:var(--line-strong);transform:translateY(-2px)}
-.sg-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.69rem;color:var(--acc);text-transform:uppercase;letter-spacing:.05em}
-.sg-text{font-size:.87rem;color:var(--txt-soft);font-weight:500;line-height:1.4}
-.sg:hover .sg-text{color:var(--txt)}
-
-/* ---------- Crisp Typing Bar ---------- */
-.composer{
-  width:100%;max-width:760px;margin:0 auto;
-  border-radius:18px;
-  background:var(--input-bg);
-  border:1px solid var(--line-strong);
-  box-shadow:0 12px 32px rgba(0,0,0,.35);
-  overflow:hidden;
-  transition:border-color .15s,box-shadow .15s;
-}
-.composer:focus-within{
-  border-color:var(--acc);
-  box-shadow:0 14px 36px rgba(0,0,0,.45), 0 0 0 3px var(--acc-glow);
-}
-.comp-top{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:7px 16px;
-  background:rgba(10, 12, 22, 0.45);
-  border-bottom:1px solid var(--line);
-  font-family:var(--mono);font-size:.7rem;color:var(--mut);
-}
-.comp-mode-desc{display:flex;align-items:center;gap:6px}
-.comp-mode-desc b{color:var(--cyan);font-weight:600}
-.comp-body{padding:12px 16px 4px}
-.composer textarea{
-  display:block;width:100%;resize:none;border:0;outline:none;background:none;
-  color:var(--txt);font-size:.97rem;line-height:1.58;max-height:200px;
-}
-.composer textarea::placeholder{color:var(--mut)}
-.crow{display:flex;align-items:center;gap:10px;padding:8px 12px 11px}
-.seg{display:flex;padding:3px;border-radius:10px;background:var(--bg);border:1px solid var(--line)}
-.seg button{padding:5px 14px;border:0;border-radius:7px;background:none;color:var(--mut);font-size:.79rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s}
-.seg button.on{background:var(--card-hover);color:var(--txt)}
-.hint{flex:1;font-size:.72rem;color:var(--mut);font-family:var(--mono);padding-left:4px}
-.clear-btn{background:var(--card-bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:.74rem;color:var(--mut);cursor:pointer;transition:background .15s,color .15s}
-.clear-btn:hover{background:var(--card-hover);color:var(--txt)}
-.send{
-  width:38px;height:38px;border:0;border-radius:11px;display:grid;place-items:center;cursor:pointer;
-  background:var(--acc);box-shadow:0 4px 14px rgba(139, 157, 255, 0.35);
-  transition:transform .15s,background .15s;
-}
-.send:hover{transform:translateY(-1px);background:#a3b2ff}
-.send svg{width:18px;height:18px;stroke:#0b0d1a;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.dock{padding:10px 24px 18px;background:var(--main-bg);border-top:1px solid var(--line)}
-
-/* ---------- High-Contrast Chatbox Messages ---------- */
-.msgs{flex:1;overflow-y:auto;padding:20px 0 24px;scroll-behavior:smooth}
-.msgs::-webkit-scrollbar,.tasks::-webkit-scrollbar{width:6px}
-.msgs::-webkit-scrollbar-thumb,.tasks::-webkit-scrollbar-thumb{background:rgba(165, 180, 255, 0.22);border-radius:9px}
-.msgs::-webkit-scrollbar-thumb:hover,.tasks::-webkit-scrollbar-thumb:hover{background:rgba(165, 180, 255, 0.38)}
-
-.col{max-width:760px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:22px}
-.m{animation:in .22s ease-out}
-@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-.m.user{align-self:flex-end;max-width:80%;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
-.user-bubble{
-  padding:12px 17px;border-radius:18px 18px 4px 18px;
-  background:var(--user-bubble);
-  border:1px solid rgba(139, 157, 255, 0.35);
-  color:#ffffff;
-  line-height:1.6;font-size:.95rem;white-space:pre-wrap;word-wrap:break-word;
-  box-shadow:0 6px 20px rgba(0,0,0,.22);
-}
-.m-time{font-family:var(--mono);font-size:.67rem;color:var(--mut);padding:0 4px}
-
-.m.bot{display:flex;gap:13px;align-items:flex-start}
-.m.bot .lg{width:28px;height:28px;margin-top:2px;box-shadow:0 4px 12px rgba(0,0,0,.35)}
-.bot-wrap{
-  flex:1;min-width:0;padding:15px 18px;
-  border-radius:4px 18px 18px 18px;
-  background:var(--bot-bubble);
-  border:1px solid var(--line);
-  box-shadow:0 6px 20px rgba(0,0,0,.2);
-}
-.bot-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-family:var(--mono);font-size:.7rem;color:var(--acc)}
-.bot-meta b{color:var(--txt);font-weight:600;font-family:var(--sans);font-size:.83rem}
-.bot-meta span{color:var(--mut)}
-
-.body{line-height:1.72;font-size:.95rem;word-wrap:break-word;color:var(--txt)}
-.body p{margin-bottom:12px}.body p:last-child{margin-bottom:0}
-.body code{font-family:var(--mono);font-size:.84em;padding:2px 6px;border-radius:6px;background:var(--bg);border:1px solid var(--line);color:var(--cyan)}
-
-.cb{margin:14px 0;border-radius:12px;overflow:hidden;border:1px solid var(--line-strong);background:#090b14}
-.ch{display:flex;justify-content:space-between;align-items:center;padding:7px 10px 7px 14px;background:#111426;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.73rem;color:var(--cyan)}
-.cp{background:var(--card-bg);border:1px solid var(--line);border-radius:7px;padding:3px 10px;font-size:.72rem;color:var(--txt-soft);cursor:pointer;transition:background .15s,color .15s}
-.cp:hover{background:var(--card-hover);color:#fff}
-.cb pre{padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:.84rem;line-height:1.65;color:#eef2ff}
-.cb pre code{padding:0;background:none;border:0;font-size:inherit;color:inherit}
-
-.dots{display:inline-flex;align-items:center;gap:6px;padding:4px 0;font-family:var(--mono);font-size:.76rem;color:var(--txt-soft)}
-.dots i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:b 1.1s infinite ease-in-out}
-.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
-@keyframes b{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
-
-@media (max-width:760px){
-  .side{display:none}.app{padding:8px}.top{padding:12px 16px}.col,.dock{padding-left:14px;padding-right:14px}.hint{display:none}.sugg{grid-template-columns:1fr}.card{padding:28px 20px 22px}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body class="booting">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="lt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#6366f1"/>
-      <stop offset="1" stop-color="#312e81"/>
-    </linearGradient>
-  </defs>
-  <symbol id="zlogo" viewBox="0 0 64 64">
-    <rect width="64" height="64" rx="16" fill="url(#lt)" stroke="#a5b4fc" stroke-opacity="0.6" stroke-width="2"/>
-    <path d="M20 22h23L21 42h23" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M49 8l1.6 4.4L55 14l-4.4 1.6L49 20l-1.6-4.4L43 14l4.4-1.6z" fill="#7dd3fc"/>
-  </symbol>
-</svg>
-
-<div class="ambient" aria-hidden="true"><i></i><i></i></div>
-
-<!-- Bright, Vibrant & Light Animated Startup Sequence -->
-<div class="land" id="land">
-  <div class="cloud c1"></div>
-  <div class="cloud c2"></div>
-  <div class="cloud c3"></div>
-  <div class="sparkles" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span><span></span>
-  </div>
-  <div class="horizon"></div>
-
-  <div class="lc">
-    <div class="boot-pill"><i></i><span>ZYNX AI · GROQ LPU ENGINE</span></div>
-    
-    <div class="halo-wrap">
-      <div class="halo-glow"></div>
-      <div class="halo-ring"></div>
-      <div class="halo-ring r2"></div>
-      <svg class="lg big" aria-label="Zynx logo" role="img"><use href="#zlogo"/></svg>
-    </div>
-
-    <h1>Build anything with Zynx</h1>
-    <p>Ask, code, and explore in a lightning-fast workspace. Instant access—no account required.</p>
-    
-    <div class="boot-box" id="load" aria-live="polite">
-      <div class="boot-top">
-        <span id="boot-status">Initializing Zynx core...</span>
-        <span id="boot-pct">0%</span>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">ZYNX AI</div>
+    <button class="new-chat" id="newChat">＋ New chat</button>
+    <div class="side-label">YOUR CONVERSATIONS</div>
+    <div class="history" id="history"></div>
+    <div class="profile">
+      <div>
+        <strong id="userName">Guest User</strong>
+        <div class="side-label" id="userStatus">Free guest access</div>
       </div>
-      <div class="boot-track"><b class="boot-fill" id="boot-fill"></b></div>
-      <div class="boot-steps">
-        <span id="st-0">CORE</span>
-        <span id="st-1">GROQ</span>
-        <span id="st-2">SESSION</span>
-        <span id="st-3">READY</span>
-      </div>
-    </div>
-
-    <div class="actions hidden" id="actions">
-      <div class="row">
-        <button class="cta" id="start" type="button">Enter Workspace →</button>
-        <button class="ghost" id="go-in" type="button">Sign in</button>
-      </div>
-      <small>Instant guest mode active · Click anywhere to enter</small>
-    </div>
-  </div>
-  <div class="foot">Powered by Groq · Press Esc to skip</div>
-</div>
-
-<!-- Auth Modal (Wired to Flask /api/login & /api/register) -->
-<section class="auth hidden" id="auth">
-  <div class="card">
-    <div class="logo"><svg class="lg" aria-hidden="true"><use href="#zlogo"/></svg><span>Zynx AI</span></div>
-    <h2 id="auth-title">Welcome back</h2>
-    <p class="sub" id="auth-sub">Sign in to sync your account.</p>
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-in" aria-selected="true" type="button">Sign in</button>
-      <button class="tab" role="tab" id="tab-up" aria-selected="false" type="button">Sign up</button>
-    </div>
-    <form id="auth-form" novalidate>
-      <div class="field">
-        <label for="username">Username</label>
-        <input id="username" type="text" autocomplete="username" placeholder="3-20 letters, numbers or _">
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" placeholder="At least 8 characters">
-      </div>
-      <div class="err" id="err" role="alert"></div>
-      <button class="btn" id="auth-btn" type="submit">Sign in</button>
-    </form>
-    <p class="switch" id="switch">New to Zynx? <button type="button" id="switch-btn">Create an account</button></p>
-    <button class="gbtn" id="guest-btn" type="button">Continue as Guest</button>
-  </div>
-</section>
-
-<!-- Workspace App Shell -->
-<div class="app" id="app">
-  <aside class="side">
-    <div class="side-head">
-      <div class="logo"><svg class="lg" aria-hidden="true"><use href="#zlogo"/></svg><span>Zynx AI</span></div>
-      <span class="ver-tag">v2.6</span>
-    </div>
-    <button class="new" id="new-chat" type="button">
-      <span>+ New task</span>
-      <kbd>Alt+N</kbd>
-    </button>
-    <div class="label-row">
-      <span class="label">Tasks</span>
-      <span class="count-pill" id="task-count">0</span>
-    </div>
-    <div class="tasks" id="tasks"></div>
-
-    <div class="side-status">
-      <span class="status-dot">Groq Connected</span>
-      <span>gpt-oss-120b</span>
-    </div>
-
-    <div class="me">
-      <div class="av" id="avatar">G</div>
-      <div class="who">
-        <div class="who-top">
-          <b id="uname">Guest</b>
-          <span class="guest-badge" id="guest-badge">GUEST</span>
-        </div>
-        <small id="umail">Instant access active</small>
-      </div>
-      <button class="out" id="signout" type="button">Sign in</button>
+      <button class="auth-btn" id="loginButton">Sign in</button>
     </div>
   </aside>
 
-  <main class="main empty" id="main">
-    <div class="top">
-      <div class="top-left">
-        <h3 id="title">New task</h3>
-        <span class="mode-tag" id="top-mode">ASK</span>
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <button class="menu-btn side-button" id="mobileNew">＋</button>
+        <strong>Zynx AI</strong>
+        <span class="model"> · AI Assistant</span>
       </div>
-      <span class="pill">zynx-engine · groq</span>
-    </div>
-
-    <div class="hero">
-      <span class="hero-sub">ZYNX WORKSPACE</span>
-      <h1 id="hello">What should we build?</h1>
-      <div class="slot" id="slot">
-        <form class="composer" id="composer" autocomplete="off">
-          <div class="comp-top">
-            <span class="comp-mode-desc">Mode: <b id="mode-label">Ask</b> — <span id="mode-desc">Witty, helpful reasoning & answers</span></span>
-            <span id="char-count">0 chars</span>
-          </div>
-          <div class="comp-body">
-            <textarea id="user-input" rows="2" aria-label="Message"></textarea>
-          </div>
-          <div class="crow">
-            <div class="seg">
-              <button type="button" class="on" data-m="ask">Ask</button>
-              <button type="button" data-m="code">Code</button>
-            </div>
-            <span class="hint">Enter to send · Shift+Enter for new line</span>
-            <button class="clear-btn hidden" id="clear-input" type="button">Clear</button>
-            <button class="send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
-          </div>
-        </form>
+      <div>
+        <span class="status" id="connectionStatus">● Ready</span>
       </div>
-      <div class="sugg" id="sugg"></div>
-    </div>
+    </header>
 
-    <div class="msgs" id="msgs"><div class="col" id="col"></div></div>
-    <div class="dock" id="dock"></div>
+    <section class="messages" id="messages">
+      <div class="welcome" id="welcome">
+        <h1>Welcome to <span class="gradient">Zynx AI</span></h1>
+        <p>Your intelligent AI assistant. Ask anything. No sign-in required.</p>
+        <div class="suggestions">
+          <button class="suggestion">Explain artificial intelligence simply</button>
+          <button class="suggestion">Create a Python project</button>
+          <button class="suggestion">Give me innovative science ideas</button>
+          <button class="suggestion">Help me learn programming</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="composer-wrap">
+      <div class="composer">
+        <textarea id="prompt" placeholder="Message Zynx AI..." rows="1"></textarea>
+        <button class="send" id="sendButton">Send ↑</button>
+      </div>
+      <div class="hint">Zynx AI can make mistakes. Verify important information.</div>
+    </footer>
   </main>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
-const store = {
-  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-};
 
-let user = { name: 'Guest', guest: true };
+let user = {name:"Guest User", guest:true};
+let chats = JSON.parse(localStorage.getItem("zynx_guest_chats") || "[]");
+let activeChat = null;
+let busy = false;
 
-/* Check active session on load via Flask /api/me */
-async function checkSession(){
-  try {
-    const r = await fetch('/api/me');
-    const data = await r.json();
-    if (data.user) {
-      user = { name: data.user, guest: false };
-      enterApp();
-    }
-  } catch {}
-}
-checkSession();
-
-/* ---------- Bright Animated Startup Sequence ---------- */
-const bootSteps = [
-  'Igniting Zynx core...',
-  'Linking Groq LPU neural engine...',
-  'Syncing session state...',
-  'Ready to launch'
-];
-let si = 0, ready = false, gone = false, st;
-
-function dismiss(){
-  if (gone) return;
-  gone = true;
-  document.body.classList.remove('booting');
-  $('land').classList.add('done');
-  setTimeout(() => { $('land').remove(); $('user-input').focus(); }, 850);
-}
-
-function loaded(){
-  if (ready) return;
-  ready = true;
-  clearInterval(st);
-  $('boot-fill').style.width = '100%';
-  $('boot-pct').textContent = '100%';
-  $('boot-status').textContent = 'Workspace ready';
-  for (let i = 0; i < 4; i++) { $('st-' + i).className = 'done'; }
-  $('load').classList.add('hidden');
-  $('actions').classList.remove('hidden');
-  $('start').focus();
-}
-
-function stepTick(){
-  if (si >= bootSteps.length) {
-    clearInterval(st);
-    setTimeout(loaded, 280);
-    return;
-  }
-  const pct = Math.round(((si + 1) / bootSteps.length) * 100);
-  $('boot-status').textContent = bootSteps[si];
-  $('boot-pct').textContent = pct + '%';
-  $('boot-fill').style.width = pct + '%';
-  for (let i = 0; i <= si; i++) {
-    $('st-' + i).className = i < si ? 'done' : 'active';
-  }
-  si++;
-}
-
-stepTick();
-st = setInterval(stepTick, 400);
-
-$('land').addEventListener('click', e => {
-  if (e.target.closest('button')) return;
-  if (!ready) loaded();
-  else dismiss();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && !gone) {
-    if (!ready) loaded();
-    else dismiss();
-  }
-  if (e.altKey && e.key.toLowerCase() === 'n') {
-    e.preventDefault();
-    newChat();
-  }
-});
-
-$('start').onclick = () => dismiss();
-$('go-in').onclick = () => { dismiss(); openAuth(); };
-
-/* ---------- Auth Modal (Wired to Flask /api/login & /api/register) ---------- */
-let mode = 'in';
-function openAuth(){ $('auth').classList.remove('hidden'); setMode('in'); }
-function closeAuth(){ $('auth').classList.add('hidden'); }
-
-function setMode(m){
-  mode = m; const up = m === 'up';
-  $('tab-in').setAttribute('aria-selected', !up);
-  $('tab-up').setAttribute('aria-selected', up);
-  $('auth-title').textContent = up ? 'Create your account' : 'Welcome back';
-  $('auth-sub').textContent = up ? 'Pick a username (3–20 letters, numbers, or _).' : 'Sign in to your Zynx account.';
-  $('auth-btn').textContent = up ? 'Create account' : 'Sign in';
-  $('password').autocomplete = up ? 'new-password' : 'current-password';
-  $('switch').firstChild.textContent = up ? 'Already have an account? ' : 'New to Zynx? ';
-  $('switch-btn').textContent = up ? 'Sign in' : 'Create an account';
-  $('err').textContent = '';
-}
-$('tab-in').onclick = () => setMode('in');
-$('tab-up').onclick = () => setMode('up');
-$('switch-btn').onclick = () => setMode(mode === 'in' ? 'up' : 'in');
-$('guest-btn').onclick = () => { enterGuest(); closeAuth(); };
-$('auth').addEventListener('click', e => { if (e.target === $('auth')) closeAuth(); });
-
-$('auth-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const username = $('username').value.trim();
-  const password = $('password').value;
-  const err = m => { $('err').textContent = m; };
-  err('');
-
-  if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
-    return err('Username must be 3-20 letters, numbers or underscores.');
-  }
-  if (password.length < 8) {
-    return err('Password must be at least 8 characters.');
-  }
-
-  const btn = $('auth-btn');
-  btn.disabled = true;
-  try {
-    const endpoint = mode === 'up' ? '/api/register' : '/api/login';
-    const r = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) {
-      btn.disabled = false;
-      return err(data.error || 'Authentication failed.');
-    }
-    user = { name: data.user || username, guest: false };
-    $('auth-form').reset();
-    closeAuth();
-    enterApp();
-  } catch {
-    err('Cannot reach Flask server.');
-  }
-  btn.disabled = false;
-});
-
-$('signout').onclick = async () => {
-  if (user.guest) {
-    openAuth();
-  } else {
-    await fetch('/api/logout', { method: 'POST' }).catch(() => {});
-    enterGuest();
-  }
-};
-
-function enterGuest(){
-  user = { name: 'Guest', guest: true };
-  enterApp();
-}
-
-/* ---------- Chat Engine (Wired to Flask /chat with Full History) ---------- */
-let chats = [], cur = null, chatMode = 'ask';
-const key = () => 'zynx_chats_' + user.name;
-const save = () => store.set(key(), chats);
-const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const nowTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-const suggestions = [
-  { tag: 'Debugging', text: 'Explain this error and how to fix it' },
-  { tag: 'JavaScript', text: 'Write a clean debounce function in JS' },
-  { tag: 'Code Review', text: 'Review my code for bugs and edge cases' },
-  { tag: 'Architecture', text: 'Plan the folder structure for a Flask app' }
-];
-
-function md(t){
-  const parts = t.split(/```(\w*)\n?([\s\S]*?)```/g);
-  return parts.map((p, i) => {
-    if (i % 3 === 1) return '';
-    if (i % 3 === 2) return `<div class="cb"><div class="ch"><span>${esc(parts[i - 1] || 'code')}</span><button class="cp" type="button">Copy</button></div><pre><code>${esc(p.replace(/\n$/, ''))}</code></pre></div>`;
-    return esc(p).split(/\n{2,}/).filter(x => x.trim()).map(x => '<p>' + x.replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>') + '</p>').join('');
-  }).join('');
-}
-
-function enterApp(){
-  const guest = !!user.guest;
-  $('uname').textContent = user.name;
-  $('umail').textContent = guest ? 'Instant access active' : 'Signed in · Synced';
-  $('guest-badge').classList.toggle('hidden', !guest);
-  $('avatar').textContent = user.name.charAt(0).toUpperCase();
-  $('signout').textContent = guest ? 'Sign in' : 'Sign out';
-  $('hello').textContent = guest ? 'What should we build?' : 'What should we build, ' + user.name + '?';
-  chats = store.get(key(), []);
-  newChat();
+function saveChats(){
+  localStorage.setItem("zynx_guest_chats",JSON.stringify(chats));
 }
 
 function newChat(){
-  cur = { id: Date.now(), title: 'New task', time: nowTime(), msgs: [] };
+  activeChat = {id:Date.now(),title:"New chat",messages:[]};
+  chats.unshift(activeChat);
+  saveChats();
   render();
-  if (gone) $('user-input').focus();
 }
 
 function render(){
-  const empty = !cur.msgs.length;
-  $('main').classList.toggle('empty', empty);
-  (empty ? $('slot' ) : $('dock')).appendChild($('composer'));
-  $('title').textContent = cur.title;
-  $('col').innerHTML = '';
-  cur.msgs.forEach(m => addMsg(m.text, m.role, m.time));
-  $('sugg').innerHTML = suggestions.map(s => `
-    <button class="sg" type="button" data-prompt="${esc(s.text)}">
-      <div class="sg-head"><span>${s.tag}</span><span>↗</span></div>
-      <div class="sg-text">${s.text}</div>
-    </button>
-  `).join('');
-  $('sugg').querySelectorAll('.sg').forEach(b => b.onclick = () => {
-    $('user-input').value = b.dataset.prompt;
-    grow();
-    $('user-input').focus();
-  });
-  renderTasks();
-}
+  $("messages").innerHTML = "";
 
-function renderTasks(){
-  const box = $('tasks');
-  box.innerHTML = '';
-  $('task-count').textContent = chats.length;
-  if (!chats.length) {
-    box.innerHTML = '<div class="empty-tasks">No tasks yet.<br>Send a message to begin.</div>';
-    return;
-  }
-  chats.forEach(c => {
-    const b = document.createElement('div');
-    b.className = 'task' + (c.id === cur.id ? ' on' : '') + (c.busy ? ' run' : '');
-    b.innerHTML = `<i></i><div class="task-info"><span class="task-title">${esc(c.title)}</span><span class="task-meta">${c.msgs.length} msgs · ${c.time || 'Now'}</span></div><button class="del-task" type="button" title="Delete task">×</button>`;
-    b.onclick = e => {
-      if (e.target.closest('.del-task')) {
-        e.stopPropagation();
-        chats = chats.filter(x => x.id !== c.id);
-        save();
-        if (cur.id === c.id) newChat();
-        else renderTasks();
-        return;
-      }
-      cur = c;
-      render();
-    };
-    box.appendChild(b);
-  });
-}
-
-function addMsg(text, role, time = nowTime()){
-  const d = document.createElement('div');
-  d.className = 'm ' + role;
-  if (role === 'user') {
-    d.innerHTML = `<div class="user-bubble">${esc(text)}</div><span class="m-time">${time}</span>`;
+  if(!activeChat || activeChat.messages.length===0){
+    $("messages").innerHTML = `
+      <div class="welcome" id="welcome">
+        <h1>Welcome to <span class="gradient">Zynx AI</span></h1>
+        <p>Your intelligent AI assistant. Ask anything. No sign-in required.</p>
+        <div class="suggestions">
+          <button class="suggestion">Explain artificial intelligence simply</button>
+          <button class="suggestion">Create a Python project</button>
+          <button class="suggestion">Give me innovative science ideas</button>
+          <button class="suggestion">Help me learn programming</button>
+        </div>
+      </div>`;
+    document.querySelectorAll(".suggestion").forEach(btn=>{
+      btn.onclick=()=>{ $("prompt").value=btn.textContent; sendMessage(); };
+    });
   } else {
-    d.innerHTML = `
-      <svg class="lg" aria-hidden="true"><use href="#zlogo"/></svg>
-      <div class="bot-wrap">
-        <div class="bot-meta"><b>Zynx AI</b><span>· ${chatMode.toUpperCase()} · ${time}</span></div>
-        <div class="body">${text ? md(text) : ''}</div>
-      </div>
-    `;
+    activeChat.messages.forEach(m=>addMessage(m.role,m.content));
   }
-  $('col').appendChild(d);
-  $('msgs').scrollTop = $('msgs').scrollHeight;
-  return d;
+
+  $("history").innerHTML = "";
+  chats.forEach(chat=>{
+    const item=document.createElement("div");
+    item.className="history-item";
+    item.textContent=chat.title;
+    item.onclick=()=>{activeChat=chat;render();};
+    $("history").appendChild(item);
+  });
+
+  $("messages").scrollTop=$("messages").scrollHeight;
 }
 
-async function send(text){
-  const t = nowTime();
-  if (!cur.msgs.length) {
-    cur.title = text.length > 34 ? text.slice(0, 34) + '…' : text;
-    cur.time = t;
-    chats.unshift(cur);
-    cur.msgs.push({ role:'user', text, time: t });
-    render();
-  } else {
-    cur.msgs.push({ role:'user', text, time: t });
-    addMsg(text, 'user', t);
+function addMessage(role,text){
+  const row=document.createElement("div");
+  row.className="message";
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=role==="user"?"You":"✦";
+
+  const content=document.createElement("div");
+  content.className="content";
+  content.textContent=text;
+
+  row.append(avatar,content);
+  $("messages").appendChild(row);
+  return content;
+}
+
+async function sendMessage(){
+  if(busy)return;
+
+  const input=$("prompt");
+  const text=input.value.trim();
+  if(!text)return;
+
+  if(!activeChat)newChat();
+
+  input.value="";
+  activeChat.messages.push({role:"user",content:text});
+
+  if(activeChat.messages.length===1){
+    activeChat.title=text.slice(0,35);
   }
-  const chat = cur;
-  chat.busy = true;
-  renderTasks();
 
-  const wait = addMsg('', 'bot', t);
-  wait.querySelector('.body').innerHTML = '<span class="dots"><i></i><i></i><i></i><span>Thinking via Groq...</span></span>';
+  addMessage("user",text);
+  const replyBox=addMessage("assistant","Thinking...");
+  busy=true;
+  $("sendButton").disabled=true;
+  $("connectionStatus").textContent="● Connecting to AI...";
 
-  let reply;
-  try {
-    // Format full history for Flask backend
-    const messagesPayload = chat.msgs.map(m => ({
-      role: m.role === 'bot' ? 'assistant' : 'user',
-      content: m.text
-    }));
-
-    const r = await fetch('/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages: messagesPayload,
-        mode: chatMode
+  try{
+    const response=await fetch("/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      credentials:"same-origin",
+      body:JSON.stringify({
+        messages:activeChat.messages.map(m=>({
+          role:m.role,
+          content:m.content
+        })),
+        mode:"chat",
+        guest:true
       })
     });
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.reply || 'Server error');
-    reply = data.reply || 'No response received.';
-  } catch (err) {
-    reply = `**Connection Error:** ${err.message || 'Could not reach Flask server.'}`;
-  }
 
-  const rt = nowTime();
-  chat.busy = false;
-  chat.msgs.push({ role:'bot', text: reply, time: rt });
-  save();
-  if (cur === chat) {
-    wait.remove();
-    addMsg(reply, 'bot', rt);
+    const data=await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error || data.reply || `Server error: ${response.status}`);
+    }
+
+    const answer=data.reply || data.response || data.message ||
+      data.choices?.[0]?.message?.content;
+
+    if(!answer)throw new Error("The server returned no AI reply.");
+
+    replyBox.textContent=answer;
+    activeChat.messages.push({role:"assistant",content:answer});
+    $("connectionStatus").textContent="● AI Connected";
+  }catch(error){
+    replyBox.textContent="I couldn't get a reply from the AI server. " + error.message;
+    $("connectionStatus").textContent="● Connection error";
+    console.error("Zynx AI:",error);
+  }finally{
+    busy=false;
+    $("sendButton").disabled=false;
+    saveChats();
+    renderHistoryOnly();
+    $("messages").scrollTop=$("messages").scrollHeight;
   }
-  renderTasks();
 }
 
-/* ---------- Typing Box Controls ---------- */
-const ta = $('user-input');
-const modeInfo = {
-  ask: { label: 'Ask', desc: 'Witty, helpful reasoning & answers', ph: 'Ask Zynx anything...' },
-  code: { label: 'Code', desc: 'Clean snippets, debugging & architecture', ph: 'Describe a function, bug, or feature to build...' }
+function renderHistoryOnly(){
+  $("history").innerHTML="";
+  chats.forEach(chat=>{
+    const item=document.createElement("div");
+    item.className="history-item";
+    item.textContent=chat.title;
+    item.onclick=()=>{activeChat=chat;render();};
+    $("history").appendChild(item);
+  });
+}
+
+$("sendButton").onclick=sendMessage;
+$("prompt").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+$("newChat").onclick=newChat;
+$("mobileNew").onclick=newChat;
+
+// Guest access is enabled by default.
+$("userName").textContent="Guest User";
+$("userStatus").textContent="Free guest access";
+$("loginButton").onclick=()=>{
+  alert("Sign-in is optional. You can continue using Zynx AI as a guest.");
 };
 
-function grow(){
-  ta.style.height = 'auto';
-  ta.style.height = Math.min(ta.scrollHeight, 200) + 'px';
-  const len = ta.value.length;
-  $('char-count').textContent = len + (len === 1 ? ' char' : ' chars');
-  $('clear-input').classList.toggle('hidden', len === 0);
+// Restore previous guest chat.
+if(chats.length){
+  activeChat=chats[0];
+}else{
+  newChat();
 }
+render();
 
-ta.placeholder = modeInfo.ask.ph;
-ta.addEventListener('input', grow);
-$('clear-input').onclick = () => { ta.value = ''; grow(); ta.focus(); };
-
-ta.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    const v = ta.value.trim();
-    if (v) { ta.value = ''; grow(); send(v); }
-  }
-});
-
-$('composer').addEventListener('submit', e => {
-  e.preventDefault();
-  const v = ta.value.trim();
-  if (v) { ta.value = ''; grow(); send(v); }
-});
-
-document.querySelectorAll('.seg button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('.seg button').forEach(x => x.classList.remove('on'));
-  b.classList.add('on');
-  chatMode = b.dataset.m;
-  ta.placeholder = modeInfo[chatMode].ph;
-  $('mode-label').textContent = modeInfo[chatMode].label;
-  $('mode-desc').textContent = modeInfo[chatMode].desc;
-  $('top-mode').textContent = chatMode.toUpperCase();
-  ta.focus();
-});
-
-$('new-chat').onclick = newChat;
-
-document.addEventListener('click', e => {
-  const cp = e.target.closest('.cp');
-  if (!cp) return;
-  const pre = cp.parentElement.nextElementSibling.querySelector('code') || cp.parentElement.nextElementSibling;
-  navigator.clipboard.writeText(pre.textContent).then(() => {
-    cp.textContent = 'Copied!';
-    setTimeout(() => { cp.textContent = 'Copy'; }, 1800);
-  });
-});
-
-enterApp();
+// Check whether the backend is reachable without requiring authentication.
+fetch("/api/me",{credentials:"same-origin"})
+  .then(r=>r.ok?r.json():null)
+  .then(data=>{
+    if(data && data.user){
+      user={name:data.user.name || data.user.username || "User",guest:false};
+      $("userName").textContent=user.name;
+      $("userStatus").textContent="Signed-in user";
+    }
+  })
+  .catch(()=>{});
 </script>
 </body>
 </html>
