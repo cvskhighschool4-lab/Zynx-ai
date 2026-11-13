@@ -11,22 +11,46 @@ from functools import wraps
 
 from flask import Flask, g, jsonify, request, send_from_directory
 from flask_cors import CORS
-from groq import (
-    APIConnectionError,
-    APIStatusError,
-    APITimeoutError,
-    AuthenticationError,
-    Groq,
-    RateLimitError,
-)
+try:
+    import groq as _groq
+    from groq import Groq
+except ImportError:  # keeps the server booting even if the package is missing
+    _groq, Groq = None, None
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
+
+def _exc(name):
+    cls = getattr(_groq, name, None) if _groq else None
+    return cls if isinstance(cls, type) else type(name, (Exception,), {})
+
+
+APIConnectionError = _exc("APIConnectionError")
+APIStatusError = _exc("APIStatusError")
+APITimeoutError = _exc("APITimeoutError")
+AuthenticationError = _exc("AuthenticationError")
+RateLimitError = _exc("RateLimitError")
 
 # --------------------------------------------------------------------------- #
 # Configuration
 # --------------------------------------------------------------------------- #
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "zynx.db"))
+
+
+def _resolve_db_path():
+    path = os.environ.get("DATABASE_PATH") or os.path.join(BASE_DIR, "zynx.db")
+    try:
+        d = os.path.dirname(path) or "."
+        os.makedirs(d, exist_ok=True)
+        probe = os.path.join(d, ".zynx_write_test")
+        with open(probe, "w") as f:
+            f.write("ok")
+        os.remove(probe)
+        return path
+    except OSError:
+        return "/tmp/zynx.db"
+
+
+DATABASE = _resolve_db_path()
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
@@ -50,7 +74,12 @@ CORS(
 
 if not GROQ_API_KEY:
     log.warning("GROQ_API_KEY is not set - chat replies will be unavailable.")
-client = Groq(api_key=GROQ_API_KEY, timeout=45.0, max_retries=1) if GROQ_API_KEY else None
+client = None
+if GROQ_API_KEY and Groq is not None:
+    try:
+        client = Groq(api_key=GROQ_API_KEY, timeout=45.0, max_retries=1)
+    except Exception:
+        log.exception("Could not create the Groq client")
 
 SYSTEM_PROMPT = """You are Zynx AI - a warm, natural, slightly humorous, and highly intelligent companion.
 You talk like a thoughtful friend who happens to be incredibly smart. Keep replies engaging, clear, and a little playful when it fits.
