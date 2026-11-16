@@ -994,6 +994,100 @@ button:disabled{filter:saturate(.45)}
  .row{animation:none!important}
 }
 
+
+/* ===== SENBONZAKURA / BYAKUYA BANKAI COMPLETE THEME ===== */
+:root{
+ --accent:#f4c9df;--glass:rgba(225,235,255,.075);--glass-border:rgba(222,232,255,.22);
+ --text:#f5f3fb;--byakuya-pink:#f4c9df;--byakuya-ice:#dce7f7;--byakuya-violet:#b8a8d9;--byakuya-ink:#080b16;
+}
+html,body{background:#080b16!important;color:#f5f3fb!important}
+body{font-family:Inter,ui-sans-serif,system-ui,sans-serif!important}
+::selection{background:rgba(244,201,223,.35);color:white}
+:focus-visible{outline-color:#f4c9df!important}
+.dream-bg{
+ background:
+ radial-gradient(ellipse 70% 55% at 50% 0%,rgba(177,160,214,.20),transparent 65%),
+ radial-gradient(ellipse 60% 55% at 90% 80%,rgba(226,190,218,.13),transparent 60%),
+ linear-gradient(145deg,#080b16 0%,#11182a 48%,#090d1a 100%)!important;
+}
+.cloud-1,.cloud-2,.cloud-3{background:rgba(202,183,230,.22)!important;filter:blur(90px)!important}
+.particle{background:#f6dce9!important;box-shadow:0 0 10px rgba(244,201,223,.8)!important}
+.zanka-scene{display:none!important}
+#app{isolation:isolate;background:radial-gradient(ellipse at 50% 50%,rgba(179,160,213,.07),transparent 70%)!important}
+#app:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(135deg,rgba(222,232,255,.025),transparent 55%,rgba(244,201,223,.04))}
+.glass,.sidebar,.chat-shell,.input-glass,.auth-card,.settings,.modal,.toast{
+ background:rgba(17,23,40,.48)!important;
+ border:1px solid rgba(224,232,250,.17)!important;
+ backdrop-filter:blur(30px) saturate(155%)!important;
+ -webkit-backdrop-filter:blur(30px) saturate(155%)!important;
+ box-shadow:0 18px 65px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.09)!important;
+}
+.sidebar{position:relative!important;border-radius:22px!important}
+.sidebar:before{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,#f4c9df,#e6eaf7,transparent);opacity:.8}
+.sidebar .font-semibold{color:#f6dce9!important;letter-spacing:.12em!important;text-transform:uppercase}
+.sidebar .border-b,.sidebar .border-t{border-color:rgba(224,232,250,.12)!important}
+#newChatBtn,.btn-icon,.sidebar button,.chat-shell button{transition:all .25s ease}
+#newChatBtn{background:linear-gradient(120deg,rgba(244,201,223,.12),rgba(220,231,247,.045))!important;border:1px solid rgba(244,201,223,.24)!important;color:#f5e7f0!important}
+#newChatBtn:hover,.sidebar button:hover{border-color:rgba(244,201,223,.48)!important;background:rgba(244,201,223,.11)!important}
+.sidebar nav{scrollbar-color:rgba(244,201,223,.3) transparent}
+.chat-shell{border-radius:24px!important;overflow:hidden}
+.chat-shell header,.chat-header{background:rgba(12,17,31,.28)!important;border-color:rgba(224,232,250,.12)!important;backdrop-filter:blur(22px)}
+.bubble.bot{background:rgba(223,231,248,.075)!important;border:1px solid rgba(223,231,248,.15)!important;color:#f1f2fa!important;backdrop-filter:blur(18px)}
+.bubble.user{background:linear-gradient(135deg,rgba(208,178,221,.25),rgba(244,201,223,.13))!important;border:1px solid rgba(244,201,223,.28)!important;color:#fff5fb!important}
+.bubble pre{background:rgba(5,9,20,.55)!important;border-color:rgba(224,232,250,.13)!important}
+.bubble :not(pre)>code{background:rgba(244,201,223,.14)!important}
+.messages::-webkit-scrollbar-thumb{background:rgba(244,201,223,.3)!important}
+.input-area{background:linear-gradient(180deg,transparent,rgba(8,12,24,.42))!important}
+.input-glass{background:rgba(220,231,247,.07)!important;border:1px solid rgba(224,232,250,.2)!important;box-shadow:0 10px 35px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.08)!important}
+textarea,input{color:#f7f5fc!important}
+textarea::placeholder,input::placeholder{color:#aeb7cb!important}
+.primary{background:linear-gradient(120deg,#f4c9df,#d8c9ed 55%,#c6d8ef)!important;color:#151321!important;border:1px solid rgba(255,255,255,.5)!important;box-shadow:0 8px 30px rgba(203,174,218,.2)!important}
+.primary:hover:not(:disabled){filter:brightness(1.1)!important;transform:translateY(-1px)}
+.ghost,.pw-toggle{color:#ead9e8!important;border-color:rgba(244,201,223,.22)!important}
+.ghost:hover{background:rgba(244,201,223,.1)!important;border-color:rgba(244,201,223,.42)!important}
+#welcome{background:radial-gradient(ellipse at 50% 20%,rgba(183,167,218,.19),transparent 55%),linear-gradient(145deg,#080b16,#11182b 55%,#090d1a)!important}
+#welcome:before{background:radial-gradient(ellipse at 50% 40%,rgba(244,201,223,.14),transparent 58%)!important}
+#welcome:after{background:linear-gradient(120deg,transparent 20%,rgba(244,201,223,.04),transparent 75%)!important}
+#stars{opacity:.42!important}
+.space-layer .nebula{background:radial-gradient(ellipse,rgba(204,183,229,.19),transparent 68%)!important}
+.hero .orb,.hero .core,.mark,.card-brand .mark{filter:drop-shadow(0 0 25px rgba(244,201,223,.22))}
+.mark{background:linear-gradient(145deg,rgba(244,201,223,.15),rgba(220,231,247,.06))!important;border-color:rgba(244,201,223,.3)!important}
+.mark svg{filter:drop-shadow(0 0 8px rgba(244,201,223,.55))}
+.headline,.s-logo,.card-brand h1,.card-brand h2{color:#f7eaf2!important}
+.hero .orb{border-color:rgba(244,201,223,.3)!important}
+.hero .orb:before,.hero .orb:after,.hero .orbit,.hero .arc{border-color:rgba(220,231,247,.35)!important}
+.auth-card{background:rgba(15,21,37,.52)!important;border-radius:26px!important}
+.auth-inner{background:transparent!important}
+.auth-card input,.auth-card textarea{background:rgba(220,231,247,.07)!important;border:1px solid rgba(224,232,250,.2)!important;border-radius:12px!important}
+.auth-card input:focus{border-color:rgba(244,201,223,.65)!important;box-shadow:0 0 0 3px rgba(244,201,223,.1)!important}
+.settings{background:rgba(13,19,34,.88)!important}
+.modal-bg{background:rgba(3,6,14,.68)!important;backdrop-filter:blur(18px)!important}
+.modal{background:rgba(17,23,40,.88)!important}
+.opt{color:#d9dced!important;border-color:rgba(224,232,250,.14)!important}
+.opt.on{background:rgba(244,201,223,.13)!important;color:#ffeaf4!important;border-color:rgba(244,201,223,.48)!important}
+.toast{color:#f6eaf2!important}
+.typing span{background:#f4c9df!important;box-shadow:0 0 9px rgba(244,201,223,.6)!important}
+#startup{background:radial-gradient(ellipse at 50% 45%,rgba(188,170,220,.18),transparent 55%),#080b16!important}
+.s-cloud,.sc1,.sc2,.sc3{background:rgba(201,180,229,.24)!important}
+.s-logo{background:linear-gradient(120deg,#fff,#f4c9df 48%,#cbdcf1)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.s-bar i{background:linear-gradient(90deg,#b9a8d8,#f4c9df,#e5edf8)!important}
+.boot-core,.boot-glow{filter:hue-rotate(225deg) saturate(.55)!important}
+#senbon-transition{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden;opacity:0;visibility:hidden;background:radial-gradient(ellipse at center,rgba(17,22,39,.18),rgba(5,8,18,.72));backdrop-filter:blur(2px);transition:opacity .4s,visibility .4s}
+#senbon-transition.play{opacity:1;visibility:visible}
+.senbon-sword{position:absolute;left:50%;top:50%;width:min(62vh,420px);height:3px;transform-origin:center;opacity:0;background:linear-gradient(90deg,transparent,#e8efff 10%,#fff 48%,#f4c9df 88%,transparent);box-shadow:0 0 18px 5px rgba(232,239,255,.75);border-radius:100%;filter:drop-shadow(0 0 10px rgba(244,201,223,.8))}
+.senbon-sword:before{content:"";position:absolute;left:-32px;top:-8px;width:38px;height:19px;border:2px solid #e6d9ed;border-radius:4px;background:linear-gradient(90deg,#b9a8d8,#f4c9df)}
+.senbon-sword:after{content:"";position:absolute;right:-15px;top:-4px;border-left:20px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;filter:drop-shadow(0 0 5px #f4c9df)}
+.senbon-sword.one{animation:senbonSlashA 1.05s cubic-bezier(.18,.72,.2,1) forwards}
+.senbon-sword.two{animation:senbonSlashB 1.05s .08s cubic-bezier(.18,.72,.2,1) forwards}
+@keyframes senbonSlashA{0%{opacity:0;transform:translate(-50%,-50%) rotate(-55deg) scaleX(.05)}18%{opacity:1;transform:translate(-50%,-50%) rotate(-55deg) scaleX(1)}55%{opacity:1;transform:translate(-50%,-50%) rotate(12deg) scaleX(1.15)}100%{opacity:0;transform:translate(-50%,-50%) rotate(25deg) scaleX(1.35)}}
+@keyframes senbonSlashB{0%{opacity:0;transform:translate(-50%,-50%) rotate(55deg) scaleX(.05)}20%{opacity:1;transform:translate(-50%,-50%) rotate(55deg) scaleX(1)}58%{opacity:.9;transform:translate(-50%,-50%) rotate(-12deg) scaleX(1.12)}100%{opacity:0;transform:translate(-50%,-50%) rotate(-25deg) scaleX(1.35)}}
+.senbon-petal{position:absolute;left:50%;top:50%;width:10px;height:17px;border-radius:100% 0 100% 0;background:linear-gradient(145deg,#fff,#f4c9df 60%,#bba9d6);box-shadow:0 0 12px rgba(244,201,223,.55);opacity:0;animation:petalBloom var(--dur,1.5s) cubic-bezier(.12,.62,.22,1) var(--delay,0s) forwards}
+@keyframes petalBloom{0%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.15)}14%{opacity:.95}65%{opacity:.9}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot)) scale(.72)}}
+#senbon-transition.petals-out .senbon-petal{animation-name:petalToChat}
+@keyframes petalToChat{0%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.2)}18%{opacity:.95}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot)) scale(.12)}}
+@media(max-width:768px){#app{padding:0!important}.sidebar{border-radius:0 20px 20px 0!important}.chat-shell{border-radius:0!important}.auth-card{max-width:430px!important}.senbon-sword{width:78vw}}
+@media(prefers-reduced-motion:reduce){#senbon-transition,.senbon-sword,.senbon-petal{animation:none!important;transition:none!important}.senbon-sword{display:none}}
+
 </style>
 </head>
 <body>
@@ -1045,6 +1139,7 @@ button:disabled{filter:saturate(.45)}
   </div>
   <div class="overlay" id="overlay"></div>
 
+  <div id="senbon-transition" aria-hidden="true"><span class="senbon-sword one"></span><span class="senbon-sword two"></span></div>
   <div id="app">
     <aside class="sidebar glass" id="sidebar" aria-label="Chats">
       <div class="p-4 flex items-center justify-between border-b border-white/10">
@@ -1872,6 +1967,39 @@ button:disabled{filter:saturate(.45)}
   setTimeout(finishStartup, bootMs * .7);
   resize();
 })();
+
+  /* Senbonzakura: twin blades bloom into petals, then reveal the translucent chat. */
+  (function senbonzakuraTransition(){
+    const app = document.getElementById('app');
+    const layer = document.getElementById('senbon-transition');
+    if (!app || !layer) return;
+    let played = false;
+    function bloom(){
+      if (played || !app.classList.contains('ready')) return;
+      played = true;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+      const count = Math.min(76, Math.max(42, Math.round(window.innerWidth / 14)));
+      for(let i=0;i<count;i++){
+        const p=document.createElement('span');
+        p.className='senbon-petal';
+        const angle=Math.random()*Math.PI*2;
+        const radius= Math.min(window.innerWidth,window.innerHeight)*(.28+Math.random()*.52);
+        p.style.setProperty('--dx',Math.cos(angle)*radius+'px');
+        p.style.setProperty('--dy',Math.sin(angle)*radius+'px');
+        p.style.setProperty('--rot',(Math.random()*900-450)+'deg');
+        p.style.setProperty('--dur',(1.25+Math.random()*.9)+'s');
+        p.style.setProperty('--delay',(.42+Math.random()*.42)+'s');
+        layer.appendChild(p);
+      }
+      layer.classList.add('play');
+      setTimeout(()=>layer.classList.add('petals-out'),850);
+      setTimeout(()=>{layer.classList.remove('play','petals-out');layer.replaceChildren();},2450);
+    }
+    new MutationObserver(bloom).observe(app,{attributes:true,attributeFilter:['class']});
+    if(app.classList.contains('ready')) bloom();
+  })();
+
 </script>
 </body>
 </html>
