@@ -762,8 +762,106 @@ html[data-bankai] .bankai-choice[aria-pressed="true"]{background:color-mix(in sr
 @media(max-width:768px){.sidebar{background:var(--panel-strong)!important}.input-area{padding-left:.75rem!important;padding-right:.75rem!important}.chat-shell{border-radius:0!important}}
 
 </style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/","gsap":"https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"}}
+</script>
+<style id="aether-os-styles">
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--a-bg:#060608;--a-panel:rgba(13,13,16,.82);--a-ink:#f4f1ea;--a-muted:#96918a;--a-accent:#d4af37;--a-accent2:#fff3d1;--a-line:rgba(212,175,55,.16);--a-font:'Plus Jakarta Sans',sans-serif;--a-display:'Plus Jakarta Sans',sans-serif;--a-mono:'JetBrains Mono',monospace;--a-size:16px;--a-leading:1.62;--a-measure:78ch;--a-core-opacity:1;--a-grain:.12}
+html{font-size:var(--a-size)}body{background:var(--a-bg)!important;color:var(--a-ink)!important;font-family:var(--a-font)!important}
+body,a,button,input,textarea{font-family:var(--a-font),sans-serif}
+#webgl-stage,#hud-telemetry{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#webgl-stage{z-index:0;opacity:var(--a-core-opacity);transition:opacity .7s ease}
+#hud-telemetry{z-index:1;opacity:.64}
+#app,#welcome,.toast,.settings{position:relative;z-index:2}
+#app{background:transparent!important}
+.chat-shell,.messages,.input-area,.sidebar,.chat-header{background:transparent!important}
+.sidebar{border-right:1px solid var(--a-line)!important;backdrop-filter:blur(16px) saturate(125%)}
+.chat-header{border-bottom:1px solid var(--a-line)!important}
+.chat-title,.wordmark,.auth-title{font-family:var(--a-display)!important;letter-spacing:-.045em}
+.messages{scrollbar-width:thin;scrollbar-color:var(--a-line) transparent}
+.thread{max-width:var(--a-measure);margin-inline:auto;line-height:var(--a-leading)}
+.thread .bubble,.thread .message,.thread .bot{background:transparent!important;border:0!important;box-shadow:none!important}
+.thread .user{background:color-mix(in srgb,var(--a-accent) 10%,transparent)!important;border:1px solid var(--a-line)!important;border-radius:18px!important;backdrop-filter:blur(14px)}
+.input-area{max-width:900px!important;margin-inline:auto}
+.input-glass,.glass{background:var(--a-panel)!important;border:1px solid var(--a-line)!important;box-shadow:none!important;backdrop-filter:blur(20px) saturate(160%)}
+.input-glass{border-radius:24px!important}
+.input-glass textarea,#input{font-family:var(--a-font)!important;color:var(--a-ink)!important}
+.btn-send,.primary{background:var(--a-accent)!important;color:#080808!important;box-shadow:none!important}
+.chip,.opt,.bankai-choice{border:1px solid var(--a-line)!important;background:transparent!important;color:var(--a-ink)!important}
+.chip:hover,.opt:hover,.bankai-choice:hover{border-color:var(--a-accent)!important}
+#empty h2{font-family:var(--a-display)!important;font-size:clamp(2rem,5vw,4.6rem)!important;letter-spacing:-.065em!important;font-weight:500!important}
+#empty>p{color:var(--a-muted)!important;max-width:48ch;margin-inline:auto}
+#empty .mark{display:none}
+.settings{background:var(--a-panel)!important;border-left:1px solid var(--a-line)!important;backdrop-filter:blur(24px) saturate(160%)}
+#webgl-stage,#hud-telemetry{display:block}
+#aether-studio-trigger{position:fixed;z-index:18;right:22px;top:18px;border:1px solid var(--a-line);background:var(--a-panel);backdrop-filter:blur(20px);color:var(--a-ink);border-radius:999px;padding:9px 14px;font:10px var(--a-mono);letter-spacing:.13em;cursor:pointer}
+#aether-audio-toggle{position:fixed;z-index:18;right:126px;top:18px;border:1px solid var(--a-line);background:var(--a-panel);color:var(--a-ink);border-radius:999px;padding:9px 12px;font:10px var(--a-mono);cursor:pointer}
+#aether-studio{position:fixed;z-index:40;right:0;top:0;height:100dvh;width:min(430px,94vw);padding:26px;overflow:auto;background:var(--a-panel);border-left:1px solid var(--a-line);backdrop-filter:blur(26px) saturate(160%);transform:translateX(105%);transition:transform .55s cubic-bezier(.2,.8,.2,1);color:var(--a-ink)}
+#aether-studio.open{transform:translateX(0)}
+.a-studio-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--a-line);padding-bottom:18px;margin-bottom:20px}
+.a-kicker{font:10px var(--a-mono);letter-spacing:.18em;color:var(--a-accent)}
+.a-studio-title{font:32px var(--a-display);letter-spacing:-.05em;margin:7px 0}
+.a-theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 22px}
+.a-theme{min-height:82px;text-align:left;padding:12px;border:1px solid var(--a-line);border-radius:13px;background:transparent;color:var(--a-ink);cursor:pointer}
+.a-theme[aria-pressed=true]{border-color:var(--a-accent);background:color-mix(in srgb,var(--a-accent) 9%,transparent)}
+.a-theme b{display:block;font-size:12px;font-weight:600}.a-theme small{display:block;color:var(--a-muted);font:9px var(--a-mono);margin-top:7px}
+.a-swatch{display:block;width:30px;height:4px;border-radius:4px;margin-bottom:9px}
+.a-control{padding:15px 0;border-top:1px solid var(--a-line)}
+.a-control label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:10px}
+.a-control output{font:10px var(--a-mono);color:var(--a-accent)}
+.a-control input[type=range]{width:100%;accent-color:var(--a-accent)}
+.a-segment{display:flex;gap:6px;flex-wrap:wrap}.a-segment button{flex:1;min-width:90px;border:1px solid var(--a-line);border-radius:9px;background:transparent;color:var(--a-ink);padding:9px 7px;font-size:10px;cursor:pointer}.a-segment button.active{border-color:var(--a-accent);color:var(--a-accent)}
+#aether-archive{position:fixed;z-index:30;left:20px;bottom:22px;color:var(--a-muted);font:9px var(--a-mono);letter-spacing:.12em;pointer-events:none}
+#aether-cursor,#aether-cursor-dot{position:fixed;z-index:100;left:0;top:0;pointer-events:none;display:none}
+@media(pointer:fine){#aether-cursor{display:block;width:30px;height:30px;border:1px solid color-mix(in srgb,var(--a-accent) 75%,transparent);border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference}#aether-cursor-dot{display:block;width:4px;height:4px;background:var(--a-accent2);border-radius:50%;transform:translate(-50%,-50%)}}
+#aether-boot{position:fixed;inset:0;z-index:200;background:#030304;color:#f4f1ea;display:grid;place-items:center;font-family:var(--a-mono)}
+#aether-boot-inner{width:min(460px,80vw);text-align:center}
+#aether-boot-line{height:1px;background:#d4af37;transform:scaleX(0);transform-origin:center;margin:25px 0}
+#aether-boot-pct{font:12px var(--a-mono);letter-spacing:.2em}
+#aether-boot-log{font:9px var(--a-mono);letter-spacing:.16em;color:#8e8779;margin-top:14px;min-height:14px}
+#aether-boot-brand{font:clamp(28px,6vw,52px) 'Instrument Serif',serif;letter-spacing:.12em;opacity:0;clip-path:inset(100% 0 0 0)}
+#aether-skip{position:fixed;right:22px;bottom:20px;border:1px solid #66562c;border-radius:99px;background:transparent;color:#e8d9a7;padding:9px 13px;font:9px var(--a-mono);letter-spacing:.12em;cursor:pointer}
+.aether-reveal{opacity:0;transform:translateY(12px);clip-path:inset(100% 0 0 0)}
+#aether-boot.done{pointer-events:none}
+body[data-aether-theme="alabaster"]{--a-bg:#f4f3ef;--a-panel:rgba(249,248,244,.83);--a-ink:#111113;--a-muted:#65635f;--a-accent:#8c7f9d;--a-accent2:#fff;--a-line:rgba(17,17,19,.09)}
+body[data-aether-theme="biolume"]{--a-bg:#02080d;--a-panel:rgba(3,20,27,.78);--a-ink:#dffcf7;--a-muted:#77a9a7;--a-accent:#00f5d4;--a-accent2:#00bbf9;--a-line:rgba(0,245,212,.16)}
+body[data-aether-theme="wireframe"]{--a-bg:#000;--a-panel:rgba(0,0,0,.8);--a-ink:#fff;--a-muted:#aaa;--a-accent:#fff;--a-accent2:#fff;--a-line:rgba(255,255,255,.2)}
+body[data-aether-font="editorial"]{--a-font:'Inter',sans-serif;--a-display:'Instrument Serif',serif;--a-mono:'JetBrains Mono',monospace}
+body[data-aether-font="cyber"]{--a-font:'Fira Code',monospace;--a-display:'Space Grotesk',sans-serif;--a-mono:'Fira Code',monospace}
+body[data-aether-font="swiss"]{--a-font:'Plus Jakarta Sans',sans-serif;--a-display:'Plus Jakarta Sans',sans-serif;--a-mono:'JetBrains Mono',monospace}
+body[data-aether-measure="luxury"]{--a-leading:1.82;--a-measure:62ch}
+body[data-aether-measure="compact"]{--a-leading:1.55;--a-measure:78ch}
+body[data-aether-core="ambient"] #hud-telemetry{opacity:0}
+body[data-aether-core="flat"] #webgl-stage,body[data-aether-core="flat"] #hud-telemetry{opacity:0}
+body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
+@media(max-width:700px){#aether-studio-trigger{right:12px;top:12px}#aether-audio-toggle{right:105px;top:12px}#aether-archive{display:none}#hud-telemetry{opacity:.3}}
+@media(prefers-reduced-motion:reduce){#aether-studio{transition:none}*{scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
+
+<canvas id="webgl-stage" aria-hidden="true"></canvas><canvas id="hud-telemetry" aria-hidden="true"></canvas>
+<button id="aether-audio-toggle" type="button" aria-pressed="false">SOUND OFF</button><button id="aether-studio-trigger" type="button">STUDIO ↗</button>
+<div id="aether-archive">AETHER // OS · SPATIAL INTELLIGENCE</div><div id="aether-cursor"></div><div id="aether-cursor-dot"></div>
+<aside id="aether-studio" aria-label="AETHER Studio">
+ <div class="a-studio-head"><div><div class="a-kicker">AETHER // OS 4.0</div><h2 class="a-studio-title">Studio & atmosphere</h2><div style="font-size:11px;color:var(--a-muted)">Shape the interface in real time.</div></div><button id="aether-studio-close" aria-label="Close studio" style="background:none;border:0;color:inherit;font-size:22px;cursor:pointer">×</button></div>
+ <div class="a-kicker">01 / ATMOSPHERE</div>
+ <div class="a-theme-grid">
+  <button class="a-theme" data-a-theme="obsidian" aria-pressed="true"><span class="a-swatch" style="background:linear-gradient(90deg,#d4af37,#fff3d1)"></span><b>Obsidian & liquid gold</b><small>MATTE VOID / CHAMPAGNE</small></button>
+  <button class="a-theme" data-a-theme="alabaster" aria-pressed="false"><span class="a-swatch" style="background:linear-gradient(90deg,#f4f3ef,#8c7f9d)"></span><b>Lusion alabaster</b><small>DAYLIGHT / PORCELAIN</small></button>
+  <button class="a-theme" data-a-theme="biolume" aria-pressed="false"><span class="a-swatch" style="background:linear-gradient(90deg,#00f5d4,#00bbf9)"></span><b>Immersive biolume</b><small>ABYSS / BIO-LIGHT</small></button>
+  <button class="a-theme" data-a-theme="wireframe" aria-pressed="false"><span class="a-swatch" style="background:linear-gradient(90deg,#fff,#777)"></span><b>Monochrome kinetic</b><small>GEODESIC / WHITE NOISE</small></button>
+ </div>
+ <div class="a-control"><label>Typography matrix <output id="a-font-value">SWISS NEO-GROTESK</output></label><div class="a-segment"><button data-a-font="swiss" class="active">Swiss</button><button data-a-font="editorial">Editorial</button><button data-a-font="cyber">Cyber</button></div></div>
+ <div class="a-control"><label>Root type scale <output id="a-size-value">16 px</output></label><input id="a-size" type="range" min="14" max="20" value="16" step=".5"></div>
+ <div class="a-control"><label>Reading rhythm</label><div class="a-segment"><button data-a-measure="compact" class="active">Studio compact</button><button data-a-measure="luxury">Luxury editorial</button></div></div>
+ <div class="a-control"><label>Core presence</label><div class="a-segment"><button data-a-core="full" class="active">3D + HUD</button><button data-a-core="ambient">Ambient</button><button data-a-core="flat">Pure flat</button></div></div>
+ <div class="a-control"><label>Organic distortion <output id="a-noise-value">0.42</output></label><input id="a-noise" type="range" min="0" max="1" value=".42" step=".01"></div>
+ <div class="a-control"><label>Particle velocity <output id="a-speed-value">0.70</output></label><input id="a-speed" type="range" min="0" max="2" value=".7" step=".01"></div>
+ <p style="font-size:10px;line-height:1.6;color:var(--a-muted);margin-top:18px">Preferences are stored locally in this browser. Audio is opt-in and starts muted.</p>
+</aside>
+<div id="aether-boot"><div id="aether-boot-inner"><div id="aether-boot-brand">AETHER <span style="font:10px var(--a-mono);letter-spacing:.25em"> // OS</span></div><div id="aether-boot-line"></div><div id="aether-boot-pct">000%</div><div id="aether-boot-log">INIT_GLSL_PIPELINE</div></div><button id="aether-skip">ESC // SKIP SEQUENCE</button></div>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="zg" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
@@ -1718,6 +1816,206 @@ html[data-bankai] .bankai-choice[aria-pressed="true"]{background:color-mix(in sr
   resize();
 })();
 
+</script>
+
+<script type="module" id="aether-engine">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { gsap } from 'gsap';
+
+(() => {
+ 'use strict';
+ const $ = (q,root=document)=>root.querySelector(q);
+ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const themes = {
+  obsidian:{bg:'#060608',a:'#d4af37',b:'#fff3d1',bloom:.42},
+  alabaster:{bg:'#f4f3ef',a:'#a99bb8',b:'#e7e0ef',bloom:.24},
+  biolume:{bg:'#02080d',a:'#00f5d4',b:'#00bbf9',bloom:.72},
+  wireframe:{bg:'#000000',a:'#ffffff',b:'#ffffff',bloom:.5}
+ };
+ const prefsKey='aether_os_v4_prefs';
+ let prefs={theme:'obsidian',font:'swiss',size:16,measure:'compact',core:'full',noise:.42,speed:.7};
+ try{prefs={...prefs,...JSON.parse(localStorage.getItem(prefsKey)||'{}')}}catch{}
+ const persist=()=>{try{localStorage.setItem(prefsKey,JSON.stringify(prefs))}catch{}};
+ const hex=(h)=>new THREE.Color(h);
+ let renderer,scene,camera,composer,coreMat,particleMat,bloom,aberrationPass,core,particles,raf=0,paused=false,contextLost=false;
+ let pulse=0,aiState='idle',lastFrame=0,frameTime=0,noiseAmp=prefs.noise,particleSpeed=prefs.speed;
+ const pointer=new THREE.Vector2(10,10),raycaster=new THREE.Raycaster(),pointerWorld=new THREE.Vector3(0,0,0);
+ const stage=$('#webgl-stage'),hud=$('#hud-telemetry'),hctx=hud.getContext('2d');
+ const vertexShader=`#version 300 es
+ precision highp float;
+ in vec3 position; in vec3 normal; in vec3 aBarycentric;
+ uniform mat4 modelMatrix,modelViewMatrix,projectionMatrix;
+ uniform float uTime,uNoiseAmp,uPulseProgress,uPulseAmplitude,uRepulsionRadius,uWireframeMix;
+ uniform vec3 uPointer;
+ out vec3 vWorldPos; out vec3 vNormal; out vec3 vBary; out float vNoise; out float vPulse;
+ vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+ float permute(float x){return mod289(((x*34.0)+1.0)*x);}
+ vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+ vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+ float snoise(vec4 v){
+  const vec2 C=vec2(0.138196601125011,0.309016994374947451);
+  vec4 i=floor(v+dot(v,vec4(C.y))); vec4 x0=v-i+dot(i,vec4(C.x));
+  vec4 i0; vec3 isX=step(x0.yzw,x0.xxx); vec3 isYZ=step(x0.zww,x0.yyz);
+  i0.x=isX.x+isX.y+isX.z; i0.yzw=1.0-isX;
+  i0.y+=isYZ.x+isYZ.y; i0.zw+=1.0-isYZ.xy; i0.z+=isYZ.z; i0.w+=1.0-isYZ.z;
+  vec4 i3=clamp(i0,0.0,1.0),i2=clamp(i0-1.0,0.0,1.0),i1=clamp(i0-2.0,0.0,1.0);
+  vec4 x1=x0-i1+C.x,x2=x0-i2+2.0*C.x,x3=x0-i3+3.0*C.x,x4=x0-1.0+4.0*C.x;
+  i=mod289(i); float j0=permute(permute(permute(permute(i.w)+i.z)+i.y)+i.x);
+  vec4 j1=permute(permute(permute(permute(i.w+vec4(1.0, i1.w,i2.w,i3.w))+i.z+vec4(0.0,i1.z,i2.z,i3.z))+i.y+vec4(0.0,i1.y,i2.y,i3.y))+i.x+vec4(0.0,i1.x,i2.x,i3.x));
+  vec4 ip=1.0/294.0; vec4 p0=fract(j0*ip.x)*4.0-1.0;
+  vec4 p1=fract(j1*ip.x)*4.0-1.0; vec4 p2=abs(p0)-0.5; vec4 p3=abs(p1)-0.5;
+  vec4 s0=floor(p0+0.5),s1=floor(p1+0.5); vec4 sh=step(p2,vec4(0.0));
+  vec4 a0=p0-s0,a1=p1-s1;
+  vec4 norm=taylorInvSqrt(vec4(dot(a0,a0),dot(a1,a1),dot(p2,p2),dot(p3,p3)));
+  a0*=norm.x; a1*=norm.y;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);
+  vec4 m2=m*m; return 49.0*(dot(m2*m2,vec4(dot(a0,vec4(x0.xyz,x0.w)),dot(a1,vec4(x1.xyz,x1.w)),dot(a0,vec4(x2.xyz,x2.w)),dot(a1,vec4(x3.xyz,x3.w))))+m2.w*m2.w*dot(a0,x4));
+ }
+ float field(vec3 p,float t,float seed){return snoise(vec4(p*1.15+seed,t));}
+ vec3 curlField(vec3 p,float t){
+  float e=.035;
+  float a1=field(p+vec3(0,e,0),t,1.7)-field(p-vec3(0,e,0),t,1.7);
+  float a2=field(p+vec3(0,0,e),t,1.7)-field(p-vec3(0,0,e),t,1.7);
+  float b1=field(p+vec3(e,0,0),t,3.1)-field(p-vec3(e,0,0),t,3.1);
+  float b2=field(p+vec3(0,0,e),t,3.1)-field(p-vec3(0,0,e),t,3.1);
+  float c1=field(p+vec3(e,0,0),t,5.3)-field(p-vec3(e,0,0),t,5.3);
+  float c2=field(p+vec3(0,e,0),t,5.3)-field(p-vec3(0,e,0),t,5.3);
+  return normalize(vec3(a1-b2,b1-c2,c1-a2)+vec3(.0001));
+ }
+ void main(){
+  vec3 p=position; float n=snoise(vec4(p*1.22,uTime*.22));
+  vec3 curl=curlField(p,uTime*.18);
+  float breath=.5+.5*sin(uTime*2.199);
+  float displacement=n*uNoiseAmp*.19+dot(curl,normal)*uNoiseAmp*.11;
+  float ring=exp(-pow((length(p)-uPulseProgress*2.7)*8.0,2.0))*uPulseAmplitude;
+  vec3 pointerDelta=uPointer-p; float influence=exp(-length(pointerDelta)*uRepulsionRadius);
+  vec3 deformed=p+normal*(displacement+ring*.08)+normalize(pointerDelta+vec3(.00001))*influence*.055;
+  vec4 world=modelMatrix*vec4(deformed,1.0); vWorldPos=world.xyz; vNormal=normalize(mat3(modelMatrix)*normal);
+  vBary=aBarycentric;vNoise=n;vPulse=ring;
+  gl_Position=projectionMatrix*modelViewMatrix*vec4(deformed,1.0);
+ }`;
+ const fragmentShader=`#version 300 es
+ precision highp float;
+ uniform vec3 uColorA,uColorB,uLightDir;uniform float uTime,uFresnelPower,uWrap,uWireframeMix,uPulseAmplitude;
+ in vec3 vWorldPos,vNormal,vBary;in float vNoise,vPulse;out vec4 outColor;
+ void main(){
+  vec3 N=normalize(cross(dFdx(vWorldPos),dFdy(vWorldPos)));if(!gl_FrontFacing)N=-N;
+  vec3 V=normalize(cameraPosition-vWorldPos);vec3 L=normalize(uLightDir);
+  float fresnel=pow(1.0-max(dot(V,N),0.0),uFresnelPower);
+  vec3 spectral=vec3(.5)+vec3(.5)*cos(6.28318*(vec3(.02,.18,.34)+fresnel*vec3(.75,.72,.68)));
+  float wrap=max(0.0,(dot(N,L)+uWrap)/(1.0+uWrap));
+  float spec=pow(max(dot(reflect(-L,N),V),0.0),54.0);
+  float edge=min(min(vBary.x,vBary.y),vBary.z);float wire=1.0-smoothstep(0.0,fwidth(edge)*1.65,edge);
+  vec3 base=mix(uColorA,uColorB,clamp(.28+vNoise*.28+fresnel*.5,0.0,1.0));
+  vec3 col=base*(.22+wrap*.78)+spectral*fresnel*.58+vec3(1.0)*spec*.65+uColorB*vPulse*.8;
+  col=mix(col,uColorB*(.5+fresnel*1.3),wire*uWireframeMix);
+  outColor=vec4(col,1.0);
+ }`;
+ const particleVertex=`#version 300 es
+ precision highp float;in vec3 position;in float aScale;uniform mat4 modelViewMatrix,projectionMatrix;uniform float uTime,uSpeed,uPixelRatio;out float vAlpha;
+ float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
+ void main(){vec3 p=position;float t=uTime*uSpeed;vec3 flow=vec3(sin(p.y*1.8+t),cos(p.z*1.7+t*.8),sin(p.x*1.6-t*.7));p+=flow*.12;vec4 mv=modelViewMatrix*vec4(p,1.0);gl_Position=projectionMatrix*mv;gl_PointSize=clamp(uPixelRatio*aScale*(1.0/max(.1,-mv.z)),.5,8.0);vAlpha=.2+.65*(.5+.5*sin(t+hash(position)*6.28));}`;
+ const particleFragment=`#version 300 es
+ precision highp float;uniform vec3 uParticleColor;in float vAlpha;out vec4 outColor;void main(){float d=length(gl_PointCoord-.5);float a=(1.0-smoothstep(.08,.5,d))*vAlpha;outColor=vec4(uParticleColor,a);}`;
+ const FilmShader={uniforms:{tDiffuse:{value:null},uTime:{value:0},uAberration:{value:0.0018},uGrain:{value:.075}},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,fragmentShader:`uniform sampler2D tDiffuse;uniform float uTime,uAberration,uGrain;varying vec2 vUv;float hash(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}void main(){vec2 uv=vUv;vec2 d=uv-.5;float r=dot(d,d);vec2 warped=uv+d*r*.035;vec2 shift=normalize(d+vec2(.00001))*uAberration*r*3.0;float red=texture2D(tDiffuse,warped+shift).r;float green=texture2D(tDiffuse,warped).g;float blue=texture2D(tDiffuse,warped-shift).b;vec3 c=vec3(red,green,blue);float vig=smoothstep(.82,.18,length(d)*1.42);float grain=(hash(gl_FragCoord.xy+uTime)-.5)*uGrain;c=(c+grain)*mix(.72,1.0,vig);gl_FragColor=vec4(c,1.0);}`};
+ function makeBarycentric(g){const geo=g.toNonIndexed(),count=geo.attributes.position.count,b=[];for(let i=0;i<count;i++){const v=i%3;b.push(v===0?1:0,v===1?1:0,v===2?1:0)}geo.setAttribute('aBarycentric',new THREE.Float32BufferAttribute(b,3));return geo}
+ function init3D(){
+  try{
+   renderer=new THREE.WebGLRenderer({canvas:stage,antialias:true,alpha:true,powerPreference:'high-performance'});
+   renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;
+   scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(34,innerWidth/innerHeight,.1,100);camera.position.set(0,.12,7.5);
+   const geometry=makeBarycentric(new THREE.IcosahedronGeometry(1.35,4));
+   coreMat=new THREE.ShaderMaterial({vertexShader,fragmentShader,glslVersion:THREE.GLSL3,uniforms:{uTime:{value:0},uNoiseAmp:{value:prefs.noise},uPulseProgress:{value:0},uPulseAmplitude:{value:0},uRepulsionRadius:{value:2.4},uPointer:{value:new THREE.Vector3(0,0,0)},uWireframeMix:{value:prefs.theme==='wireframe'?1:0},uColorA:{value:hex(themes[prefs.theme].a)},uColorB:{value:hex(themes[prefs.theme].b)},uLightDir:{value:new THREE.Vector3(-.5,.7,1)},uFresnelPower:{value:2.4},uWrap:{value:.42}},transparent:false});
+   core=new THREE.Mesh(geometry,coreMat);scene.add(core);
+   const count=1200,positions=new Float32Array(count*3),scales=new Float32Array(count);
+   for(let i=0;i<count;i++){const r=2.1+Math.random()*3.1,a=Math.random()*Math.PI*2,z=Math.random()*2-1,q=Math.sqrt(1-z*z);positions[i*3]=r*q*Math.cos(a);positions[i*3+1]=r*z;positions[i*3+2]=r*q*Math.sin(a);scales[i]=.7+Math.random()*2}
+   const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(positions,3));pg.setAttribute('aScale',new THREE.BufferAttribute(scales,1));
+   particleMat=new THREE.ShaderMaterial({vertexShader:particleVertex,fragmentShader:particleFragment,glslVersion:THREE.GLSL3,transparent:true,depthWrite:false,uniforms:{uTime:{value:0},uSpeed:{value:prefs.speed},uPixelRatio:{value:Math.min(devicePixelRatio||1,2)},uParticleColor:{value:hex(themes[prefs.theme].b)}}});
+   particles=new THREE.Points(pg,particleMat);scene.add(particles);
+   composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));
+   bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),themes[prefs.theme].bloom,.55,.72);composer.addPass(bloom);
+   aberrationPass=new ShaderPass(FilmShader);composer.addPass(aberrationPass);
+   stage.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;cancelAnimationFrame(raf);});
+   stage.addEventListener('webglcontextrestored',()=>{contextLost=false;resize();if(!paused)startLoop();});
+   new ResizeObserver(resize).observe(document.body);window.addEventListener('resize',resize,{passive:true});
+   startLoop();
+  }catch(err){console.warn('AETHER WebGL unavailable; editorial interface remains active.',err);stage.style.display='none';hud.style.display='none'}
+ }
+ function resize(){if(!renderer)return;const w=innerWidth,h=innerHeight;renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();composer?.setSize(w,h);const d=Math.min(devicePixelRatio||1,2);hud.width=Math.round(w*d);hud.height=Math.round(h*d);hud.style.width=w+'px';hud.style.height=h+'px';hctx?.setTransform(d,0,0,d,0,0)}
+ function startLoop(){if(raf||paused||contextLost||reduce)return;raf=requestAnimationFrame(frame)}
+ function frame(t){raf=0;if(paused||contextLost)return;if(t-lastFrame<15){startLoop();return}frameTime=Math.min(.04,(t-lastFrame)/1000||.016);lastFrame=t;
+  if(coreMat){const time=t*.001;coreMat.uniforms.uTime.value=time;coreMat.uniforms.uNoiseAmp.value=noiseAmp;coreMat.uniforms.uPulseProgress.value=pulse;coreMat.uniforms.uPulseAmplitude.value*=.94;
+   const target=aiState==='thinking'?.84:aiState==='streaming'?1.04:aiState==='listening'?.98:1;
+   const breath=aiState==='idle'?1+.012*Math.sin(time*2.199):1;core.scale.lerp(new THREE.Vector3(target*breath,target*breath,target*breath),.055);core.rotation.y+=frameTime*(aiState==='thinking'?.55:.11);core.rotation.x=Math.sin(time*.18)*.06;
+   const v=new THREE.Vector3(pointer.x,pointer.y,.5).unproject(camera);const dir=v.sub(camera.position).normalize();const dist=-camera.position.z/dir.z;pointerWorld.copy(camera.position).add(dir.multiplyScalar(dist));coreMat.uniforms.uPointer.value.copy(pointerWorld);
+   if(pulse>0)pulse=Math.max(0,pulse-frameTime*.58);
+   particleMat.uniforms.uTime.value=time;particleMat.uniforms.uSpeed.value=particleSpeed*(aiState==='thinking'?1.7:1);
+   aberrationPass.uniforms.uTime.value=time;composer.render();drawHud(time);
+  }
+  startLoop();
+ }
+ function drawHud(t){const w=innerWidth,h=innerHeight;hctx.clearRect(0,0,w,h);if(prefs.core==='flat')return;const p=core.position.clone().project(camera),x=(p.x*.5+.5)*w,y=(-p.y*.5+.5)*h,r=Math.min(140,Math.max(40,220/(camera.position.z-core.position.z)*5));
+  hctx.save();hctx.translate(x,y);hctx.strokeStyle=themes[prefs.theme].a;hctx.globalAlpha=.2;hctx.lineWidth=.5;
+  for(let k=0;k<3;k++){hctx.beginPath();hctx.arc(0,0,r*(1+k*.27),0,Math.PI*2);hctx.stroke()}
+  for(let i=0;i<96;i++){const a=i/96*Math.PI*2,major=i%8===0;hctx.beginPath();hctx.moveTo(Math.cos(a)*(r+5),Math.sin(a)*(r+5));hctx.lineTo(Math.cos(a)*(r+(major?15:9)),Math.sin(a)*(r+(major?15:9)));hctx.stroke()}
+  hctx.globalAlpha=.42;for(let i=0;i<64;i++){const a=i/64*Math.PI*2;const amp=(.22+.78*Math.abs(Math.sin(t*1.6+i*.47)))*(aiState==='streaming'?1.5:aiState==='thinking'?1.2:.7);hctx.beginPath();hctx.moveTo(Math.cos(a)*(r+18),Math.sin(a)*(r+18));hctx.lineTo(Math.cos(a)*(r+18+amp*16),Math.sin(a)*(r+18+amp*16));hctx.stroke()}
+  hctx.restore();
+ }
+ function shock(amplitude=.65){pulse=1;if(coreMat){coreMat.uniforms.uPulseAmplitude.value=amplitude;aberrationPass.uniforms.uAberration.value=.018;gsap.to(aberrationPass.uniforms.uAberration,{value:.0018,duration:.8,ease:'power2.out'})}}
+ function applyTheme(name){prefs.theme=themes[name]?name:'obsidian';const t=themes[prefs.theme];document.body.dataset.aetherTheme=prefs.theme;document.documentElement.style.setProperty('--a-bg',t.bg);if(coreMat){gsap.to(coreMat.uniforms.uColorA.value,{r:hex(t.a).r,g:hex(t.a).g,b:hex(t.a).b,duration:.7});gsap.to(coreMat.uniforms.uColorB.value,{r:hex(t.b).r,g:hex(t.b).g,b:hex(t.b).b,duration:.7});gsap.to(bloom,{strength:t.bloom,duration:.7});particleMat.uniforms.uParticleColor.value.set(t.b);gsap.to(coreMat.uniforms.uWireframeMix,{value:prefs.theme==='wireframe'?1:0,duration:.7})}
+  document.querySelectorAll('[data-a-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.aTheme===prefs.theme)));shock(.25);persist()}
+ function setCoreMode(mode){prefs.core=mode;document.body.dataset.aetherCore=mode;if(mode==='flat'){paused=true;cancelAnimationFrame(raf);raf=0;gsap.to(stage,{opacity:0,duration:.5});gsap.to(hud,{opacity:0,duration:.4})}else{paused=false;gsap.to(stage,{opacity:1,duration:.5});gsap.to(hud,{opacity:mode==='ambient'?0:.64,duration:.5});startLoop()}persist()}
+ function applyPrefs(){document.body.dataset.aetherFont=prefs.font;document.body.dataset.aetherMeasure=prefs.measure;document.documentElement.style.setProperty('--a-size',prefs.size+'px');noiseAmp=prefs.noise;particleSpeed=prefs.speed;applyTheme(prefs.theme);setCoreMode(prefs.core)}
+ function setState(s){aiState=s;if(coreMat){coreMat.uniforms.uNoiseAmp.value=s==='thinking'?noiseAmp*1.8:noiseAmp}if(s==='thinking'||s==='streaming')shock(s==='thinking'?.28:.12)}
+ document.addEventListener('pointermove',e=>{pointer.x=e.clientX/innerWidth*2-1;pointer.y=-(e.clientY/innerHeight)*2+1;const c=$('#aether-cursor'),d=$('#aether-cursor-dot');if(c){gsap.to(c,{x:e.clientX,y:e.clientY,duration:.18,ease:'power2.out'});gsap.to(d,{x:e.clientX,y:e.clientY,duration:.06})}});
+ document.addEventListener('click',e=>{if(e.target.closest('button'))shock(.18)});
+ const shell=$('.chat-shell');if(shell)new MutationObserver(()=>setState(shell.dataset.aiState||'idle')).observe(shell,{attributes:true,attributeFilter:['data-ai-state']});
+ const thread=$('#thread');if(thread)new MutationObserver(()=>{if(thread.children.length)shock(.12)}).observe(thread,{childList:true,subtree:true,characterData:true});
+ class Spring2D{constructor(k=.14,d=.72){this.k=k;this.d=d;this.x=0;this.y=0;this.vx=0;this.vy=0}step(tx,ty){this.vx+=(tx-this.x)*this.k;this.vy+=(ty-this.y)*this.k;this.vx*=this.d;this.vy*=this.d;this.x+=this.vx;this.y+=this.vy;return this}}
+ const cursorSpring=new Spring2D(.14,.72),dotSpring=new Spring2D(.45,.85);let mouse={x:innerWidth/2,y:innerHeight/2};
+ document.addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});
+ function cursorFrame(){const c=$('#aether-cursor'),d=$('#aether-cursor-dot');if(c&&matchMedia('(pointer:fine)').matches){const a=cursorSpring.step(mouse.x,mouse.y),b=dotSpring.step(mouse.x,mouse.y);c.style.transform='translate3d('+(a.x-15)+'px,'+(a.y-15)+'px,0)';d.style.transform='translate3d('+(b.x-2)+'px,'+(b.y-2)+'px,0)'}requestAnimationFrame(cursorFrame)}
+ if(!reduce)cursorFrame();
+ class AetherAudioEngine{constructor(){this.ctx=null;this.enabled=false}async unlock(){if(!this.ctx)this.ctx=new(window.AudioContext||window.webkitAudioContext)();await this.ctx.resume();this.enabled=true}noise(duration=.012,frequency=1800){if(!this.enabled)return;const c=this.ctx,n=Math.max(128,Math.floor(c.sampleRate*duration)),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();src.buffer=b;f.type='bandpass';f.frequency.value=frequency;g.gain.setValueAtTime(.035,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+duration);src.connect(f).connect(g).connect(c.destination);src.start();src.stop(c.currentTime+duration)}chime(){if(!this.enabled)return;const c=this.ctx;[261.63,392].forEach((hz,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=hz;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.055/(i+1),c.currentTime+.08);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.1);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+1.12)})}grain(){if(!this.enabled)return;const c=this.ctx,o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.frequency.value=110;f.type='lowpass';f.frequency.value=420;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.linearRampToValueAtTime(.008,c.currentTime+.025);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.14);o.connect(f).connect(g).connect(c.destination);o.start();o.stop(c.currentTime+.15)}whoosh(){if(!this.enabled)return;const c=this.ctx,n=c.createBufferSource(),b=c.createBuffer(1,c.sampleRate*.35,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;n.buffer=b;const f=c.createBiquadFilter(),g=c.createGain();f.type='bandpass';f.frequency.setValueAtTime(200,c.currentTime);f.frequency.exponentialRampToValueAtTime(1400,c.currentTime+.32);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.linearRampToValueAtTime(.045,c.currentTime+.12);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.35);n.connect(f).connect(g).connect(c.destination);n.start();n.stop(c.currentTime+.36)}}
+ const audio=new AetherAudioEngine(),audioBtn=$('#aether-audio-toggle');audioBtn.addEventListener('click',async()=>{try{await audio.unlock();audioBtn.textContent='SOUND ON';audioBtn.setAttribute('aria-pressed','true');audio.chime()}catch{audioBtn.textContent='AUDIO UNAVAILABLE'}});
+ $('#input')?.addEventListener('input',()=>audio.noise(.012,1800));
+ $('#sendBtn')?.addEventListener('click',()=>{audio.chime();shock(.7)});
+ let lastTyped=0;$('#input')?.addEventListener('keydown',e=>{if(e.key.length===1){const now=performance.now();audio.noise(.012,1800+Math.min(1000,Math.max(0,now-lastTyped)*-1));lastTyped=now}});
+ document.querySelectorAll('.chip').forEach(n=>{n.addEventListener('pointermove',e=>{const r=n.getBoundingClientRect();n.style.transform='perspective(500px) rotateX('+(-(e.clientY-r.top-r.height/2)/r.height*5)+'deg) rotateY('+((e.clientX-r.left-r.width/2)/r.width*7)+'deg) translateY(-2px)' });n.addEventListener('pointerleave',()=>n.style.transform='')});
+ const drawer=$('#aether-studio');function openStudio(){drawer.classList.add('open')}function closeStudio(){drawer.classList.remove('open')}
+ $('#aether-studio-trigger').addEventListener('click',openStudio);$('#aether-studio-close').addEventListener('click',closeStudio);
+ document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&(e.key.toLowerCase()==='k'||e.key===',')){e.preventDefault();drawer.classList.toggle('open')}if(e.key==='Escape'){closeStudio();skipBoot()}});
+ document.querySelectorAll('[data-a-theme]').forEach(b=>b.addEventListener('click',()=>{audio.whoosh();applyTheme(b.dataset.aTheme)}));
+ document.querySelectorAll('[data-a-font]').forEach(b=>b.addEventListener('click',()=>{prefs.font=b.dataset.aFont;document.body.dataset.aetherFont=prefs.font;document.querySelectorAll('[data-a-font]').forEach(x=>x.classList.toggle('active',x===b));persist()}));
+ document.querySelectorAll('[data-a-measure]').forEach(b=>b.addEventListener('click',()=>{prefs.measure=b.dataset.aMeasure;document.body.dataset.aetherMeasure=prefs.measure;document.querySelectorAll('[data-a-measure]').forEach(x=>x.classList.toggle('active',x===b));persist()}));
+ document.querySelectorAll('[data-a-core]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-a-core]').forEach(x=>x.classList.toggle('active',x===b));setCoreMode(b.dataset.aCore)}));
+ $('#a-size').addEventListener('input',e=>{prefs.size=+e.target.value;document.documentElement.style.setProperty('--a-size',prefs.size+'px');$('#a-size-value').textContent=prefs.size+' px';persist()});
+ $('#a-noise').addEventListener('input',e=>{prefs.noise=noiseAmp=+e.target.value;$('#a-noise-value').textContent=noiseAmp.toFixed(2);persist()});
+ $('#a-speed').addEventListener('input',e=>{prefs.speed=particleSpeed=+e.target.value;$('#a-speed-value').textContent=particleSpeed.toFixed(2);persist()});
+ async function* generateAIStream(prompt,signal){const sample='AETHER is ready to connect to your model stream. Replace this generator body with your provider SSE reader; yield each decoded text delta as it arrives.';for(const word of sample.split(/(\s+)/)){if(signal?.aborted)return;yield word;await new Promise(r=>setTimeout(r,22))}}
+ window.generateAIStream=generateAIStream;
+ function skipBoot(){const boot=$('#aether-boot');if(!boot||boot.classList.contains('done'))return;gsap.killTweensOf('*');gsap.to(boot,{autoAlpha:0,duration:.25,onComplete:()=>boot.remove()})}
+ function runBoot(){const boot=$('#aether-boot'),line=$('#aether-boot-line'),pct=$('#aether-boot-pct'),log=$('#aether-boot-log'),brand=$('#aether-boot-brand'),skip=$('#aether-skip');if(reduce){skipBoot();return}
+  const logs=['INIT_GLSL_PIPELINE','COMPILING_4D_SIMPLEX','CALIBRATING_SPRING_SOLVER','AETHER_CORE // READY'];const obj={v:0};
+  const tl=gsap.timeline({onComplete:skipBoot});window.masterBootTL=tl;
+  tl.to(line,{scaleX:1,duration:.48,ease:'expo.inOut'},0).to(obj,{v:100,duration:1.12,ease:'none',onUpdate:()=>pct.textContent=String(Math.floor(obj.v)).padStart(3,'0')+'%'},0)
+   .call(()=>log.textContent=logs[1],[],.3).call(()=>log.textContent=logs[2],[],.72).call(()=>log.textContent=logs[3],[],1.02)
+   .to(line,{scaleX:.015,duration:.2,ease:'power3.in'},1.15).fromTo(stage,{scale:.001,filter:'blur(12px)'},{scale:1,filter:'blur(0px)',duration:.65,ease:'back.out(1.4)'},1.18)
+   .to(aberrationPass?.uniforms?.uAberration||{value:.018},{value:.0018,duration:.7,ease:'power2.out'},1.2)
+   .to(brand,{opacity:1,clipPath:'inset(0% 0% 0% 0%)',duration:.55,ease:'power3.out'},2.45)
+   .to('#aether-boot-inner',{y:-8,duration:.45},2.5).to('#aether-boot',{backgroundColor:'rgba(3,3,4,0)',duration:.75},3.05);
+  skip.addEventListener('click',skipBoot);
+ }
+ document.body.dataset.aetherTheme=prefs.theme;applyPrefs();init3D();runBoot();
+ const origSend=$('#sendBtn');origSend?.addEventListener('click',()=>setState('thinking'));
+ const oldInput=$('#input');oldInput?.addEventListener('input',()=>setState('listening'));
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0}else if(!paused)startLoop()});
+ window.addEventListener('beforeunload',()=>{cancelAnimationFrame(raf);renderer?.dispose();composer?.renderTarget1?.dispose();audio.ctx?.close()});
+})();
 </script>
 </body>
 </html>
