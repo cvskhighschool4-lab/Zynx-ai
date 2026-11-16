@@ -63,7 +63,7 @@ GROQ_FALLBACK_MODEL = (
     else "openai/gpt-oss-120b"
 )
 if _requested_model != GROQ_MODEL:
-    log.warning("Ignoring GROQ_MODEL=%r because it is not on the configured free-model allowlist.", _requested_model)
+    logging.warning("Ignoring GROQ_MODEL=%r because it is not on the configured free-model allowlist.", _requested_model)
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
 MAX_MESSAGE_CHARS = 4000
 HISTORY_LIMIT = 30
