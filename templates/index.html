@@ -1282,11 +1282,27 @@ html[data-zynx-skin]:not([data-zynx-skin="default"]) .bubble.user{background:col
   async function api(path, { method = 'GET', body, retry = true } = {}) {
     const headers = { 'Content-Type': 'application/json' };
     if (S.token) headers['X-Session-Token'] = S.token;
+    const controller = new AbortController();
+    const timeoutMs = path.includes('/messages') ? 55000 : 15000;
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     let res;
     try {
-      res = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : undefined });
-    } catch {
+      res = await fetch(path, {
+        method, headers, body: body ? JSON.stringify(body) : undefined,
+        signal: controller.signal
+      });
+    } catch (err) {
+      if (err && err.name === 'AbortError') {
+        throw Object.assign(
+          new Error(path.includes('/messages')
+            ? "Zynx is taking too long to get a reply. Please try again in a moment."
+            : "The server took too long to respond. Please try again."),
+          { status: 408 }
+        );
+      }
       throw Object.assign(new Error("Can't reach the server. Check your connection and try again."), { status: 0 });
+    } finally {
+      clearTimeout(timeoutId);
     }
     const data = await res.json().catch(() => ({}));
     if (res.status === 401 && data.code === 'session_expired' && retry) {
