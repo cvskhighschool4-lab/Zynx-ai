@@ -645,6 +645,34 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
  .empty .mark,.card-brand:after,#welcome:before,.row{animation:none!important}
 }
 
+
+/* BANKAI PERSONALIZATION */
+.bankai-grid{display:grid;gap:8px}.bankai-choice{display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;text-align:left;border:1px solid rgba(205,184,255,.16);border-radius:13px;background:rgba(255,255,255,.035);color:#eee8ff;cursor:pointer;transition:.2s}.bankai-choice:hover{transform:translateX(2px);background:rgba(255,255,255,.07)}.bankai-choice[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 13%,transparent)}.bankai-choice>span:nth-child(2){display:flex;flex-direction:column;gap:3px}.bankai-choice b{font-size:12px}.bankai-choice small{font-size:10px;color:#a9a0ba}.bankai-choice>i{margin-left:auto;font-style:normal;color:var(--accent-soft);opacity:0}.bankai-choice[aria-pressed="true"]>i{opacity:1}.bankai-swatch{display:grid;place-items:center;width:35px;height:35px;flex:0 0 35px;border-radius:11px;font-size:19px;border:1px solid #ffffff33}.swatch-default{background:linear-gradient(135deg,#7656dc,#d8b4fe)}.swatch-sakura{background:linear-gradient(135deg,#222638,#e8d8f7 55%,#d99bc7)}.swatch-zanka{background:linear-gradient(135deg,#100e0d,#8d351c 55%,#e5b85c)}.swatch-tensa{background:linear-gradient(135deg,#090b13,#751e35 60%,#d7dce8)}.swatch-hyorin{background:linear-gradient(135deg,#102638,#83d8ef 58%,#effaff)}
+.bankai-seal{position:relative;display:flex;align-items:center;gap:12px;margin:0 0 17px;padding:12px 13px;border:1px solid rgba(205,184,255,.2);border-radius:15px;background:linear-gradient(110deg,rgba(167,139,250,.12),rgba(255,255,255,.025));overflow:hidden}.seal-orbit{position:absolute;width:42px;height:42px;left:10px;border:1px solid rgba(221,207,255,.3);border-radius:50%;animation:seal-spin 13s linear infinite}.seal-petal{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;color:var(--accent-soft);font-size:22px;text-shadow:0 0 15px var(--accent)}.seal-copy{display:flex;flex-direction:column;gap:4px}.seal-copy b{font-size:9px;letter-spacing:.2em;color:var(--accent-soft)}.seal-copy small{font-size:10px;color:#b9aecb}.seal-spark{margin-left:auto;color:var(--accent-soft);animation:seal-pulse 2.4s ease-in-out infinite}@keyframes seal-spin{to{transform:rotate(360deg)}}@keyframes seal-pulse{50%{opacity:.35;transform:scale(.72) rotate(45deg)}}
+#dream-transition{background:radial-gradient(ellipse at center,color-mix(in srgb,var(--accent) 20%,transparent),rgba(8,7,24,.48))}.dream-particle{background:linear-gradient(145deg,#fff,var(--accent-soft) 55%,var(--accent));box-shadow:0 0 14px color-mix(in srgb,var(--accent) 72%,transparent)}
+html[data-bankai="senbonzakura"]{--accent:#c9b4e8;--accent-soft:#f8e8f5;--bg:#090b18;--glass:rgba(29,27,48,.55);--glass-border:rgba(224,207,245,.28)}
+html[data-bankai="senbonzakura"] .dream-bg{background:radial-gradient(ellipse at 20% 18%,#d2b9eb40,transparent 58%),radial-gradient(ellipse at 82% 75%,#cd8bbc2b,transparent 55%),linear-gradient(145deg,#090b18,#242238 54%,#111426)!important}
+html[data-bankai="senbonzakura"] .glass,html[data-bankai="senbonzakura"] .sidebar,html[data-bankai="senbonzakura"] .chat-shell,html[data-bankai="senbonzakura"] .input-glass,html[data-bankai="senbonzakura"] .auth-card,html[data-bankai="senbonzakura"] .settings,html[data-bankai="senbonzakura"] .modal{background:rgba(26,27,45,.62)!important;border-color:#e1d1f540!important}
+html[data-bankai="senbonzakura"] .bubble.user,html[data-bankai="senbonzakura"] .primary,html[data-bankai="senbonzakura"] .btn-send{background:linear-gradient(125deg,#bda7d8,#9479b9)!important;color:#fff!important}
+html[data-bankai="senbonzakura"] #welcome{background:linear-gradient(145deg,#090b18,#242238 60%,#111426)!important}html[data-bankai="senbonzakura"] #startup{background:#090b18!important}
+html[data-bankai="zanka"]{--accent:#e4a34e;--accent-soft:#ffe0a0;--bg:#100d0b;--glass:rgba(35,23,17,.58);--glass-border:rgba(235,166,82,.25)}
+html[data-bankai="zanka"] .dream-bg{background:radial-gradient(ellipse at 18% 22%,#9a411f4d,transparent 58%),linear-gradient(145deg,#090909,#21150f 56%,#0c0b0a)!important}
+html[data-bankai="zanka"] .glass,html[data-bankai="zanka"] .sidebar,html[data-bankai="zanka"] .chat-shell,html[data-bankai="zanka"] .input-glass,html[data-bankai="zanka"] .auth-card,html[data-bankai="zanka"] .settings,html[data-bankai="zanka"] .modal{background:rgba(27,19,15,.72)!important;border-color:#e19b4642!important}
+html[data-bankai="zanka"] .bubble.user,html[data-bankai="zanka"] .primary,html[data-bankai="zanka"] .btn-send{background:linear-gradient(125deg,#a95828,#d49a43)!important;color:#160e08!important}
+html[data-bankai="zanka"] #welcome{background:linear-gradient(145deg,#090909,#24160f 60%,#0c0b0a)!important}html[data-bankai="zanka"] #startup{background:#090909!important}
+html[data-bankai="tensa"]{--accent:#d65b76;--accent-soft:#f4dce4;--bg:#080a12;--glass:rgba(20,17,28,.6);--glass-border:rgba(220,115,145,.25)}
+html[data-bankai="tensa"] .dream-bg{background:radial-gradient(ellipse at 20% 20%,#7f1b394d,transparent 58%),linear-gradient(145deg,#070910,#1b1722 55%,#0b0d17)!important}
+html[data-bankai="tensa"] .glass,html[data-bankai="tensa"] .sidebar,html[data-bankai="tensa"] .chat-shell,html[data-bankai="tensa"] .input-glass,html[data-bankai="tensa"] .auth-card,html[data-bankai="tensa"] .settings,html[data-bankai="tensa"] .modal{background:rgba(20,17,28,.72)!important;border-color:#dc739142!important}
+html[data-bankai="tensa"] .bubble.user,html[data-bankai="tensa"] .primary,html[data-bankai="tensa"] .btn-send{background:linear-gradient(125deg,#76223b,#b83b5b)!important;color:#fff!important}
+html[data-bankai="tensa"] #welcome{background:linear-gradient(145deg,#070910,#1b1722 60%,#0b0d17)!important}html[data-bankai="tensa"] #startup{background:#070910!important}
+html[data-bankai="hyorinmaru"]{--accent:#83d8ef;--accent-soft:#e3f8ff;--bg:#07131d;--glass:rgba(15,39,54,.58);--glass-border:rgba(139,220,244,.27)}
+html[data-bankai="hyorinmaru"] .dream-bg{background:radial-gradient(ellipse at 18% 20%,#4baed140,transparent 58%),linear-gradient(145deg,#06121d,#102b3b 55%,#07131d)!important}
+html[data-bankai="hyorinmaru"] .glass,html[data-bankai="hyorinmaru"] .sidebar,html[data-bankai="hyorinmaru"] .chat-shell,html[data-bankai="hyorinmaru"] .input-glass,html[data-bankai="hyorinmaru"] .auth-card,html[data-bankai="hyorinmaru"] .settings,html[data-bankai="hyorinmaru"] .modal{background:rgba(13,34,48,.7)!important;border-color:#8bdcf444!important}
+html[data-bankai="hyorinmaru"] .bubble.user,html[data-bankai="hyorinmaru"] .primary,html[data-bankai="hyorinmaru"] .btn-send{background:linear-gradient(125deg,#287f9d,#75cfe5)!important;color:#071923!important}
+html[data-bankai="hyorinmaru"] #welcome{background:linear-gradient(145deg,#06121d,#102b3b 60%,#07131d)!important}html[data-bankai="hyorinmaru"] #startup{background:#06121d!important}
+html[data-bankai] .seg-ind{background:linear-gradient(120deg,var(--primary),var(--accent))!important}html[data-bankai] .opt.on{border-color:var(--accent)!important;background:color-mix(in srgb,var(--accent) 18%,transparent)!important}
+@media(prefers-reduced-motion:reduce){.seal-orbit,.seal-spark{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -785,6 +813,16 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
         </label>
         <p class="text-xs text-slate-500">Use the microphone button beside the message box to speak. Microphone permission is required.</p>
       </section>
+      <section class="bankai-settings space-y-3">
+        <div><p class="text-sm font-semibold text-slate-100">Personalization · Bankai realms</p><p class="text-xs text-slate-400 mt-1">Optional themes. Dreamspace remains the default.</p></div>
+        <div class="bankai-grid" id="bankaiThemes">
+          <button type="button" class="bankai-choice" data-bankai="default" aria-pressed="true"><span class="bankai-swatch swatch-default">✦</span><span><b>Dreamspace</b><small>Original Zynx theme</small></span><i>✓</i></button>
+          <button type="button" class="bankai-choice" data-bankai="senbonzakura" aria-pressed="false"><span class="bankai-swatch swatch-sakura">❀</span><span><b>Senbonzakura</b><small>Silver · sakura · lavender</small></span><i>✓</i></button>
+          <button type="button" class="bankai-choice" data-bankai="zanka" aria-pressed="false"><span class="bankai-swatch swatch-zanka">☼</span><span><b>Zanka no Tachi</b><small>Obsidian · ember · gold</small></span><i>✓</i></button>
+          <button type="button" class="bankai-choice" data-bankai="tensa" aria-pressed="false"><span class="bankai-swatch swatch-tensa">✧</span><span><b>Tensa Zangetsu</b><small>Midnight · crimson · silver</small></span><i>✓</i></button>
+          <button type="button" class="bankai-choice" data-bankai="hyorinmaru" aria-pressed="false"><span class="bankai-swatch swatch-hyorin">❄</span><span><b>Hyorinmaru</b><small>Ice · glacier · starlight</small></span><i>✓</i></button>
+        </div>
+      </section>
       <div class="border-t border-white/10 pt-5">
         <label class="text-sm text-slate-300 mb-2 block" for="theme">Theme intensity</label>
         <input type="range" id="theme" min="0" max="1" step="0.05" value="0.7" />
@@ -853,6 +891,7 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
           <div class="mark" style="--s:70px"><span class="orbit"></span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#zlogo"/></svg></div>
           <h1 class="wordmark">Zynx AI</h1>
         </div>
+        <div class="bankai-seal stag" style="--i:1" aria-label="Zynx personalization"><span class="seal-orbit"></span><span class="seal-petal">✿</span><span class="seal-copy"><b>THE BANKAI ARCHIVE</b><small>Shape your Zynx atmosphere in Personalization</small></span><span class="seal-spark">✦</span></div>
         <div class="seg stag" id="seg" data-mode="signin" role="tablist" style="--i:1">
           <span class="seg-ind"></span>
           <button type="button" role="tab" data-mode="signin" class="on" aria-selected="true">Sign in</button>
@@ -925,6 +964,19 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     welcome: $('#welcome'), card: $('#authCard'), toast: $('#toast')
   };
   const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+  /* Optional Bankai personalization */
+  const BANKAI_KEY = 'zynx_bankai_theme';
+  const BANKAI_THEMES = new Set(['senbonzakura','zanka','tensa','hyorinmaru']);
+  function applyBankaiTheme(name, persist = true) {
+    const theme = BANKAI_THEMES.has(name) ? name : 'default';
+    if (theme === 'default') delete document.documentElement.dataset.bankai;
+    else document.documentElement.dataset.bankai = theme;
+    if (persist) store.set(BANKAI_KEY, theme);
+    $$('#bankaiThemes [data-bankai]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.bankai === theme)));
+  }
+  applyBankaiTheme(store.get(BANKAI_KEY) || 'default', false);
+
 
   /* ---------- Utilities ---------- */
   let toastTimer;
@@ -1309,6 +1361,12 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
   $('#closeSettings').addEventListener('click', closeSettings);
   $('#saveSettings').addEventListener('click', saveSettings);
   $('#theme').addEventListener('input', (e) => applyTheme(parseFloat(e.target.value)));
+  $('#bankaiThemes').addEventListener('click', (e) => {
+    const choice = e.target.closest('[data-bankai]');
+    if (!choice) return;
+    applyBankaiTheme(choice.dataset.bankai);
+    toast(choice.dataset.bankai === 'default' ? 'Dreamspace restored.' : choice.querySelector('b').textContent + ' theme activated.');
+  });
   ['#lengthGroup', '#styleGroup'].forEach((sel) => {
     $(sel).addEventListener('click', (e) => {
       const b = e.target.closest('.opt'); if (!b) return;
@@ -1572,37 +1630,27 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
   resize();
 })();
 
-  /* Dream transition: a soft violet particle bloom that reveals the chat shell. */
+  /* Petal convergence: startup energy blooms into the selected chat atmosphere. */
   (function dreamyTransition(){
-    const app = document.getElementById('app');
-    const layer = document.getElementById('dream-transition');
-    if (!app || !layer) return;
-    let played = false;
+    const app=document.getElementById('app'),layer=document.getElementById('dream-transition');
+    if(!app||!layer)return;let played=false;
     function bloom(){
-      if (played || !app.classList.contains('ready')) return;
-      played = true;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const count = Math.min(64, Math.max(34, Math.round(window.innerWidth / 17)));
+      if(played||!app.classList.contains('ready'))return;played=true;
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      const count=Math.min(54,Math.max(30,Math.round(window.innerWidth/21)));
       for(let i=0;i<count;i++){
-        const p=document.createElement('span');
-        p.className='dream-particle';
-        const angle=Math.random()*Math.PI*2;
-        const radius=Math.min(window.innerWidth,window.innerHeight)*(.24+Math.random()*.48);
-        p.style.setProperty('--dx',Math.cos(angle)*radius+'px');
-        p.style.setProperty('--dy',Math.sin(angle)*radius+'px');
-        p.style.setProperty('--rot',(Math.random()*720-360)+'deg');
-        p.style.setProperty('--dur',(1.35+Math.random()*.85)+'s');
-        p.style.setProperty('--delay',(.12+Math.random()*.55)+'s');
+        const p=document.createElement('span');p.className='dream-particle';
+        const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.3;
+        const radius=Math.min(window.innerWidth,window.innerHeight)*(.28+Math.random()*.38);
+        p.style.setProperty('--dx',Math.cos(angle)*radius+'px');p.style.setProperty('--dy',Math.sin(angle)*radius+'px');
+        p.style.setProperty('--rot',(Math.random()*540-270)+'deg');p.style.setProperty('--dur',(1.15+Math.random()*.65)+'s');p.style.setProperty('--delay',(Math.random()*.28)+'s');
         layer.appendChild(p);
       }
-      layer.classList.add('play');
-      setTimeout(()=>layer.classList.add('flow-out'),720);
-      setTimeout(()=>{layer.classList.remove('play','flow-out');layer.replaceChildren();},2300);
+      layer.classList.add('play');setTimeout(()=>layer.classList.add('flow-out'),560);
+      setTimeout(()=>{layer.classList.remove('play','flow-out');layer.replaceChildren();},1950);
     }
-    new MutationObserver(bloom).observe(app,{attributes:true,attributeFilter:['class']});
-    if(app.classList.contains('ready')) bloom();
+    new MutationObserver(bloom).observe(app,{attributes:true,attributeFilter:['class']});if(app.classList.contains('ready'))bloom();
   })();
-
 </script>
 </body>
 </html>
