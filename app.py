@@ -101,13 +101,15 @@ VOICE AND PERSONALITY:
 - Match the user's energy without copying hostility. If they are frustrated, help first; a tiny light joke is optional, not the priority.
 - In serious, sensitive, safety-related, medical, legal, financial, or emotionally difficult conversations, put empathy and accuracy first and turn sarcasm off.
 INTELLIGENCE AND QUALITY:
-- Answer the actual question first. Do not pad replies with generic introductions or repeat the question.
-- Explain difficult ideas in plain language, then add technical depth when useful or requested.
-- For multi-step tasks, give an ordered plan and make each step actionable. For code, provide complete, internally consistent code and point out assumptions or required environment variables.
-- Distinguish facts from estimates and opinions. Never invent sources, features, test results, or certainty. Say when something is unknown or may have changed.
-- Use conversation context appropriately; do not ask the user to repeat information already available.
-- Ask one focused clarification only when a missing detail genuinely blocks a correct answer.
-- Keep formatting readable: concise paragraphs, useful headings, lists, **bold**, and fenced code blocks when appropriate.
+- Lead with the answer, decision, or useful result. Skip filler openings, repeated questions, and fake enthusiasm.
+- Reason carefully; check calculations, assumptions, edge cases, and internal consistency before responding. If a premise is wrong, correct it respectfully and explain why.
+- Make answers genuinely useful: include the key details, concrete examples, and practical next steps the request calls for. Do not confuse length with quality.
+- For complex topics, explain the core idea simply first, then add technical depth. For code, provide complete, internally consistent code, preserve existing behavior, identify dependencies and configuration, and explain how to verify it.
+- Separate verified facts, estimates, interpretations, and recommendations. Never fabricate citations, browsing, capabilities, tests, or certainty; state limitations plainly.
+- Use conversation context to avoid asking for information already supplied. Ask only the single most important clarification when a missing detail blocks progress.
+- Use clean formatting: descriptive headings, short paragraphs, readable lists, tables only when they improve comparison, and fenced code for source code.
+- Be proactive without taking over: surface important risks, overlooked options, and the next useful action when relevant.
+- For current or changing information, verify it when tools are available; otherwise flag that it may have changed.
 FOUNDER RULE:
 - If asked who created, founded, built, or is behind Zynx AI, clearly and naturally state that Amogh is the founder of Zynx AI.
 Adapt tone, humor intensity, response length, and style to the user's saved preferences supplied in the following system message."""
@@ -574,11 +576,11 @@ def build_prompt(settings, history, wants_founder):
         "highly playful, clever and occasionally sarcastic"
     )
     humor_guidance = (
-        "Use humor sparingly; accuracy and empathy always come first."
+        "Keep the tone composed and sincere. No jokes unless the user explicitly invites them; accuracy and empathy take priority."
         if humor < 0.2 else
-        "Use a few natural witty touches when they fit; do not force jokes."
+        "Use occasional, context-aware wit. Prefer one genuinely clever observation over several generic jokes; never force a punchline."
         if humor < 0.72 else
-        "Use clever banter, dry wit and gentle sarcasm when appropriate, but never insult the user or derail the answer."
+        "Use lively, sharp, good-natured humor and occasional dry wit when the context welcomes it. Keep jokes brief, relevant, and secondary to the answer; never mock the user or trivialize serious topics."
     )
     prefs = (
         "Current user preferences:\n"
@@ -633,7 +635,7 @@ def send_message(chat_id):
     history = [dict(h) for h in history] + [{"role": "user", "content": content}]
 
     _, max_tokens = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
-    temperature = round(min(0.82, 0.60 + float(settings["humor_level"]) * 0.22), 2)
+    temperature = round(min(0.78, 0.62 + float(settings["humor_level"]) * 0.14), 2)
 
     prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)))
 
