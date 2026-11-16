@@ -838,7 +838,22 @@ body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
 @media(max-width:700px){#aether-studio-trigger{right:12px;top:12px}#aether-audio-toggle{right:105px;top:12px}#aether-archive{display:none}#hud-telemetry{opacity:.3}}
 @media(prefers-reduced-motion:reduce){#aether-studio{transition:none}*{scroll-behavior:auto!important}}
 </style>
-</head>
+<style id="zynx-pro-suite">
+/* ZYNX PRO SUITE — focused interaction polish */
+.zynx-chat-search{display:flex;align-items:center;gap:9px;margin:0 12px 10px;padding:10px 12px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(255,255,255,.035);color:#94a3b8;transition:border-color .2s,background .2s}
+.zynx-chat-search:focus-within{border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.07)}
+.zynx-chat-search input{width:100%;min-width:0;background:transparent;border:0;outline:0;color:#f8fafc;font:12px Inter, sans-serif}
+.zynx-chat-search input::placeholder{color:#778096}
+.zynx-mode-rail{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 10px;max-width:760px;padding:0 8px}
+.zynx-mode{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);color:#aeb5c8;border-radius:999px;padding:6px 11px;font:500 10px Inter,sans-serif;letter-spacing:.02em;cursor:pointer;transition:transform .2s,border-color .2s,background .2s,color .2s}
+.zynx-mode:hover,.zynx-mode:focus-visible{transform:translateY(-2px);border-color:rgba(167,139,250,.55);background:rgba(167,139,250,.12);color:#fff}
+.zynx-mode[aria-pressed=true]{border-color:rgba(167,139,250,.65);background:rgba(167,139,250,.16);color:#e9ddff}
+.input-glass:focus-within{border-color:rgba(167,139,250,.55)!important;box-shadow:0 0 0 3px rgba(167,139,250,.08),0 14px 50px rgba(0,0,0,.2)}
+#voiceBtn[aria-pressed=true]{color:#fff;background:rgba(167,139,250,.2);box-shadow:0 0 0 5px rgba(167,139,250,.08),0 0 24px rgba(167,139,250,.25);animation:zynxVoicePulse 1.5s ease-in-out infinite}
+@keyframes zynxVoicePulse{50%{box-shadow:0 0 0 9px rgba(167,139,250,0),0 0 30px rgba(167,139,250,.35)}}
+.zynx-composer-note{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(184,190,210,.48);text-align:center;margin:0 0 7px}
+@media(prefers-reduced-motion:reduce){.zynx-mode,#voiceBtn{animation:none!important;transition:none!important}}
+</style>\n</head>
 <body>
 
 <canvas id="webgl-stage" aria-hidden="true"></canvas><canvas id="hud-telemetry" aria-hidden="true"></canvas>
@@ -920,6 +935,12 @@ body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
           New chat
         </button>
       </div>
+      
+      <label class="zynx-chat-search" aria-label="Search conversations">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="zynx-chat-filter" type="search" placeholder="Search conversations…" autocomplete="off">
+        <span style="font:9px ui-monospace,monospace;opacity:.55">⌕</span>
+      </label>
       <nav class="flex-1 overflow-y-auto px-2 pb-2 space-y-0.5" id="chatList" aria-label="Chat history"></nav>
       <div class="p-3 border-t border-white/10 space-y-1">
         <button id="settingsBtn" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-sm text-slate-300">
@@ -967,7 +988,16 @@ body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
         <div class="thread" id="thread"></div>
       </div>
 
-      <div class="input-area cascade" style="--i:10">
+      <div class="input-area cascade" style="--i:10">\n
+        <div class="zynx-composer-note">Choose a thinking style · optional</div>
+        <div class="zynx-mode-rail" id="zynx-mode-rail" role="group" aria-label="Prompt styles">
+          <button class="zynx-mode" type="button" data-zynx-mode="Explain">✦ Explain</button>
+          <button class="zynx-mode" type="button" data-zynx-mode="Research">⌕ Research</button>
+          <button class="zynx-mode" type="button" data-zynx-mode="Code">⌘ Code</button>
+          <button class="zynx-mode" type="button" data-zynx-mode="Study">▤ Study</button>
+          <button class="zynx-mode" type="button" data-zynx-mode="Creative">✧ Creative</button>
+        </div>
+
         <div class="input-glass glass">
           <button class="btn-icon" id="voiceBtn" title="Voice input" aria-label="Voice input" aria-pressed="false">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
@@ -2017,5 +2047,51 @@ import { gsap } from 'gsap';
  window.addEventListener('beforeunload',()=>{cancelAnimationFrame(raf);renderer?.dispose();composer?.renderTarget1?.dispose();audio.ctx?.close()});
 })();
 </script>
-</body>
+
+<script id="zynx-pro-suite-runtime">
+(()=> {
+  const input=document.getElementById('input');
+  const rail=document.getElementById('zynx-mode-rail');
+  const filter=document.getElementById('zynx-chat-filter');
+  const list=document.getElementById('chatList');
+  if(rail&&input){
+    rail.addEventListener('click',e=>{
+      const b=e.target.closest('[data-zynx-mode]'); if(!b)return;
+      const mode=b.dataset.zynxMode;
+      rail.querySelectorAll('[data-zynx-mode]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+      const prompts={
+        Explain:'Explain this clearly, step by step, with a simple example: ',
+        Research:'Give me a well-structured, evidence-aware research answer. Separate established facts from uncertainty: ',
+        Code:'Help me solve this programming task. Explain the approach and provide complete, runnable code where appropriate: ',
+        Study:'Teach me this topic like a personal tutor. Use clear notes, examples and a short knowledge check: ',
+        Creative:'Approach this creatively. Give me an original, polished result with a few interesting ideas: '
+      };
+      const prefix=prompts[mode]||'';
+      if(!input.value.trim()) input.value=prefix;
+      else if(!input.value.startsWith(prefix)) input.value=prefix+input.value;
+      input.focus(); input.dispatchEvent(new Event('input',{bubbles:true}));
+      const send=document.getElementById('sendBtn'); if(send)send.disabled=!input.value.trim();
+    });
+  }
+  function filterChats(){
+    if(!filter||!list)return;
+    const q=filter.value.trim().toLocaleLowerCase();
+    [...list.children].forEach(item=>{
+      item.hidden=!!q&&!item.textContent.toLocaleLowerCase().includes(q);
+    });
+  }
+  filter?.addEventListener('input',filterChats);
+  if(list&&filter){
+    new MutationObserver(filterChats).observe(list,{childList:true,subtree:true});
+  }
+  document.addEventListener('keydown',e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='j'&&!e.shiftKey){
+      if(e.target.matches('input,textarea,[contenteditable="true"]'))return;
+      e.preventDefault();filter?.focus();
+    }
+    if(e.key==='Escape'&&document.activeElement===filter){filter.value='';filterChats();filter.blur();}
+  });
+})();
+</script>
+\n</body>
 </html>
