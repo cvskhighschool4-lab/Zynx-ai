@@ -179,6 +179,37 @@
   .toast { position: fixed; left: 50%; bottom: calc(5.5rem + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); z-index: 90; padding: .65rem 1.1rem; border-radius: 999px; font-size: .85rem; background: rgba(20,25,44,.9); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(14px); opacity: 0; pointer-events: none; transition: all .3s; max-width: 90vw; text-align: center; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+
+  /* ---------- Optional Bankai personalization worlds ---------- */
+  body::before, body::after { content:""; position:fixed; inset:-18%; z-index:3; pointer-events:none; opacity:0; transition:opacity .8s ease; }
+  body::before { background:var(--bankai-scene, transparent); filter:saturate(1.25); animation:bankai-drift 18s ease-in-out infinite alternate; }
+  body::after { inset:0; background:radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(0,0,0,.22) 100%); opacity:0; }
+  @keyframes bankai-drift { from{transform:scale(1) rotate(-2deg)} to{transform:scale(1.12) rotate(2deg)} }
+  html[data-bankai]:not([data-bankai="dreamspace"]) body::before { opacity:.92; }
+  html[data-bankai]:not([data-bankai="dreamspace"]) body::after { opacity:1; }
+  html[data-bankai]:not([data-bankai="dreamspace"]) { --accent:var(--bankai-accent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .dream-bg { background:var(--bankai-base) !important; }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .cloud { opacity:.22; filter:blur(90px); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .particles .particle { background:var(--bankai-accent); box-shadow:0 0 12px 2px var(--bankai-accent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .glass { border-color:color-mix(in srgb,var(--bankai-accent) 32%,transparent); box-shadow:0 12px 55px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.12), 0 0 35px color-mix(in srgb,var(--bankai-accent) 10%,transparent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .sidebar { background:color-mix(in srgb,var(--bankai-base) 62%,transparent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell { background:color-mix(in srgb,var(--bankai-base) 52%,transparent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .input-glass { background:color-mix(in srgb,var(--bankai-base) 58%,transparent); border-color:color-mix(in srgb,var(--bankai-accent) 42%,transparent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .btn-send, html[data-bankai]:not([data-bankai="dreamspace"]) .primary { background:linear-gradient(135deg,var(--bankai-accent),var(--bankai-secondary)); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .bubble.user { background:linear-gradient(135deg,color-mix(in srgb,var(--bankai-accent) 38%,transparent),color-mix(in srgb,var(--bankai-secondary) 30%,transparent)); border-color:color-mix(in srgb,var(--bankai-accent) 45%,transparent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .typing span { background:var(--bankai-accent); }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell::before, html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell::after { content:""; position:absolute; z-index:0; pointer-events:none; border-radius:50%; border:1px solid color-mix(in srgb,var(--bankai-accent) 30%,transparent); width:min(68vw,720px); aspect-ratio:1; left:50%; top:48%; transform:translate(-50%,-50%) perspective(700px) rotateX(68deg); box-shadow:0 0 45px color-mix(in srgb,var(--bankai-accent) 12%,transparent), inset 0 0 45px color-mix(in srgb,var(--bankai-accent) 8%,transparent); animation:bankai-ring 16s linear infinite; }
+  html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell::after { width:min(48vw,520px); transform:translate(-50%,-50%) perspective(700px) rotateX(68deg) rotateZ(55deg); animation-direction:reverse; animation-duration:22s; }
+  @keyframes bankai-ring { to{rotate:360deg} }
+  .bankai-option { position:relative; overflow:hidden; min-height:108px; padding:12px; border-radius:15px; text-align:left; border:1px solid rgba(255,255,255,.13); background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025)); color:#e2e8f0; transition:transform .25s,border-color .25s,box-shadow .25s; }
+  .bankai-option::before { content:""; position:absolute; width:120px;height:120px;right:-35px;top:-55px;border-radius:50%;background:var(--swatch);filter:blur(18px);opacity:.35; }
+  .bankai-option:hover { transform:translateY(-3px); border-color:var(--swatch); box-shadow:0 10px 30px color-mix(in srgb,var(--swatch) 18%,transparent); }
+  .bankai-option.active { border-color:var(--swatch); box-shadow:0 0 0 1px var(--swatch),0 0 28px color-mix(in srgb,var(--swatch) 22%,transparent); background:linear-gradient(145deg,color-mix(in srgb,var(--swatch) 17%,transparent),rgba(255,255,255,.035)); }
+  .bankai-option strong,.bankai-option small { position:relative;display:block; }
+  .bankai-option small { margin-top:5px;color:#aab4c8;font-size:11px;line-height:1.35; }
+  .bankai-option .bankai-check { position:absolute;right:10px;bottom:9px;color:var(--swatch);font-size:11px; }
+  @media (prefers-reduced-motion:reduce) { body::before,.chat-shell::before,.chat-shell::after { animation:none !important; } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     .s-logo, .s-sub, .s-bar, .s-skip, .s-mark { opacity: 1; transform: none; }
@@ -776,7 +807,20 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
       </button>
     </div>
     <div class="flex-1 overflow-y-auto p-5 space-y-6">
-      <div>
+      <section class="space-y-3">
+        <div><p class="text-sm font-semibold text-slate-100">Personalization</p><p class="text-xs text-slate-400 mt-1">Choose an optional Bankai-inspired visual world. Dreamspace stays your default.</p></div>
+        <div class="grid grid-cols-2 gap-2" id="bankaiThemes">
+          <button type="button" class="bankai-option active" data-bankai="dreamspace" style="--swatch:#a78bfa"><strong>Dreamspace</strong><small>Original purple nebula · default</small><span class="bankai-check">✓ DEFAULT</span></button>
+          <button type="button" class="bankai-option" data-bankai="senbonzakura" style="--swatch:#f0b8dc"><strong>Senbonzakura</strong><small>Endless rose-petal storm</small></button>
+          <button type="button" class="bankai-option" data-bankai="zanka" style="--swatch:#ff6a32"><strong>Zanka no Tachi</strong><small>Crimson sun · molten embers</small></button>
+          <button type="button" class="bankai-option" data-bankai="hyorinmaru" style="--swatch:#8ceaff"><strong>Daiguren Hyōrinmaru</strong><small>Glacial sky · frozen aurora</small></button>
+          <button type="button" class="bankai-option" data-bankai="katen" style="--swatch:#ff647f"><strong>Katen Kyōkotsu</strong><small>Scarlet shadows · spectral theatre</small></button>
+          <button type="button" class="bankai-option" data-bankai="kannon" style="--swatch:#d9a7ff"><strong>Konjiki Ashisogi Jizō</strong><small>Golden-violet alchemy glow</small></button>
+          <button type="button" class="bankai-option" data-bankai="kamishini" style="--swatch:#a7ffbd"><strong>Kamishini no Yari</strong><small>Emerald speed · razor-light trails</small></button>
+        </div>
+        <p class="text-xs text-slate-500" id="bankaiStatus" aria-live="polite">Selected: Dreamspace. Your choice is saved on this device.</p>
+      </section>
+      <div class="border-t border-white/10 pt-5">
         <label class="text-sm text-slate-300 mb-2 block" for="theme">Theme intensity</label>
         <input type="range" id="theme" min="0" max="1" step="0.05" value="0.7" />
         <div class="flex justify-between text-xs text-slate-500 mt-1"><span>Soft</span><span>Vivid</span></div>
@@ -1099,6 +1143,38 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     $$('#styleGroup .opt').forEach((b) => b.classList.toggle('on', b.dataset.value === s.response_style));
     applyTheme(s.theme_intensity);
   }
+  const BANKAI_THEMES = {
+    dreamspace:{name:'Dreamspace'},
+    senbonzakura:{name:'Senbonzakura',accent:'#f0b8dc',secondary:'#9d5b9a',base:'#170d20',scene:'radial-gradient(ellipse at 50% 45%,rgba(255,190,225,.30),transparent 23%),radial-gradient(ellipse at 15% 80%,rgba(164,82,160,.32),transparent 38%),repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,220,240,.10) 0deg 1deg,transparent 1deg 8deg)'},
+    zanka:{name:'Zanka no Tachi',accent:'#ff7547',secondary:'#b51f25',base:'#1c0808',scene:'radial-gradient(ellipse at 50% 45%,rgba(255,91,38,.42),transparent 24%),radial-gradient(ellipse at 80% 85%,rgba(150,12,18,.35),transparent 38%),repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,100,35,.08) 39px 41px,transparent 42px 80px)'},
+    hyorinmaru:{name:'Daiguren Hyōrinmaru',accent:'#8ceaff',secondary:'#287dbb',base:'#061827',scene:'radial-gradient(ellipse at 50% 38%,rgba(130,230,255,.36),transparent 26%),radial-gradient(ellipse at 10% 90%,rgba(50,125,220,.35),transparent 40%),repeating-linear-gradient(135deg,transparent 0 44px,rgba(180,245,255,.09) 45px 47px,transparent 48px 90px)'},
+    katen:{name:'Katen Kyōkotsu',accent:'#ff647f',secondary:'#81345e',base:'#1b0818',scene:'radial-gradient(ellipse at 55% 42%,rgba(255,70,120,.28),transparent 25%),radial-gradient(ellipse at 20% 85%,rgba(95,30,90,.42),transparent 42%),repeating-linear-gradient(45deg,transparent 0 65px,rgba(255,100,150,.08) 66px 68px,transparent 69px 130px)'},
+    kannon:{name:'Konjiki Ashisogi Jizō',accent:'#d9a7ff',secondary:'#bd9b42',base:'#170f24',scene:'radial-gradient(ellipse at 50% 42%,rgba(220,170,255,.30),transparent 24%),radial-gradient(ellipse at 75% 75%,rgba(255,198,80,.24),transparent 36%),conic-gradient(from 30deg at 50% 50%,rgba(200,150,255,.08),transparent,rgba(255,200,90,.10),transparent)'},
+    kamishini:{name:'Kamishini no Yari',accent:'#a7ffbd',secondary:'#3a9f78',base:'#061a17',scene:'radial-gradient(ellipse at 50% 50%,rgba(120,255,180,.30),transparent 20%),radial-gradient(ellipse at 85% 15%,rgba(30,140,110,.30),transparent 36%),repeating-linear-gradient(100deg,transparent 0 90px,rgba(140,255,190,.10) 91px 93px,transparent 94px 150px)'}
+  };
+  function setBankaiTheme(key, persist=true) {
+    const theme=BANKAI_THEMES[key] ? key : 'dreamspace';
+    const root=document.documentElement;
+    root.dataset.bankai=theme;
+    const t=BANKAI_THEMES[theme];
+    ['accent','secondary','base'].forEach(k=>root.style.removeProperty('--bankai-'+k));
+    root.style.removeProperty('--bankai-scene');
+    if(theme!=='dreamspace') {
+      root.style.setProperty('--bankai-accent',t.accent);
+      root.style.setProperty('--bankai-secondary',t.secondary);
+      root.style.setProperty('--bankai-base',t.base);
+      root.style.setProperty('--bankai-scene',t.scene);
+    }
+    $('#bankaiThemes .bankai-option').forEach(b=>{
+      const active=b.dataset.bankai===theme;
+      b.classList.toggle('active',active);
+      const check=b.querySelector('.bankai-check');
+      if(check) check.remove();
+      if(active){const mark=document.createElement('span');mark.className='bankai-check';mark.textContent=theme==='dreamspace'?'✓ DEFAULT':'✓ ACTIVE';b.appendChild(mark);}
+    });
+    $('#bankaiStatus').textContent='Selected: '+t.name+'. Your choice is saved on this device.';
+    if(persist) store.set('zynx_bankai_theme',theme);
+  }
   function applyTheme(v) { document.documentElement.style.setProperty('--intensity', v); }
   async function loadSettings() { try { const s = await api('/api/settings'); S.settings = s; paintSettings(s); } catch {} }
   async function saveSettings() {
@@ -1263,6 +1339,8 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
   $$('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
 
   $('#settingsBtn').addEventListener('click', () => { el.settings.classList.add('open'); closeSidebarMobile(); });
+  $('#bankaiThemes').addEventListener('click', (e) => { const b=e.target.closest('[data-bankai]'); if(b) setBankaiTheme(b.dataset.bankai); });
+  setBankaiTheme(store.get('zynx_bankai_theme') || 'dreamspace', false);
   $('#closeSettings').addEventListener('click', closeSettings);
   $('#saveSettings').addEventListener('click', saveSettings);
   $('#theme').addEventListener('input', (e) => applyTheme(parseFloat(e.target.value)));
