@@ -1608,19 +1608,30 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
   const setLabel = (t) => { const l = $('#bootLabel'); l.textContent = t; l.style.animation = 'none'; void l.offsetWidth; l.style.animation = ''; };
   if (!reduceMotion) { setTimeout(() => setLabel('SYNCHRONIZING THE DREAMSPACE'), bootMs * .32); setTimeout(() => setLabel('ZYNX IS READY'), bootMs * .6); }
   let started = false, initDone = false;
+  const hadSavedToken = !!S.token;
   const initP = initSession()
     .catch(() => toast("Can't reach the server right now. Try again in a moment."))
     .finally(() => { initDone = true; });
+  // A slow session/chat-history request must never trap the user on the boot animation.
+  initP.then(() => {
+    if (started && hadSavedToken && S.user && el.welcome.classList.contains('show')) enterApp();
+  });
   async function finishStartup() {
     if (started) return; started = true;
     if (!initDone) setLabel('CONNECTING TO THE CLOUD...');
-    await Promise.race([initP, new Promise(resolve => setTimeout(() => resolve('startup-timeout'), 4500))]);
+    // Keep the intro short; continue loading account data in the background.
+    await Promise.race([initP, new Promise(resolve => setTimeout(() => resolve('startup-timeout'), 1200))]);
     let guestOk = false; try { guestOk = sessionStorage.getItem('zynx_guest') === '1'; } catch {}
     if (S.user || guestOk) { el.startup.classList.add('hidden'); enterApp(); }
     else { showWelcome(false); $('#bootCore').classList.remove('show'); el.startup.classList.add('hidden'); }
   }
   el.startup.addEventListener('click', finishStartup);
   setTimeout(finishStartup, bootMs * .7);
+  // Final safety net in case a browser animation/timer is interrupted.
+  setTimeout(() => {
+    if (!started) finishStartup();
+    else if (!el.startup.classList.contains('hidden')) el.startup.classList.add('hidden');
+  }, 6500);
   resize();
 })();
 
