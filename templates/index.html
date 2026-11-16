@@ -180,36 +180,6 @@
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 
-  /* ---------- Optional Bankai personalization worlds ---------- */
-  body::before, body::after { content:""; position:fixed; inset:-18%; z-index:3; pointer-events:none; opacity:0; transition:opacity .8s ease; }
-  body::before { background:var(--bankai-scene, transparent); filter:saturate(1.25); animation:bankai-drift 18s ease-in-out infinite alternate; }
-  body::after { inset:0; background:radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(0,0,0,.22) 100%); opacity:0; }
-  @keyframes bankai-drift { from{transform:scale(1) rotate(-2deg)} to{transform:scale(1.12) rotate(2deg)} }
-  html[data-bankai]:not([data-bankai="dreamspace"]) body::before { opacity:.92; }
-  html[data-bankai]:not([data-bankai="dreamspace"]) body::after { opacity:1; }
-  html[data-bankai]:not([data-bankai="dreamspace"]) { --accent:var(--bankai-accent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .dream-bg { background:var(--bankai-base) !important; }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .cloud { opacity:.22; filter:blur(90px); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .particles .particle { background:var(--bankai-accent); box-shadow:0 0 12px 2px var(--bankai-accent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .glass { border-color:color-mix(in srgb,var(--bankai-accent) 32%,transparent); box-shadow:0 12px 55px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.12), 0 0 35px color-mix(in srgb,var(--bankai-accent) 10%,transparent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .sidebar { background:color-mix(in srgb,var(--bankai-base) 62%,transparent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell { background:color-mix(in srgb,var(--bankai-base) 52%,transparent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .input-glass { background:color-mix(in srgb,var(--bankai-base) 58%,transparent); border-color:color-mix(in srgb,var(--bankai-accent) 42%,transparent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .btn-send, html[data-bankai]:not([data-bankai="dreamspace"]) .primary { background:linear-gradient(135deg,var(--bankai-accent),var(--bankai-secondary)); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .bubble.user { background:linear-gradient(135deg,color-mix(in srgb,var(--bankai-accent) 38%,transparent),color-mix(in srgb,var(--bankai-secondary) 30%,transparent)); border-color:color-mix(in srgb,var(--bankai-accent) 45%,transparent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .typing span { background:var(--bankai-accent); }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell::before, html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell::after { content:""; position:absolute; z-index:0; pointer-events:none; border-radius:50%; border:1px solid color-mix(in srgb,var(--bankai-accent) 30%,transparent); width:min(68vw,720px); aspect-ratio:1; left:50%; top:48%; transform:translate(-50%,-50%) perspective(700px) rotateX(68deg); box-shadow:0 0 45px color-mix(in srgb,var(--bankai-accent) 12%,transparent), inset 0 0 45px color-mix(in srgb,var(--bankai-accent) 8%,transparent); animation:bankai-ring 16s linear infinite; }
-  html[data-bankai]:not([data-bankai="dreamspace"]) .chat-shell::after { width:min(48vw,520px); transform:translate(-50%,-50%) perspective(700px) rotateX(68deg) rotateZ(55deg); animation-direction:reverse; animation-duration:22s; }
-  @keyframes bankai-ring { to{rotate:360deg} }
-  .bankai-option { position:relative; overflow:hidden; min-height:108px; padding:12px; border-radius:15px; text-align:left; border:1px solid rgba(255,255,255,.13); background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025)); color:#e2e8f0; transition:transform .25s,border-color .25s,box-shadow .25s; }
-  .bankai-option::before { content:""; position:absolute; width:120px;height:120px;right:-35px;top:-55px;border-radius:50%;background:var(--swatch);filter:blur(18px);opacity:.35; }
-  .bankai-option:hover { transform:translateY(-3px); border-color:var(--swatch); box-shadow:0 10px 30px color-mix(in srgb,var(--swatch) 18%,transparent); }
-  .bankai-option.active { border-color:var(--swatch); box-shadow:0 0 0 1px var(--swatch),0 0 28px color-mix(in srgb,var(--swatch) 22%,transparent); background:linear-gradient(145deg,color-mix(in srgb,var(--swatch) 17%,transparent),rgba(255,255,255,.035)); }
-  .bankai-option strong,.bankai-option small { position:relative;display:block; }
-  .bankai-option small { margin-top:5px;color:#aab4c8;font-size:11px;line-height:1.35; }
-  .bankai-option .bankai-check { position:absolute;right:10px;bottom:9px;color:var(--swatch);font-size:11px; }
-  @media (prefers-reduced-motion:reduce) { body::before,.chat-shell::before,.chat-shell::after { animation:none !important; } }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     .s-logo, .s-sub, .s-bar, .s-skip, .s-mark { opacity: 1; transform: none; }
@@ -815,13 +785,6 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
         </label>
         <p class="text-xs text-slate-500">Use the microphone button beside the message box to speak. Microphone permission is required.</p>
       </section>
-      <section class="space-y-3">
-        <div><p class="text-sm font-semibold text-slate-100">Personalization</p><p class="text-xs text-slate-400 mt-1">Choose an optional Bankai-inspired visual world. Dreamspace stays your default.</p></div>
-        <div class="grid grid-cols-2 gap-2" id="bankaiThemes">
-          <button type="button" class="bankai-option active" data-bankai="dreamspace" style="--swatch:#a78bfa"><strong>Dreamspace</strong><small>Original purple nebula · default</small><span class="bankai-check">✓ DEFAULT</span></button>
-        </div>
-        <p class="text-xs text-slate-500" id="bankaiStatus" aria-live="polite">Selected: Dreamspace. Your choice is saved on this device.</p>
-      </section>
       <div class="border-t border-white/10 pt-5">
         <label class="text-sm text-slate-300 mb-2 block" for="theme">Theme intensity</label>
         <input type="range" id="theme" min="0" max="1" step="0.05" value="0.7" />
@@ -1147,32 +1110,6 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     $$('#styleGroup .opt').forEach((b) => b.classList.toggle('on', b.dataset.value === s.response_style));
     applyTheme(s.theme_intensity);
   }
-  const BANKAI_THEMES = {
-    dreamspace:{name:'Dreamspace'},
-  };
-  function setBankaiTheme(key, persist=true) {
-    const theme=BANKAI_THEMES[key] ? key : 'dreamspace';
-    const root=document.documentElement;
-    root.dataset.bankai=theme;
-    const t=BANKAI_THEMES[theme];
-    ['accent','secondary','base'].forEach(k=>root.style.removeProperty('--bankai-'+k));
-    root.style.removeProperty('--bankai-scene');
-    if(theme!=='dreamspace') {
-      root.style.setProperty('--bankai-accent',t.accent);
-      root.style.setProperty('--bankai-secondary',t.secondary);
-      root.style.setProperty('--bankai-base',t.base);
-      root.style.setProperty('--bankai-scene',t.scene);
-    }
-    $('#bankaiThemes .bankai-option').forEach(b=>{
-      const active=b.dataset.bankai===theme;
-      b.classList.toggle('active',active);
-      const check=b.querySelector('.bankai-check');
-      if(check) check.remove();
-      if(active){const mark=document.createElement('span');mark.className='bankai-check';mark.textContent=theme==='dreamspace'?'✓ DEFAULT':'✓ ACTIVE';b.appendChild(mark);}
-    });
-    $('#bankaiStatus').textContent='Selected: '+t.name+'. Your choice is saved on this device.';
-    if(persist) store.set('zynx_bankai_theme',theme);
-  }
   function applyTheme(v) { document.documentElement.style.setProperty('--intensity', v); }
   async function loadSettings() { try { const s = await api('/api/settings'); S.settings = s; paintSettings(s); } catch {} }
   async function saveSettings() {
@@ -1369,8 +1306,6 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     if (!S.voiceReplies && 'speechSynthesis' in window) window.speechSynthesis.cancel();
     toast(S.voiceReplies ? 'Voice replies enabled.' : 'Voice replies disabled.');
   });
-  $('#bankaiThemes').addEventListener('click', (e) => { const b=e.target.closest('[data-bankai]'); if(b) setBankaiTheme(b.dataset.bankai); });
-  setBankaiTheme(store.get('zynx_bankai_theme') || 'dreamspace', false);
   $('#closeSettings').addEventListener('click', closeSettings);
   $('#saveSettings').addEventListener('click', saveSettings);
   $('#theme').addEventListener('input', (e) => applyTheme(parseFloat(e.target.value)));
@@ -1445,7 +1380,7 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
       if (reduceMotion) { toBottom(); return resolve(); }
       setBotState('streaming');
       const units = []; prepUnits(row.firstChild, units);
-      const step = Math.max(8, Math.min(42, 2000 / Math.max(units.length, 1)));
+      const step = Math.max(2, Math.min(10, 560 / Math.max(units.length, 1)));
       let i = 0, last = null, lastScroll = 0; const t0 = performance.now();
       const tick = (now) => {
         const target = Math.min(units.length, Math.floor((now - t0) / step) + 1);
@@ -1510,17 +1445,19 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     const cv = $('#chatFx'); if (!cv) return;
     const ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let w = 0, h = 0, raf = 0; const ps = [];
+    let w = 0, h = 0, raf = 0, lastPaint = 0; const ps = [];
     const rnd = (a, b) => a + Math.random() * (b - a);
     const make = () => ({ x: rnd(0, w), y: rnd(0, h), r: rnd(.6, 2.1), vx: rnd(-.1, .1), vy: rnd(-.3, -.06), ph: rnd(0, 6.28), sp: rnd(.4, 1.2), hue: rnd(245, 285) });
     function resize() {
       const b = cv.parentElement.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = b.width; h = b.height; cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.max(24, Math.min(70, Math.round(w * h / 14000)));
+      const n = Math.max(20, Math.min(48, Math.round(w * h / 18000)));
       while (ps.length < n) ps.push(make()); ps.length = n;
       if (reduce) frame(0);
     }
     function frame(t) {
+      if (!reduce && t - lastPaint < 32) { raf = requestAnimationFrame(frame); return; }
+      lastPaint = t;
       ctx.clearRect(0, 0, w, h);
       const inten = parseFloat(document.documentElement.style.getPropertyValue('--intensity'));
       const k = .35 + (isNaN(inten) ? .7 : inten) * .9, vis = Math.min(1, k);
@@ -1534,7 +1471,7 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, 6.283); ctx.fill();
       }
       ctx.lineWidth = .6;
-      for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < ps.length; j++) {
+      for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < Math.min(ps.length, i + 9); j++) {
         const dx = ps[i].x - ps[j].x, dy = ps[i].y - ps[j].y, d2 = dx * dx + dy * dy;
         if (d2 < 9000) { ctx.strokeStyle = `rgba(255,255,255,${(1 - d2 / 9000) * .2 * vis})`; ctx.beginPath(); ctx.moveTo(ps[i].x, ps[i].y); ctx.lineTo(ps[j].x, ps[j].y); ctx.stroke(); }
       }
@@ -1559,7 +1496,7 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = el.welcome.clientWidth; h = el.welcome.clientHeight;
       cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.min(260, Math.round(w * h / 6500)); st.length = 0;
+      const n = Math.min(150, Math.round(w * h / 11000)); st.length = 0;
       for (let i = 0; i < n; i++) st.push({ x: rnd(0, w), y: rnd(0, h), r: rnd(.3, 1.5), a: rnd(0, 6.28), sp: rnd(.5, 2.2), z: rnd(.2, 1) });
     }
     function draw(t) {
@@ -1620,13 +1557,13 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     if (started) return; started = true;
     if (!initDone) setLabel('CONNECTING TO THE CLOUD...');
     // Keep the intro short; continue loading account data in the background.
-    await Promise.race([initP, new Promise(resolve => setTimeout(() => resolve('startup-timeout'), 1200))]);
+    await Promise.race([initP, new Promise(resolve => setTimeout(() => resolve('startup-timeout'), 450))]);
     let guestOk = false; try { guestOk = sessionStorage.getItem('zynx_guest') === '1'; } catch {}
     if (S.user || guestOk) { el.startup.classList.add('hidden'); enterApp(); }
     else { showWelcome(false); $('#bootCore').classList.remove('show'); el.startup.classList.add('hidden'); }
   }
   el.startup.addEventListener('click', finishStartup);
-  setTimeout(finishStartup, bootMs * .7);
+  setTimeout(finishStartup, bootMs * .4);
   // Final safety net in case a browser animation/timer is interrupted.
   setTimeout(() => {
     if (!started) finishStartup();
