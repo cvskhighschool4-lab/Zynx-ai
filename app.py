@@ -88,7 +88,7 @@ if not GROQ_API_KEY:
 client = None
 if GROQ_API_KEY and Groq is not None:
     try:
-        client = Groq(api_key=GROQ_API_KEY, timeout=45.0, max_retries=1)
+        client = Groq(api_key=GROQ_API_KEY, timeout=25.0, max_retries=0)
     except Exception:
         log.exception("Could not create the Groq client")
 
