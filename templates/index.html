@@ -853,7 +853,19 @@ body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
 @keyframes zynxVoicePulse{50%{box-shadow:0 0 0 9px rgba(167,139,250,0),0 0 30px rgba(167,139,250,.35)}}
 .zynx-composer-note{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(184,190,210,.48);text-align:center;margin:0 0 7px}
 @media(prefers-reduced-motion:reduce){.zynx-mode,#voiceBtn{animation:none!important;transition:none!important}}
-</style>\n</head>
+</style>\n<style id="zynx-premium-atmospheres">
+.premium-theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.premium-theme{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0;padding:9px;text-align:left;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035);color:#f3f4f6;cursor:pointer;transition:transform .22s,border-color .22s,background .22s,box-shadow .22s}.premium-theme:hover{transform:translateY(-2px);background:rgba(255,255,255,.07)}.premium-theme[aria-pressed=true]{border-color:var(--premium-accent);box-shadow:0 0 0 1px var(--premium-accent),0 8px 24px color-mix(in srgb,var(--premium-accent) 18%,transparent);background:color-mix(in srgb,var(--premium-accent) 10%,transparent)}.premium-swatch{height:42px;border-radius:9px;border:1px solid #ffffff25;position:relative;overflow:hidden;background:var(--swatch)}.premium-swatch:after{content:"";position:absolute;inset:-45% 30% 10% -15%;border-radius:50%;background:var(--glow);filter:blur(16px);opacity:.8}.premium-theme b{font-size:11px;letter-spacing:.02em}.premium-theme small{font-size:9px;color:#aab2c4;line-height:1.3}.premium-theme .theme-check{position:absolute;right:11px;top:57px;font-size:11px;color:var(--premium-accent);opacity:0}.premium-theme[aria-pressed=true] .theme-check{opacity:1}
+html[data-zynx-skin="aurora"]{--premium-accent:#74e5d1;--premium-glow:rgba(58,220,191,.25)}html[data-zynx-skin="aurora"] body{background:#071b20}html[data-zynx-skin="aurora"] .dream-bg{background:radial-gradient(ellipse at 18% 20%,#1c9d8c55,transparent 55%),radial-gradient(ellipse at 85% 18%,#3479bd55,transparent 52%),linear-gradient(145deg,#06171d,#102d39 55%,#081923)}
+html[data-zynx-skin="obsidian"]{--premium-accent:#d6b77b;--premium-glow:rgba(214,183,123,.24)}html[data-zynx-skin="obsidian"] body{background:#100e0c}html[data-zynx-skin="obsidian"] .dream-bg{background:radial-gradient(ellipse at 22% 18%,#9d663344,transparent 55%),radial-gradient(ellipse at 80% 78%,#5f493b55,transparent 55%),linear-gradient(145deg,#0c0b0a,#211b17 55%,#100e0c)}
+html[data-zynx-skin="rose"]{--premium-accent:#f0a9c5;--premium-glow:rgba(240,169,197,.24)}html[data-zynx-skin="rose"] body{background:#1c101c}html[data-zynx-skin="rose"] .dream-bg{background:radial-gradient(ellipse at 18% 20%,#b45b9655,transparent 55%),radial-gradient(ellipse at 85% 75%,#7956b355,transparent 55%),linear-gradient(145deg,#160e1b,#2b1830 55%,#17101f)}
+html[data-zynx-skin="emerald"]{--premium-accent:#9bd49b;--premium-glow:rgba(155,212,155,.22)}html[data-zynx-skin="emerald"] body{background:#0c1914}html[data-zynx-skin="emerald"] .dream-bg{background:radial-gradient(ellipse at 18% 20%,#397e5555,transparent 55%),radial-gradient(ellipse at 85% 75%,#a1a35b33,transparent 55%),linear-gradient(145deg,#09140f,#1a2a20 55%,#0b1711)}
+html[data-zynx-skin="sapphire"]{--premium-accent:#91c9ff;--premium-glow:rgba(93,160,255,.25)}html[data-zynx-skin="sapphire"] body{background:#091426}html[data-zynx-skin="sapphire"] .dream-bg{background:radial-gradient(ellipse at 18% 20%,#3476c655,transparent 55%),radial-gradient(ellipse at 85% 75%,#5b62bd44,transparent 55%),linear-gradient(145deg,#071020,#152b4a 55%,#0a1427)}
+html[data-zynx-skin="copper"]{--premium-accent:#f0b17c;--premium-glow:rgba(240,177,124,.24)}html[data-zynx-skin="copper"] body{background:#1b120d}html[data-zynx-skin="copper"] .dream-bg{background:radial-gradient(ellipse at 18% 20%,#bd693f55,transparent 55%),radial-gradient(ellipse at 85% 75%,#9a793d44,transparent 55%),linear-gradient(145deg,#160e0a,#302016 55%,#17100d)}
+html[data-zynx-skin]:not([data-zynx-skin="default"]) .btn-send,html[data-zynx-skin]:not([data-zynx-skin="default"]) .primary{background:linear-gradient(135deg,color-mix(in srgb,var(--premium-accent) 85%,#fff),color-mix(in srgb,var(--premium-accent) 55%,#182033));color:#101522}
+html[data-zynx-skin]:not([data-zynx-skin="default"]) .bubble.user{background:color-mix(in srgb,var(--premium-accent) 19%,rgba(20,25,44,.7));border-color:color-mix(in srgb,var(--premium-accent) 38%,transparent)}html[data-zynx-skin]:not([data-zynx-skin="default"]) .typing span{background:var(--premium-accent)}html[data-zynx-skin]:not([data-zynx-skin="default"]) :focus-visible{outline-color:var(--premium-accent)}
+@media(prefers-reduced-motion:reduce){.premium-theme{transition:none}}
+</style>
+</head>
 <body>
 
 <canvas id="webgl-stage" aria-hidden="true"></canvas><canvas id="hud-telemetry" aria-hidden="true"></canvas>
@@ -1029,6 +1041,18 @@ body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
         </label>
         <p class="text-xs text-slate-500">Use the microphone button beside the message box to speak. Microphone permission is required.</p>
       </section>
+      <section class="space-y-3" aria-label="Premium atmosphere themes">
+        <div><p class="text-sm font-semibold text-slate-100">Personalization · Premium atmospheres</p><p class="text-xs text-slate-400 mt-1">Seven curated colour worlds. Your choice stays saved on this device; Dreamspace remains the default.</p></div>
+        <div class="premium-theme-grid" id="premiumThemes">
+          <button type="button" class="premium-theme" data-premium-theme="default" aria-pressed="true" style="--swatch:linear-gradient(120deg,#24174b,#7656dc 55%,#d8b4fe);--glow:#d8b4fe"><span class="premium-swatch"></span><b>Dreamspace</b><small>Signature violet · original Zynx</small><i class="theme-check">✓</i></button>
+          <button type="button" class="premium-theme" data-premium-theme="aurora" aria-pressed="false" style="--swatch:linear-gradient(120deg,#09252a,#167e79 55%,#8de8d1);--glow:#8de8d1"><span class="premium-swatch"></span><b>Aurora Glass</b><small>Arctic teal · atmospheric</small><i class="theme-check">✓</i></button>
+          <button type="button" class="premium-theme" data-premium-theme="obsidian" aria-pressed="false" style="--swatch:linear-gradient(120deg,#100e0c,#5c4030 55%,#d6b77b);--glow:#d6b77b"><span class="premium-swatch"></span><b>Obsidian Luxe</b><small>Charcoal · champagne gold</small><i class="theme-check">✓</i></button>
+          <button type="button" class="premium-theme" data-premium-theme="rose" aria-pressed="false" style="--swatch:linear-gradient(120deg,#211224,#8c4778 55%,#f0a9c5);--glow:#f0a9c5"><span class="premium-swatch"></span><b>Rose Quartz</b><small>Plum · soft rose · pearl</small><i class="theme-check">✓</i></button>
+          <button type="button" class="premium-theme" data-premium-theme="emerald" aria-pressed="false" style="--swatch:linear-gradient(120deg,#0b1912,#326c49 55%,#9bd49b);--glow:#9bd49b"><span class="premium-swatch"></span><b>Emerald Atelier</b><small>Deep forest · jade</small><i class="theme-check">✓</i></button>
+          <button type="button" class="premium-theme" data-premium-theme="sapphire" aria-pressed="false" style="--swatch:linear-gradient(120deg,#081326,#24528d 55%,#91c9ff);--glow:#91c9ff"><span class="premium-swatch"></span><b>Sapphire Night</b><small>Midnight blue · ice light</small><i class="theme-check">✓</i></button>
+          <button type="button" class="premium-theme" data-premium-theme="copper" aria-pressed="false" style="--swatch:linear-gradient(120deg,#1a100c,#8d4e2e 55%,#f0b17c);--glow:#f0b17c"><span class="premium-swatch"></span><b>Copper Dusk</b><small>Warm bronze · sunset ember</small><i class="theme-check">✓</i></button>
+        </div>
+      </section>
       <section class="bankai-settings space-y-3">
         <div><p class="text-sm font-semibold text-slate-100">Personalization · Bankai realms</p><p class="text-xs text-slate-400 mt-1">Optional themes. Dreamspace remains the default.</p></div>
         <div class="bankai-grid" id="bankaiThemes">
@@ -1192,6 +1216,25 @@ body[data-aether-core="flat"] #webgl-stage{visibility:hidden}
     $$('#bankaiThemes [data-bankai]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.bankai === theme)));
   }
   applyBankaiTheme(store.get(BANKAI_KEY) || 'default', false);
+  /* Premium colour atmospheres */
+  const PREMIUM_THEME_KEY = 'zynx_premium_atmosphere';
+  const PREMIUM_THEMES = new Set(['default','aurora','obsidian','rose','emerald','sapphire','copper']);
+  function applyPremiumTheme(name, persist = true) {
+    const theme = PREMIUM_THEMES.has(name) ? name : 'default';
+    if (theme === 'default') delete document.documentElement.dataset.zynxSkin;
+    else document.documentElement.dataset.zynxSkin = theme;
+    if (persist) store.set(PREMIUM_THEME_KEY, theme);
+    $('#premiumThemes [data-premium-theme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.premiumTheme === theme)));
+  }
+  applyPremiumTheme(store.get(PREMIUM_THEME_KEY) || 'default', false);
+  $('#premiumThemes')?.addEventListener('click', (event) => {
+    const choice = event.target.closest('[data-premium-theme]');
+    if (!choice) return;
+    applyPremiumTheme(choice.dataset.premiumTheme);
+    const label = choice.querySelector('b')?.textContent || 'Theme';
+    toast(choice.dataset.premiumTheme === 'default' ? 'Dreamspace restored' : label + ' applied');
+  });
+
 
 
   /* ---------- Utilities ---------- */
