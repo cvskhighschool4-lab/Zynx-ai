@@ -342,6 +342,37 @@ def index():
     return send_from_directory(root, name)
 
 
+@app.route("/<path:asset_path>")
+def serve_frontend_asset(asset_path):
+    """Serve frontend assets without exposing files outside known frontend roots."""
+    # Keep unknown API routes handled by the API 404 handler.
+    if asset_path == "api" or asset_path.startswith("api/"):
+        return jsonify({"error": "Not found."}), 404
+
+    roots = [
+        BASE_DIR,
+        os.getcwd(),
+        os.path.join(BASE_DIR, "static"),
+        os.path.join(BASE_DIR, "public"),
+        os.path.join(BASE_DIR, "frontend"),
+        os.path.join(BASE_DIR, "web"),
+    ]
+
+    checked = set()
+    for root in roots:
+        root = os.path.abspath(root)
+        if root in checked:
+            continue
+        checked.add(root)
+
+        candidate = os.path.join(root, asset_path)
+        if os.path.isfile(candidate):
+            # send_from_directory safely prevents path traversal.
+            return send_from_directory(root, asset_path)
+
+    return jsonify({"error": "File not found."}), 404
+
+
 @app.route("/api/health")
 def health():
     return jsonify({"status": "ok", "service": "Zynx AI", "ai_ready": client is not None})
