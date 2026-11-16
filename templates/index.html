@@ -811,9 +811,6 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
         <div><p class="text-sm font-semibold text-slate-100">Personalization</p><p class="text-xs text-slate-400 mt-1">Choose an optional Bankai-inspired visual world. Dreamspace stays your default.</p></div>
         <div class="grid grid-cols-2 gap-2" id="bankaiThemes">
           <button type="button" class="bankai-option active" data-bankai="dreamspace" style="--swatch:#a78bfa"><strong>Dreamspace</strong><small>Original purple nebula · default</small><span class="bankai-check">✓ DEFAULT</span></button>
-          <button type="button" class="bankai-option" data-bankai="senbonzakura" style="--swatch:#f0b8dc"><strong>Senbonzakura</strong><small>Endless rose-petal storm</small></button>
-          <button type="button" class="bankai-option" data-bankai="zanka" style="--swatch:#ff6a32"><strong>Zanka no Tachi</strong><small>Crimson sun · molten embers</small></button>
-          <button type="button" class="bankai-option" data-bankai="hyorinmaru" style="--swatch:#8ceaff"><strong>Daiguren Hyōrinmaru</strong><small>Glacial sky · frozen aurora</small></button>
         </div>
         <p class="text-xs text-slate-500" id="bankaiStatus" aria-live="polite">Selected: Dreamspace. Your choice is saved on this device.</p>
       </section>
@@ -1142,9 +1139,6 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
   }
   const BANKAI_THEMES = {
     dreamspace:{name:'Dreamspace'},
-    senbonzakura:{name:'Senbonzakura',accent:'#f0b8dc',secondary:'#9d5b9a',base:'#170d20',scene:'radial-gradient(ellipse at 50% 45%,rgba(255,190,225,.30),transparent 23%),radial-gradient(ellipse at 15% 80%,rgba(164,82,160,.32),transparent 38%),repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,220,240,.10) 0deg 1deg,transparent 1deg 8deg)'},
-    zanka:{name:'Zanka no Tachi',accent:'#ff7547',secondary:'#b51f25',base:'#1c0808',scene:'radial-gradient(ellipse at 50% 45%,rgba(255,91,38,.42),transparent 24%),radial-gradient(ellipse at 80% 85%,rgba(150,12,18,.35),transparent 38%),repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,100,35,.08) 39px 41px,transparent 42px 80px)'},
-    hyorinmaru:{name:'Daiguren Hyōrinmaru',accent:'#8ceaff',secondary:'#287dbb',base:'#061827',scene:'radial-gradient(ellipse at 50% 38%,rgba(130,230,255,.36),transparent 26%),radial-gradient(ellipse at 10% 90%,rgba(50,125,220,.35),transparent 40%),repeating-linear-gradient(135deg,transparent 0 44px,rgba(180,245,255,.09) 45px 47px,transparent 48px 90px)'},
   };
   function setBankaiTheme(key, persist=true) {
     const theme=BANKAI_THEMES[key] ? key : 'dreamspace';
