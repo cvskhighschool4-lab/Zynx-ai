@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b0f1a" />
+<meta name="theme-color" content="#090807" />
 <title>Zynx AI</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23e0e7ff'/%3E%3Cstop offset='.55' stop-color='%23a78bfa'/%3E%3Cstop offset='1' stop-color='%236366f1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%230b0f1a'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='url(%23g)' stroke-width='2' stroke-dasharray='118 33' transform='rotate(-70 32 32)'/%3E%3Cpath d='M21.5 23.5h21l-21 17h21' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 <script src="https://cdn.tailwindcss.com"></script>
@@ -540,13 +540,243 @@ body{background:#04111f}
 @media(max-width:768px){.ice-dragon-scene{width:78vw;height:48vh;right:-24vw;bottom:8vh;opacity:.2}}
 @media(prefers-reduced-motion:reduce){.ice-dragon,.ice-dragon .body3d,.ice-dragon .wing,.ice-glow,.ice-shard{animation:none!important}}
 
+
+/* ==========================================================
+   ZANKA NO TACHI — INFERNAL SUN / BLACK STEEL INTERFACE
+   Complete visual override. Core app logic and element IDs
+   remain untouched.
+   ========================================================== */
+:root {
+  --intensity: .82;
+  --glass: rgba(17, 14, 12, .76);
+  --glass-border: rgba(214, 157, 74, .20);
+  --accent: #e8a94c;
+  --text: #f8f0df;
+  color-scheme: dark;
+}
+html, body { background:#080706 !important; }
+body {
+  color:#f8f0df;
+  background:
+    radial-gradient(ellipse at 76% 42%, rgba(117,34,15,.19), transparent 42%),
+    linear-gradient(135deg,#080706 0%,#100d0a 48%,#090706 100%) !important;
+}
+:focus-visible { outline-color:#f0b653 !important; }
+.dream-bg {
+  background:
+    radial-gradient(ellipse 44% 68% at 78% 45%,rgba(173,54,18,.16),transparent 70%),
+    radial-gradient(ellipse 80% 55% at 50% 100%,rgba(105,42,16,.16),transparent 65%),
+    linear-gradient(118deg,#080706 0%,#15100c 52%,#090706 100%) !important;
+}
+.cloud { background:#a9471d !important; filter:blur(100px) !important; opacity:.13 !important; }
+.cloud-1 { background:#b34c1d !important; }
+.cloud-2 { background:#6e2518 !important; }
+.cloud-3 { background:#d18b36 !important; opacity:.08 !important; }
+.particles .particle {
+  background:radial-gradient(circle,#fff0bd 0%,#e7a13e 36%,rgba(190,62,22,0) 76%) !important;
+  box-shadow:0 0 12px rgba(235,145,47,.7) !important;
+}
+.zanka-scene {
+  position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden;
+  opacity:.72; perspective:1000px;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 35%,#000 100%);
+}
+.zanka-sun {
+  position:absolute; width:min(48vw,650px); aspect-ratio:1; right:5vw; top:50%;
+  transform:translateY(-50%); border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,#fff4c9 0 1.2%,#ffc66b 2.5%,#ed742c 10%,#9e3019 28%,rgba(99,26,15,.4) 53%,transparent 70%);
+  filter:drop-shadow(0 0 42px rgba(211,83,29,.25));
+  animation:sun-breathe 8s ease-in-out infinite alternate;
+}
+.zanka-sun:before,.zanka-sun:after {
+  content:"";position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(255,192,105,.17);
+}
+.zanka-sun:after { inset:-5%;border-color:rgba(208,99,42,.12); }
+.zanka-blade {
+  position:absolute; right:clamp(8%,15vw,240px); top:7%; height:88%; width:2px;
+  transform:rotate(27deg); transform-origin:center;
+  background:linear-gradient(180deg,transparent,rgba(255,226,166,.1) 12%,#f7d28a 43%,#fff1c9 50%,#bd622d 72%,transparent);
+  box-shadow:0 0 8px rgba(255,186,91,.5),0 0 28px rgba(198,67,26,.35);
+  opacity:.52;
+}
+.zanka-blade:before {
+  content:"";position:absolute;left:-5px;top:10%;width:12px;height:72%;
+  background:linear-gradient(90deg,transparent,rgba(255,201,119,.26),transparent);
+  filter:blur(5px);
+}
+.zanka-blade i {
+  position:absolute;top:47%;left:-13px;width:28px;height:2px;
+  background:#e7b66c;box-shadow:0 0 14px #e7a64b;
+}
+.zanka-horizon {
+  position:absolute;left:-10%;right:-10%;bottom:5%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(205,105,46,.08),rgba(255,190,100,.35),rgba(205,105,46,.08),transparent);
+  box-shadow:0 0 40px rgba(205,83,34,.22);
+}
+.ember {
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:#ffd58a;box-shadow:0 0 12px 3px rgba(236,116,39,.42);
+  animation:ember-rise 9s linear infinite;opacity:0;
+}
+.e1{left:65%;bottom:5%;animation-delay:-1s}.e2{left:82%;bottom:12%;animation-delay:-5s}
+.e3{left:73%;bottom:2%;animation-delay:-7s}.e4{left:92%;bottom:18%;animation-delay:-3s}
+.e5{left:58%;bottom:9%;animation-delay:-6s}.e6{left:88%;bottom:4%;animation-delay:-2s}
+@keyframes ember-rise {
+  0%{transform:translate3d(0,0,0) scale(.4);opacity:0}
+  12%{opacity:.85}85%{opacity:.5}
+  100%{transform:translate3d(-35px,-85vh,0) scale(1.25);opacity:0}
+}
+@keyframes sun-breathe { from{transform:translateY(-50%) scale(.97);opacity:.72} to{transform:translateY(-50%) scale(1.04);opacity:.96} }
+#startup {
+  background:
+    radial-gradient(ellipse at 50% 44%,rgba(154,48,20,.24),transparent 35%),
+    linear-gradient(145deg,#080706,#15100c 60%,#090706) !important;
+}
+#startup:before {
+  content:"";position:absolute;width:min(68vw,620px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(238,135,49,.16),rgba(147,37,17,.09) 38%,transparent 70%);
+  animation:sun-breathe 5s ease-in-out infinite alternate;
+}
+.s-logo,.boot-label,.s-sub { color:#f5d59b !important; }
+.s-logo {
+  background:linear-gradient(120deg,#fff0c4,#e7a84e 45%,#a83c20) !important;
+  -webkit-background-clip:text !important;background-clip:text !important;
+}
+.boot-bar i { background:linear-gradient(90deg,#9f351d,#f1bd67,#fff0c4) !important; }
+.boot-core .trail { stroke:#e6a64a !important; }
+.boot-core .base { stroke:rgba(224,163,78,.18) !important; }
+.bc-glow { background:radial-gradient(circle,rgba(221,105,37,.35),transparent 70%) !important; }
+#app { gap:14px !important; padding:14px !important; }
+.glass {
+  background:linear-gradient(145deg,rgba(25,20,15,.91),rgba(11,9,8,.88)) !important;
+  border:1px solid rgba(214,157,74,.18) !important;
+  backdrop-filter:blur(26px) saturate(115%) !important;
+  -webkit-backdrop-filter:blur(26px) saturate(115%) !important;
+  box-shadow:0 24px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,220,164,.055) !important;
+}
+.sidebar {
+  background:linear-gradient(180deg,rgba(24,19,14,.96),rgba(12,10,8,.96)) !important;
+  border-radius:18px !important;
+}
+.chat-shell {
+  position:relative;overflow:hidden;border-radius:20px !important;
+  background:linear-gradient(145deg,rgba(20,16,12,.86),rgba(9,8,7,.91)) !important;
+}
+.chat-shell:before {
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(110deg,transparent 0 48%,rgba(213,128,52,.035) 68%,transparent 100%);
+}
+.chat-shell > * { position:relative;z-index:1; }
+.chat-shell .fx { z-index:0 !important;opacity:.35; }
+header {
+  border-color:rgba(216,165,93,.16) !important;
+  background:linear-gradient(90deg,rgba(255,255,255,.018),rgba(196,111,47,.035),rgba(255,255,255,.01));
+}
+#chatTitle { color:#f4e7d1 !important;letter-spacing:.015em; }
+#userBadge {
+  color:#e7bd7e !important;background:rgba(196,119,52,.08) !important;
+  border-color:rgba(221,164,91,.2) !important;
+}
+.mark,.avatar {
+  --accent:#e8a94c;
+  filter:drop-shadow(0 0 15px rgba(214,119,48,.25));
+}
+.avatar .aura { background:radial-gradient(circle,rgba(225,117,44,.35),transparent 70%) !important; }
+.avatar .ring { border-color:rgba(225,166,87,.45) !important; }
+.avatar .bars i { background:#e8a94c !important; }
+.messages { scrollbar-color:rgba(197,126,60,.38) transparent; }
+.empty h2 {
+  color:#f6e8d1 !important;letter-spacing:-.045em;
+  text-shadow:0 5px 32px rgba(210,119,51,.18);
+}
+.empty .greet-bubble { color:#c6b8a5 !important; }
+.bubble {
+  border:1px solid rgba(219,167,101,.13) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.16) !important;
+}
+.bubble.bot {
+  background:linear-gradient(145deg,rgba(40,30,21,.88),rgba(22,17,13,.92)) !important;
+  color:#f1e6d7 !important;border-radius:5px 17px 17px 17px !important;
+}
+.bubble.user {
+  background:linear-gradient(135deg,#9f4825,#71321e) !important;
+  color:#fff4e5 !important;border-color:rgba(239,173,97,.28) !important;
+  border-radius:17px 5px 17px 17px !important;
+}
+.bubble.err { background:rgba(111,34,23,.35) !important;border-color:rgba(215,93,56,.35) !important; }
+.chip {
+  color:#e9c99b !important;background:rgba(194,119,55,.075) !important;
+  border:1px solid rgba(221,165,94,.22) !important;border-radius:999px !important;
+  transition:all .25s ease !important;
+}
+.chip:hover {
+  color:#fff1d0 !important;background:rgba(177,82,35,.22) !important;
+  border-color:rgba(243,184,104,.55) !important;
+  box-shadow:0 0 24px rgba(203,102,43,.13) !important;transform:translateY(-2px);
+}
+.input-area { background:linear-gradient(180deg,transparent,rgba(8,7,6,.45)); }
+.input-glass {
+  background:rgba(20,16,12,.96) !important;border:1px solid rgba(222,165,91,.24) !important;
+  border-radius:17px !important;box-shadow:0 15px 45px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,224,177,.05) !important;
+}
+.input-glass:focus-within {
+  border-color:rgba(238,174,89,.65) !important;
+  box-shadow:0 0 0 3px rgba(216,139,62,.09),0 15px 45px rgba(0,0,0,.4) !important;
+}
+.input-glass textarea { color:#fff2df !important; }
+.input-glass textarea::placeholder { color:#877968 !important; }
+.btn-icon {
+  color:#b9a58b !important;border-radius:11px !important;
+  transition:all .2s ease !important;
+}
+.btn-icon:hover,.btn-icon.active {
+  color:#ffd28c !important;background:rgba(198,115,48,.14) !important;
+  box-shadow:inset 0 0 0 1px rgba(229,166,91,.16);
+}
+.btn-send {
+  background:linear-gradient(135deg,#f2c879,#c66b32 58%,#8d351e) !important;
+  color:#1a1009 !important;border:1px solid rgba(255,221,161,.45) !important;
+  box-shadow:0 4px 22px rgba(192,91,38,.26) !important;
+}
+.btn-send:hover:not(:disabled) { filter:brightness(1.12);transform:translateY(-1px); }
+.chat-item {
+  color:#bcae9a !important;border-radius:10px !important;
+}
+.chat-item:hover,.chat-item.active {
+  color:#f3d6a8 !important;background:rgba(190,112,51,.12) !important;
+}
+.chat-item.active { box-shadow:inset 2px 0 #d99a4d !important; }
+.settings,.modal {
+  background:linear-gradient(145deg,#211910,#100d0a) !important;
+  border:1px solid rgba(221,164,91,.23) !important;color:#f5e8d6 !important;
+}
+.modal-bg { background:rgba(0,0,0,.76) !important;backdrop-filter:blur(12px); }
+.field,.opt {
+  background:rgba(255,255,255,.035) !important;border-color:rgba(221,164,91,.2) !important;color:#f4e6d2 !important;
+}
+.field:focus,.opt:hover,.opt.on { border-color:#d99a4d !important; }
+.overlay { background:rgba(0,0,0,.72) !important; }
+.sweep i { background:linear-gradient(90deg,transparent,rgba(233,158,73,.22),transparent) !important; }
+@media(max-width:768px) {
+  #app { padding:0 !important;gap:0 !important; }
+  .chat-shell { border-radius:0 !important; }
+  .sidebar { border-radius:0 18px 18px 0 !important; }
+  .zanka-scene { opacity:.43;mask-image:linear-gradient(90deg,transparent 0%,#000 65%); }
+  .zanka-sun { width:88vw;right:-35vw;top:42%; }
+  .zanka-blade { right:14%;opacity:.35; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .zanka-sun,.ember { animation:none !important; }
+}
+
 </style>
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="zg" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#e0e7ff"/><stop offset=".55" stop-color="#a78bfa"/><stop offset="1" stop-color="#6366f1"/>
+        <stop offset="0" stop-color="#fff1c2"/><stop offset=".55" stop-color="#e6a83d"/><stop offset="1" stop-color="#9d351e"/>
       </linearGradient>
       <symbol id="zlogo" viewBox="0 0 64 64">
         <circle cx="32" cy="32" r="27" fill="none" stroke="url(#zg)" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="132 38" transform="rotate(-70 32 32)"/>
@@ -560,7 +790,7 @@ body{background:#04111f}
   <div id="startup" role="status" aria-live="polite">
     <div class="boot-glow"></div>
     <div class="boot-readout">
-      <span class="boot-label" id="bootLabel">INITIALIZING NEURAL CORE</span>
+      <span class="boot-label" id="bootLabel">IGNITING THE ZANKA CORE</span>
       <span class="boot-bar"><i></i></span>
     </div>
     <div class="boot-skip">Tap to skip</div>
@@ -581,42 +811,13 @@ body{background:#04111f}
   <div class="cloud cloud-1"></div><div class="cloud cloud-2"></div><div class="cloud cloud-3"></div>
   <div class="particles" id="particles"></div>
 
-  <!-- Original ice-dragon visual inspired by Daiguren Hyorinmaru -->
-  <div class="ice-dragon-scene" aria-hidden="true">
-    <i class="ice-shard s1"></i><i class="ice-shard s2"></i><i class="ice-shard s3"></i>
-    <svg class="ice-dragon" viewBox="0 0 760 700">
-      <defs>
-        <linearGradient id="iceScale" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0fdff"/><stop offset=".38" stop-color="#8be7ff"/><stop offset=".72" stop-color="#299bd8"/><stop offset="1" stop-color="#143d83"/></linearGradient>
-        <linearGradient id="iceWing" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8fcff" stop-opacity=".94"/><stop offset=".5" stop-color="#54c9f4" stop-opacity=".58"/><stop offset="1" stop-color="#1d4e9b" stop-opacity=".16"/></linearGradient>
-        <radialGradient id="iceCore"><stop stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient>
-        <filter id="iceBlur"><feGaussianBlur stdDeviation="9"/></filter>
-      </defs>
-      <ellipse class="ice-glow" cx="390" cy="355" rx="210" ry="190" fill="url(#iceCore)" filter="url(#iceBlur)"/>
-      <g class="body3d">
-        <g class="wing" fill="url(#iceWing)" stroke="#c9f7ff" stroke-width="3" stroke-linejoin="round">
-          <path d="M392 326C315 198 220 103 88 68C137 154 113 218 52 270C174 254 245 306 299 378Z"/>
-          <path d="M390 330L90 70L210 285L52 270L299 378" fill="none" opacity=".75"/>
-          <path d="M391 331C454 208 573 126 701 117C632 186 650 251 719 292C589 266 505 314 445 384Z"/>
-          <path d="M391 331L701 117L586 301L719 292L445 384" fill="none" opacity=".75"/>
-        </g>
-        <path d="M315 383C244 429 226 500 287 523C340 542 397 495 437 459C481 419 523 426 550 463C578 502 546 551 502 552" fill="none" stroke="url(#iceScale)" stroke-width="42" stroke-linecap="round"/>
-        <path d="M315 383C244 429 226 500 287 523C340 542 397 495 437 459C481 419 523 426 550 463C578 502 546 551 502 552" fill="none" stroke="#e4fbff" stroke-opacity=".65" stroke-width="5" stroke-linecap="round"/>
-        <path d="M503 550Q546 586 592 572L558 608L565 577L523 596Z" fill="url(#iceScale)" stroke="#c8f5ff" stroke-width="3"/>
-        <path d="M316 386Q264 329 284 276Q300 232 355 235Q414 239 439 291Q456 330 423 371L380 408Z" fill="url(#iceScale)" stroke="#d9faff" stroke-width="4"/>
-        <path d="M300 273Q251 222 230 174Q289 194 325 237M400 250Q433 195 481 170Q466 229 438 275" fill="none" stroke="#e6fcff" stroke-width="12" stroke-linecap="round"/>
-        <path d="M339 300Q368 280 401 301" fill="none" stroke="#164b83" stroke-width="7" stroke-linecap="round"/>
-        <path d="M423 338L480 351L433 367Z" fill="#dffaff" stroke="#78ddff" stroke-width="3"/>
-        <path d="M350 404L330 449L372 430L392 463L409 413" fill="#e9fcff" stroke="#9deaff" stroke-width="3"/>
-        <path d="M292 442L260 465L296 470M444 440L476 463L445 468" fill="none" stroke="#dffaff" stroke-width="9" stroke-linecap="round"/>
-        <g fill="#dffaff"><path d="M296 348l-23 35 33-9Z"/><path d="M321 365l-15 35 29-15Z"/><path d="M405 378l20 34-31-14Z"/><path d="M426 360l27 27-33-8Z"/></g>
-        <circle cx="397" cy="311" r="7" fill="#fff" filter="url(#iceBlur)"/><circle cx="397" cy="311" r="3.5" fill="#fff"/>
-        <g class="wing" fill="url(#iceWing)" stroke="#e2faff" stroke-width="2.5" stroke-linejoin="round">
-          <path d="M358 335C274 270 195 275 151 324C223 314 253 363 286 419C309 382 332 358 358 335Z"/>
-          <path d="M419 334C505 269 581 276 624 327C557 316 520 368 489 419C466 381 444 357 419 334Z"/>
-        </g>
-      </g>
-      <g fill="#d9faff" opacity=".9"><path d="M143 438l-15 43 30-20Z"/><path d="M620 420l20 42-34-17Z"/><path d="M206 560l-8 33 24-20Z"/><path d="M657 535l-24 34 35-13Z"/></g>
-    </svg>
+  <!-- Zanka no Tachi-inspired infernal sun and blade atmosphere -->
+  <div class="zanka-scene" aria-hidden="true">
+    <div class="zanka-sun"></div>
+    <div class="zanka-blade"><i></i></div>
+    <div class="zanka-horizon"></div>
+    <span class="ember e1"></span><span class="ember e2"></span><span class="ember e3"></span>
+    <span class="ember e4"></span><span class="ember e5"></span><span class="ember e6"></span>
   </div>
   <div class="overlay" id="overlay"></div>
 
