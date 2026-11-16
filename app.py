@@ -581,10 +581,10 @@ def build_prompt(settings, history, wants_founder):
         "Use clever banter, dry wit and gentle sarcasm when appropriate, but never insult the user or derail the answer."
     )
     prefs = (
-        "Current user preferences:\\n"
-        f"- Humor: {humor_desc} ({humor:.2f} on a 0-1 scale)\\n"
-        f"- Humor guidance: {humor_guidance}\\n"
-        f"- {length_rule}\\n"
+        "Current user preferences:\n"
+        f"- Humor: {humor_desc} ({humor:.2f} on a 0-1 scale)\n"
+        f"- Humor guidance: {humor_guidance}\n"
+        f"- {length_rule}\n"
         f"- {STYLE_RULES.get(settings['response_style'], STYLE_RULES['warm'])}"
     )
     msgs = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "system", "content": prefs}]
