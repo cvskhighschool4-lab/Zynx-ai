@@ -808,6 +808,14 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
     </div>
     <div class="flex-1 overflow-y-auto p-5 space-y-6">
       <section class="space-y-3">
+        <div><p class="text-sm font-semibold text-slate-100">Voice</p><p class="text-xs text-slate-400 mt-1">Speak to Zynx and hear replies aloud.</p></div>
+        <label class="flex items-center justify-between gap-3 text-sm text-slate-300" for="voiceReplies">
+          <span>Speak assistant replies</span>
+          <input id="voiceReplies" type="checkbox" checked style="width:18px;height:18px;accent-color:#a78bfa" />
+        </label>
+        <p class="text-xs text-slate-500">Use the microphone button beside the message box to speak. Microphone permission is required.</p>
+      </section>
+      <section class="space-y-3">
         <div><p class="text-sm font-semibold text-slate-100">Personalization</p><p class="text-xs text-slate-400 mt-1">Choose an optional Bankai-inspired visual world. Dreamspace stays your default.</p></div>
         <div class="grid grid-cols-2 gap-2" id="bankaiThemes">
           <button type="button" class="bankai-option active" data-bankai="dreamspace" style="--swatch:#a78bfa"><strong>Dreamspace</strong><small>Original purple nebula · default</small><span class="bankai-check">✓ DEFAULT</span></button>
@@ -943,7 +951,8 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
 
   const S = {
     token: store.get('zynx_token'), user: null, chats: [], chatId: null, messages: [],
-    sending: false, listening: false, authMode: 'signin', busyAuth: false
+    sending: false, listening: false, authMode: 'signin', busyAuth: false,
+    voiceReplies: store.get('zynx_voice_replies') !== 'false'
   };
   const el = {
     startup: $('#startup'), app: $('#app'), sidebar: $('#sidebar'), overlay: $('#overlay'),
@@ -1119,6 +1128,7 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
       el.title.textContent = d.chat_title || 'Chat';
       loadChats();
       await streamRow(d.assistant_message.content);
+      if (S.voiceReplies) speakReply(d.assistant_message.content);
     } catch (e) {
       typing.remove(); userRow.remove();
       if (e.status === 404) S.chatId = null;
@@ -1277,29 +1287,53 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
 
   /* ---------- Voice ---------- */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let recognition = null, voiceBase = '';
+  let recognition = null, voiceBase = '', voiceFinalText = '';
+  function speakReply(text) {
+    if (!S.voiceReplies || !('speechSynthesis' in window) || !text) return;
+    try {
+      window.speechSynthesis.cancel();
+      const clean = String(text).replace(/https?:\/\/\S+/g, 'link').replace(/[*_>#~|]/g, ' ').replace(/\s+/g, ' ').trim();
+      if (!clean) return;
+      const utterance = new SpeechSynthesisUtterance(clean.slice(0, 5000));
+      utterance.lang = navigator.language || 'en-IN';
+      utterance.rate = 1; utterance.pitch = 1;
+      window.speechSynthesis.speak(utterance);
+    } catch { toast('Voice reply is unavailable in this browser.'); }
+  }
   if (SR) {
     recognition = new SR();
     recognition.continuous = false; recognition.interimResults = true;
-    recognition.lang = navigator.language || 'en-US';
+    recognition.lang = navigator.language || 'en-IN';
     recognition.onresult = (ev) => {
-      let t = '';
-      for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript;
-      el.input.value = (voiceBase ? voiceBase + ' ' : '') + t.trim(); resize();
+      let finalText = '', interimText = '';
+      for (let i = 0; i < ev.results.length; i++) {
+        const result = ev.results[i];
+        if (result.isFinal) finalText += result[0].transcript + ' ';
+        else interimText += result[0].transcript;
+      }
+      if (finalText.trim()) voiceFinalText = (voiceFinalText + ' ' + finalText).trim();
+      el.input.value = [voiceBase, voiceFinalText, interimText].filter(Boolean).join(' ').trim();
+      resize();
     };
-    const stop = () => { S.listening = false; el.voice.classList.remove('active'); el.voice.setAttribute('aria-pressed', 'false'); if (!busyState()) setBotState(document.activeElement === el.input ? 'listening' : 'idle'); };
+    const stop = () => {
+      S.listening = false; el.voice.classList.remove('active'); el.voice.setAttribute('aria-pressed', 'false');
+      if (!busyState()) setBotState(document.activeElement === el.input ? 'listening' : 'idle');
+      const spoken = voiceFinalText.trim(); voiceFinalText = '';
+      if (spoken) { el.input.value = [voiceBase, spoken].filter(Boolean).join(' ').trim(); resize(); setTimeout(() => sendMessage(), 120); }
+    };
     recognition.onend = stop;
     recognition.onerror = (ev) => {
-      stop();
+      voiceFinalText = ''; stop();
       if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') toast('Microphone access is blocked. Allow it in your browser settings.');
       else if (ev.error === 'no-speech') toast("I didn't catch anything. Try again?");
       else if (ev.error !== 'aborted') toast('Voice input hit a snag. Please try again.');
     };
   }
   function toggleVoice() {
-    if (!recognition) { toast('Voice input is not supported in this browser.'); return; }
+    if (!recognition) { toast('Voice input is not supported here. Try Chrome or Edge.'); return; }
     if (S.listening) { recognition.stop(); return; }
-    voiceBase = el.input.value.trim();
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    voiceBase = el.input.value.trim(); voiceFinalText = '';
     try {
       recognition.start(); S.listening = true; if (!busyState()) setBotState('listening');
       el.voice.classList.add('active'); el.voice.setAttribute('aria-pressed', 'true');
@@ -1327,6 +1361,14 @@ textarea::placeholder,input::placeholder{color:#b8accf!important}
   $$('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
 
   $('#settingsBtn').addEventListener('click', () => { el.settings.classList.add('open'); closeSidebarMobile(); });
+  const voiceRepliesToggle = $('#voiceReplies');
+  voiceRepliesToggle.checked = S.voiceReplies;
+  voiceRepliesToggle.addEventListener('change', () => {
+    S.voiceReplies = voiceRepliesToggle.checked;
+    store.set('zynx_voice_replies', String(S.voiceReplies));
+    if (!S.voiceReplies && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+    toast(S.voiceReplies ? 'Voice replies enabled.' : 'Voice replies disabled.');
+  });
   $('#bankaiThemes').addEventListener('click', (e) => { const b=e.target.closest('[data-bankai]'); if(b) setBankaiTheme(b.dataset.bankai); });
   setBankaiTheme(store.get('zynx_bankai_theme') || 'dreamspace', false);
   $('#closeSettings').addEventListener('click', closeSettings);
