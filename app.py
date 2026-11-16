@@ -52,7 +52,8 @@ def _resolve_db_path():
 
 DATABASE = _resolve_db_path()
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
+GROQ_FALLBACK_MODEL = "openai/gpt-oss-120b"
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
 MAX_MESSAGE_CHARS = 4000
 HISTORY_LIMIT = 30
@@ -598,30 +599,65 @@ def send_message(chat_id):
     _, max_tokens = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     temperature = round(min(1.0, 0.55 + float(settings["humor_level"]) * 0.35), 2)
 
-    try:
-        completion = client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content))),
+    prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)))
+
+    def request_completion(model_id):
+        return client.chat.completions.create(
+            model=model_id,
+            messages=prompt_messages,
             temperature=temperature,
-            max_tokens=max_tokens,
+            max_completion_tokens=max_tokens,
             top_p=0.9,
         )
+
+    try:
+        try:
+            completion = request_completion(GROQ_MODEL)
+        except APIStatusError as first_error:
+            # Render may still have an old GROQ_MODEL value configured. If that
+            # model has been retired or is unavailable, retry once on the current
+            # supported production fallback instead of failing every chat.
+            error_body = getattr(first_error, "body", None)
+            error_text = str(error_body if error_body is not None else first_error).lower()
+            status_code = getattr(first_error, "status_code", None)
+            model_error = (
+                status_code in (400, 404)
+                and any(term in error_text for term in (
+                    "model", "decommission", "retired", "not found", "does not exist",
+                    "unsupported_model", "model_decommissioned"
+                ))
+            )
+            if not model_error or GROQ_MODEL == GROQ_FALLBACK_MODEL:
+                raise
+            log.warning(
+                "Configured Groq model %s is unavailable (HTTP %s); retrying with %s",
+                GROQ_MODEL, status_code, GROQ_FALLBACK_MODEL
+            )
+            completion = request_completion(GROQ_FALLBACK_MODEL)
+
         reply = (completion.choices[0].message.content or "").strip()
         if not reply:
             raise ValueError("empty completion")
     except RateLimitError:
         return too_many(20, "I'm getting a lot of requests right now. Give me a moment and try again?")
     except AuthenticationError:
-        log.error("Groq authentication failed - check GROQ_API_KEY")
-        return jsonify({"error": "There's an authentication hiccup with my AI provider.", "code": "auth"}), 503
+        log.exception("Groq authentication failed - check the GROQ_API_KEY environment variable")
+        return jsonify({"error": "Zynx's AI key was rejected. The server owner needs to update GROQ_API_KEY in Render.", "code": "auth"}), 503
     except (APITimeoutError, APIConnectionError):
-        return jsonify({"error": "I lost my connection for a second. Please try again.", "code": "network"}), 503
+        log.exception("Groq connection or timeout error")
+        return jsonify({"error": "Zynx couldn't connect to its AI provider. Please try again shortly.", "code": "network"}), 503
     except APIStatusError as e:
-        log.error("Groq API status error: %s", e)
-        return jsonify({"error": "My AI provider is having a moment. Please try again shortly.", "code": "provider"}), 502
+        status_code = getattr(e, "status_code", "unknown")
+        error_body = getattr(e, "body", None)
+        log.error("Groq API status error (HTTP %s): %s", status_code, error_body or str(e))
+        return jsonify({
+            "error": "The AI provider rejected the request. Check the Render logs for the exact provider error and confirm the GROQ_MODEL setting.",
+            "code": "provider",
+            "provider_status": status_code,
+        }), 502
     except Exception:
         log.exception("Unexpected error while generating a reply")
-        return jsonify({"error": "Something went sideways on my end. Mind trying again?", "code": "unknown"}), 500
+        return jsonify({"error": "Something went wrong while generating a reply. Check the Render logs for details.", "code": "unknown"}), 500
 
     ts_user = now_iso()
     user_id, assistant_id = str(uuid.uuid4()), str(uuid.uuid4())
