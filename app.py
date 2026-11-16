@@ -52,8 +52,18 @@ def _resolve_db_path():
 
 DATABASE = _resolve_db_path()
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
-GROQ_FALLBACK_MODEL = "openai/gpt-oss-120b"
+
+# Keep Zynx on Groq's documented Free-plan chat models only.
+# The environment variable is accepted only when it matches this allowlist.
+FREE_GROQ_MODELS = ("openai/gpt-oss-120b", "openai/gpt-oss-20b")
+_requested_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b").strip()
+GROQ_MODEL = _requested_model if _requested_model in FREE_GROQ_MODELS else "openai/gpt-oss-120b"
+GROQ_FALLBACK_MODEL = (
+    "openai/gpt-oss-20b" if GROQ_MODEL == "openai/gpt-oss-120b"
+    else "openai/gpt-oss-120b"
+)
+if _requested_model != GROQ_MODEL:
+    log.warning("Ignoring GROQ_MODEL=%r because it is not on the configured free-model allowlist.", _requested_model)
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
 MAX_MESSAGE_CHARS = 4000
 HISTORY_LIMIT = 30
@@ -613,10 +623,17 @@ def send_message(chat_id):
     try:
         try:
             completion = request_completion(GROQ_MODEL)
+        except RateLimitError:
+            # The Free plan has separate per-model limits. Try the other
+            # allowlisted free model once before returning a rate-limit response.
+            log.warning(
+                "Groq free model %s hit a rate limit; retrying once with %s",
+                GROQ_MODEL, GROQ_FALLBACK_MODEL
+            )
+            completion = request_completion(GROQ_FALLBACK_MODEL)
         except APIStatusError as first_error:
-            # Render may still have an old GROQ_MODEL value configured. If that
-            # model has been retired or is unavailable, retry once on the current
-            # supported production fallback instead of failing every chat.
+            # If the selected free model is unavailable or retired, retry once
+            # with the other model from the free-only allowlist.
             error_body = getattr(first_error, "body", None)
             error_text = str(error_body if error_body is not None else first_error).lower()
             status_code = getattr(first_error, "status_code", None)
@@ -627,10 +644,10 @@ def send_message(chat_id):
                     "unsupported_model", "model_decommissioned"
                 ))
             )
-            if not model_error or GROQ_MODEL == GROQ_FALLBACK_MODEL:
+            if not model_error:
                 raise
             log.warning(
-                "Configured Groq model %s is unavailable (HTTP %s); retrying with %s",
+                "Groq free model %s is unavailable (HTTP %s); retrying with %s",
                 GROQ_MODEL, status_code, GROQ_FALLBACK_MODEL
             )
             completion = request_completion(GROQ_FALLBACK_MODEL)
