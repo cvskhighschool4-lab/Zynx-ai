@@ -2004,6 +2004,12 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
 .zw-rail-controls button{min-height:40px;border-radius:9px!important;transition:background .18s ease,color .18s ease}
 .zw-rail-controls button:hover{transform:none!important}
 </style>
+<style id="zynx-remove-stray-ui">
+/* Remove stray escaped newline text and the boxed account badge in the top bar. */
+.dream-topbar #userBadge,.dream-topbar .dream-user-badge{display:none!important}
+.dream-topbar .dream-top-actions{gap:8px!important}
+.zynx-composer-note,.zynx-mode-rail{display:none!important}
+</style>
 </head>
 <body>
 
@@ -2106,7 +2112,6 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
           <h1 id="chatTitle" class="dream-current-title">New chat</h1>
         </div>
         <div class="dream-top-actions">
-          <span id="userBadge" class="dream-user-badge">Guest</span>
           <button type="button" class="dream-top-action" id="zyriconConfig"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/></svg> Configuration</button>
           <button type="button" class="dream-top-action" id="zynx-install-app" hidden aria-label="Install Zynx AI app"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg> Install app</button>
           <button type="button" class="dream-top-action dream-export" id="zyriconExport"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4"/><path d="M5 17v3h14v-3"/></svg> Export</button>
@@ -2141,16 +2146,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         <div class="thread" id="thread"></div>
       </div>
 
-      <div class="input-area cascade" style="--i:10">\n
-        <div class="zynx-composer-note">Choose a thinking style · optional</div>
-        <div class="zynx-mode-rail" id="zynx-mode-rail" role="group" aria-label="Prompt styles">
-          <button class="zynx-mode" type="button" data-zynx-mode="Explain">✦ Explain</button>
-          <button class="zynx-mode" type="button" data-zynx-mode="Research">⌕ Research</button>
-          <button class="zynx-mode" type="button" data-zynx-mode="Code">⌘ Code</button>
-          <button class="zynx-mode" type="button" data-zynx-mode="Study">▤ Study</button>
-          <button class="zynx-mode" type="button" data-zynx-mode="Creative">✧ Creative</button>
-        </div>
-
+      <div class="input-area cascade" style="--i:10">
         <div class="input-glass glass">
           <button class="btn-icon" id="voiceBtn" title="Voice input" aria-label="Voice input" aria-pressed="false">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
