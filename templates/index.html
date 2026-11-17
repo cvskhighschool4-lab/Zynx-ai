@@ -2426,7 +2426,7 @@ html,body{font-size:14px!important}
     const cv = $('#chatFx'); if (!cv) return;
     const ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let w = 0, h = 0, raf = 0, lastPaint = 0; const ps = [];
+    let w = 0, h = 0, raf = 0, lastPaint = 0, comet = null, nextComet = 2200; const ps = [];
     const rnd = (a, b) => a + Math.random() * (b - a);
     const make = () => ({ x: rnd(0, w), y: rnd(0, h), r: rnd(.6, 2.1), vx: rnd(-.1, .1), vy: rnd(-.3, -.06), ph: rnd(0, 6.28), sp: rnd(.4, 1.2), hue: rnd(245, 285) });
     function resize() {
@@ -2450,6 +2450,39 @@ html,body{font-size:14px!important}
         const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
         g.addColorStop(0, `rgba(255,255,255,${Math.min(1, 1.1 * a)})`); g.addColorStop(.35, `rgba(255,255,255,${.35 * a})`); g.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, 6.283); ctx.fill();
+      }
+      // Distant ringed worlds stay near the edges so chat remains easy to read.
+      const drawPlanet = (x, y, r, tint, phase) => {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(phase);
+        ctx.strokeStyle = 'rgba(171,190,255,.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.ellipse(0, 0, r * 1.72, r * .48, 0, 0, Math.PI * 2); ctx.stroke();
+        const sphere = ctx.createRadialGradient(-r*.38, -r*.42, r*.08, 0, 0, r*1.12);
+        sphere.addColorStop(0, 'rgba(211,224,255,.25)');
+        sphere.addColorStop(.35, tint);
+        sphere.addColorStop(1, 'rgba(7,8,24,.02)');
+        ctx.fillStyle = sphere; ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle = 'rgba(220,226,255,.22)'; ctx.lineWidth = Math.max(1,r*.025);
+        ctx.beginPath(); ctx.ellipse(0,0,r*1.72,r*.48,0,Math.PI*1.08,Math.PI*1.92); ctx.stroke();
+        ctx.restore();
+      };
+      const planetSize = Math.min(1, w / 820);
+      drawPlanet(w*.93, h*.20, 44*planetSize, 'rgba(91,112,205,.17)', -.28);
+      drawPlanet(w*.075, h*.79, 27*planetSize, 'rgba(139,83,194,.17)', .42);
+      // Occasional fine shooting star with a soft blue-violet tail.
+      if (!reduce) {
+        if (!comet && t > nextComet) comet = {x:rnd(w*.58,w*1.04),y:rnd(0,h*.34),vx:-rnd(5.5,8),vy:rnd(2.2,3.8),life:1};
+        if (comet) {
+          const tail=ctx.createLinearGradient(comet.x,comet.y,comet.x-comet.vx*12,comet.y-comet.vy*12);
+          tail.addColorStop(0,'rgba(245,247,255,.92)');
+          tail.addColorStop(.35,'rgba(115,164,255,.45)');
+          tail.addColorStop(1,'rgba(155,120,237,0)');
+          ctx.strokeStyle=tail;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(comet.x,comet.y);ctx.lineTo(comet.x-comet.vx*12,comet.y-comet.vy*12);ctx.stroke();
+          comet.x+=comet.vx;comet.y+=comet.vy;comet.life-=.018;
+          if(comet.life<=0){comet=null;nextComet=t+rnd(5000,9500);}
+        }
       }
       ctx.lineWidth = .6;
       for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < Math.min(ps.length, i + 9); j++) {
