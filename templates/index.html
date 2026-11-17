@@ -1279,6 +1279,84 @@ body{background:var(--zy-bg)!important;color:#f8f1fa}
 @media(max-height:720px){.zyricon-empty{padding-top:12px!important;padding-bottom:8px!important}.zyricon-orb-wrap{transform:scale(.78);margin-bottom:3px}.zyricon-empty>p{margin:5px 0 10px!important}.zyricon-quick-prompts{margin-bottom:12px}.zyricon-feature-card{min-height:118px}}
 @media(prefers-reduced-motion:reduce){.zyricon-orb,.zyricon-orb:before,.zyricon-orb:after{animation:none!important}.zyricon-feature-card,.zyricon-quick-prompts .chip,.zyricon-top-action{transition:none!important}}
 </style>
+
+<style id="zynx-dream-cloud-fix">
+:root{
+  --zy-bg:#090711;--zy-panel:#151020;--zy-panel2:#1c1428;
+  --zy-purple:#76539a;--zy-violet:#4d397e;--zy-rose:#a66f9e;
+  --zy-pink:#cf91b6;--zy-pearl:#d8c0dc;--zy-blue:#5556a8;
+  --zy-line:rgba(216,192,220,.17);--zy-muted:#b5a6bd;
+  --glass:rgba(27,19,39,.48);--glass-border:rgba(216,192,220,.16);
+  --accent:#c99bd7;--accent-soft:#dfc2e8;
+}
+html,body{background:#090711!important;color:#f8f0fa}
+.dream-bg{
+  background:
+    radial-gradient(ellipse 72% 48% at 12% 16%,rgba(166,111,158,.32),transparent 70%),
+    radial-gradient(ellipse 65% 52% at 88% 24%,rgba(85,86,168,.30),transparent 72%),
+    radial-gradient(ellipse 75% 48% at 48% 100%,rgba(118,83,154,.30),transparent 70%),
+    linear-gradient(145deg,#090711 0%,#171023 48%,#0b0915 100%)!important;
+}
+.dream-bg:after{display:none!important}
+.cloud{filter:blur(105px)!important;opacity:.55!important;mix-blend-mode:screen}
+.cloud-1{background:rgba(177,124,183,.32)!important;width:560px;height:390px}
+.cloud-2{background:rgba(103,105,190,.29)!important;width:540px;height:360px}
+.cloud-3{background:rgba(202,151,198,.22)!important;width:470px;height:320px}
+#startup{
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 45%,rgba(118,83,154,.24),transparent 72%),
+    radial-gradient(ellipse at 18% 20%,rgba(166,111,158,.22),transparent 60%),
+    linear-gradient(145deg,#090711,#171023 55%,#0b0915)!important;
+}
+#startup:before,#startup:after{
+  content:"";position:absolute;inset:-15%;pointer-events:none;filter:blur(85px);
+  background:radial-gradient(ellipse at 22% 40%,rgba(177,124,183,.26),transparent 38%),
+             radial-gradient(ellipse at 78% 62%,rgba(103,105,190,.25),transparent 42%);
+  animation:startup-cloud-drift 16s ease-in-out infinite alternate;
+}
+#startup:after{opacity:.6;transform:scale(1.15);animation-duration:22s;animation-direction:alternate-reverse}
+@keyframes startup-cloud-drift{to{transform:translate3d(3%,-2%,0) scale(1.08)}}
+.boot-glow{background:radial-gradient(ellipse at 50% 45%,rgba(201,155,215,.10),transparent 58%)}
+.boot-label,.boot-skip{color:#c4b3ce!important}
+.boot-bar{background:rgba(216,192,220,.18)!important}
+.boot-bar i{background:linear-gradient(90deg,#76539a,#cf91b6,#d8c0dc)!important}
+.boot-core .bc-glow{background:radial-gradient(circle,rgba(166,111,158,.42),rgba(85,86,168,.18) 42%,transparent 68%)!important}
+.boot-core .bc-pulse{border-color:rgba(207,145,182,.58)!important}
+.boot-core .bc-svg .trail{stroke:#d8b6db!important;filter:drop-shadow(0 0 5px rgba(207,145,182,.7))!important}
+#app{background:transparent}
+.sidebar{background:linear-gradient(180deg,rgba(25,17,35,.94),rgba(13,10,21,.96))!important}
+.chat-shell{background:linear-gradient(145deg,rgba(28,20,40,.91),rgba(13,10,21,.96))!important}
+.chat-shell:before{background:radial-gradient(ellipse at 50% 0%,rgba(166,111,158,.19),transparent 55%),radial-gradient(ellipse at 100% 100%,rgba(85,86,168,.16),transparent 48%)!important}
+#chatFx,.particles,.particle,#stars,.space-layer:before,.space-layer:after,.burst{display:none!important;visibility:hidden!important;opacity:0!important}
+#particles{display:none!important}
+#stars{display:none!important}
+#welcome{
+  background:
+    radial-gradient(ellipse 72% 60% at 16% 18%,rgba(166,111,158,.23),transparent 70%),
+    radial-gradient(ellipse 70% 58% at 86% 80%,rgba(85,86,168,.25),transparent 72%),
+    linear-gradient(145deg,rgba(9,7,17,.88),rgba(23,16,35,.82))!important;
+  backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
+}
+#welcome .space-layer{background:
+  radial-gradient(ellipse 46% 34% at 24% 26%,rgba(177,124,183,.18),transparent 75%),
+  radial-gradient(ellipse 48% 38% at 78% 68%,rgba(103,105,190,.18),transparent 75%)}
+#welcome .nebula{background:conic-gradient(from 20deg,#76539a,#a66f9e,#5556a8,#76539a)!important;opacity:.23!important;filter:blur(95px)!important}
+.auth-card{background:rgba(24,17,34,.78)!important;border-color:rgba(216,192,220,.22)!important;box-shadow:0 24px 90px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07)!important}
+.auth-card:before{background:conic-gradient(from 0deg,transparent 0 55%,#76539a 72%,#a66f9e 84%,#d8c0dc 94%,transparent 100%)!important}
+.auth-card.loading:after,.auth-card.success:after{background:rgba(24,17,34,.97)!important}
+.auth-card .field{background:rgba(10,8,17,.62)!important;border-color:rgba(216,192,220,.17)!important}
+.auth-card .field:focus{border-color:rgba(207,145,182,.58)!important;box-shadow:0 0 0 4px rgba(166,111,158,.12),0 0 24px rgba(118,83,154,.18)!important}
+.auth-card .auth-btn{color:#fff!important;background:linear-gradient(105deg,#76539a,#a66f9e 58%,#5556a8)!important;box-shadow:0 8px 30px rgba(118,83,154,.26)!important}
+.auth-card .auth-btn:hover:not(:disabled){box-shadow:0 10px 36px rgba(166,111,158,.35)!important}
+.auth-inner:before{background:linear-gradient(90deg,transparent,#a66f9e,#d8c0dc,transparent)!important;box-shadow:0 0 18px rgba(207,145,182,.55)!important}
+.auth-card .terms .box{border-color:rgba(216,192,220,.3)!important}
+.auth-card .terms input:checked+.box{background:linear-gradient(135deg,#76539a,#cf91b6)!important}
+.empty h2,.wordmark,.s-logo{background:linear-gradient(135deg,#f2e4f2,#d8b6db 48%,#a66f9e)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.btn-send,.primary{background:linear-gradient(135deg,#76539a,#a66f9e 58%,#5556a8)!important}
+.input-glass:focus-within{border-color:rgba(207,145,182,.48)!important;box-shadow:0 0 0 3px rgba(166,111,158,.13),0 8px 40px rgba(5,8,20,.35)!important}
+@media(prefers-reduced-motion:reduce){#startup:before,#startup:after{animation:none!important}}
+</style>
+
 </head>
 <body>
 
@@ -1905,6 +1983,8 @@ body{background:var(--zy-bg)!important;color:#f8f1fa}
     if (animate) { const f = $('#authForm'); f.classList.remove('reveal'); void f.offsetWidth; f.classList.add('reveal'); }
   }
   function showWelcome(openedFromApp) {
+    el.startup.classList.add('hidden');
+    $('#bootCore').classList.remove('show');
     fromApp = !!openedFromApp;
     el.welcome.classList.remove('leaving');
     el.card.classList.remove('loading', 'success', 'shake', 'enter');
@@ -2204,6 +2284,7 @@ body{background:var(--zy-bg)!important;color:#f8f1fa}
       );
       setTimeout(() => avatar.classList.add('landed'), 80 + p2 * .8);
       anim.finished.then(() => { core.classList.remove('show'); setTimeout(() => core.getAnimations().forEach((x) => x.cancel()), 300); }).catch(() => {});
+      setTimeout(() => { core.classList.remove('show'); core.getAnimations().forEach((x) => x.cancel()); }, Math.max(1800, p2 + 900));
     });
     setTimeout(() => el.app.classList.remove('boot-run'), total + 600);
     setTimeout(() => avatar.classList.add('landed'), total + 1200);   // safety net
@@ -2211,7 +2292,7 @@ body{background:var(--zy-bg)!important;color:#f8f1fa}
 
   /* ---------- Persistent chat particles ---------- */
   (function chatParticles() {
-    const cv = $('#chatFx'); if (!cv) return;
+    const cv = $('#chatFx'); if (!cv) return; return;
     const ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let w = 0, h = 0, raf = 0, lastPaint = 0; const ps = [];
@@ -2256,7 +2337,7 @@ body{background:var(--zy-bg)!important;color:#f8f1fa}
 
   /* ---------- Login starfield + parallax ---------- */
   (function loginSky() {
-    const cv = $('#stars'); if (!cv) return;
+    const cv = $('#stars'); if (!cv) return; return;
     const ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let w = 0, h = 0, raf = 0, mx = 0, my = 0, meteor = null, nextMeteor = 2500;
@@ -2297,19 +2378,8 @@ body{background:var(--zy-bg)!important;color:#f8f1fa}
       el.welcome.style.setProperty('--mx', mx.toFixed(3)); el.welcome.style.setProperty('--my', my.toFixed(3));
     });
   })();
-
   /* ---------- Boot ---------- */
-  (function particles() {
-    const box = $('#particles');
-    for (let i = 0; i < 30; i++) {
-      const p = document.createElement('div'); p.className = 'particle';
-      const s = Math.random() * 3 + 1;
-      p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random() * 100}%;` +
-        `animation-duration:${Math.random() * 18 + 14}s;animation-delay:-${Math.random() * 20}s;opacity:${Math.random() * .5 + .2}`;
-      box.appendChild(p);
-    }
-  })();
-
+  // Floating particle field removed: the atmosphere is now cloud-only.
   const bootMs = reduceMotion ? 0 : cssTime('--boot-duration');
   const setLabel = (t) => { const l = $('#bootLabel'); l.textContent = t; l.style.animation = 'none'; void l.offsetWidth; l.style.animation = ''; };
   if (!reduceMotion) { setTimeout(() => setLabel('CALIBRATING YOUR WORKSPACE'), bootMs * .32); setTimeout(() => setLabel('YOUR SPACE IS READY'), bootMs * .6); }
