@@ -2596,9 +2596,6 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         signal: controller.signal
       });
     } catch (error) {
-      if (controller.signal.aborted) throw Object.assign(new Error('Generation stopped'), { name: 'AbortError' });
-      throw new Error("Can't reach Zynx. Check your connection and try again.");
-    } catch (error) {
       clearTimeout(timeoutId);
       window.__zynxStreamController = null;
       if (controller.signal.aborted) throw Object.assign(new Error('Generation stopped'), { name: 'AbortError' });
@@ -2610,8 +2607,11 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
       const problem = await response.json().catch(() => ({}));
       throw Object.assign(new Error(problem.error || 'The request could not be completed.'), { status: response.status });
     }
-    if (!response.body) throw new Error('Live streaming is not supported by this browser.');
-
+    if (!response.body) {
+      clearTimeout(timeoutId);
+      window.__zynxStreamController = null;
+      throw new Error('Live streaming is not supported by this browser.');
+    }
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '', finalData = null, assistantRow = null, assistantBubble = null, rendered = '';
@@ -2634,13 +2634,9 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         rendered += event.text || '';
         assistantBubble.textContent = rendered;
         if (!window.__zynxWorkspaceFollow || window.__zynxWorkspaceFollow()) el.messages.scrollTop = el.messages.scrollHeight;
-      } else if (event.type === 'done') {
-        finalData = event;
-      } else if (event.type === 'error') {
-        throw new Error(event.error || 'The reply was interrupted.');
-      }
+      } else if (event.type === 'done') finalData = event;
+      else if (event.type === 'error') throw new Error(event.error || 'The reply was interrupted.');
     };
-
     try {
       while (true) {
         const { value, done } = await reader.read();
@@ -2652,12 +2648,18 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
       }
       buffer += decoder.decode();
       if (buffer.trim()) handleEvent(buffer.trim());
+      if (!finalData) throw new Error('The stream ended before Zynx finished its reply.');
+      if (assistantBubble) {
+        assistantBubble.classList.remove('streaming-live');
+        assistantBubble.innerHTML = renderMarkdown(finalData.assistant_message.content);
+      }
+      toBottom();
+      return finalData;
     } catch (error) {
       try { await reader.cancel(); } catch {}
-      if (controller.signal.aborted && assistantBubble) {
+      if (controller.signal.aborted && assistantBubble && rendered) {
         assistantBubble.classList.remove('streaming-live');
         assistantBubble.innerHTML = renderMarkdown(rendered);
-        window.__zynxStreamController = null;
         return {
           user_message: { role: 'user', content },
           assistant_message: { role: 'assistant', content: rendered },
@@ -2665,17 +2667,12 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
           partial: true
         };
       }
-      window.__zynxStreamController = null;
+      if (controller.signal.aborted) throw Object.assign(new Error('Generation stopped'), { name: 'AbortError' });
       throw error;
+    } finally {
+      clearTimeout(timeoutId);
+      window.__zynxStreamController = null;
     }
-    if (!finalData) throw new Error('The stream ended before Zynx finished its reply.');
-    if (assistantBubble) {
-      assistantBubble.classList.remove('streaming-live');
-      assistantBubble.innerHTML = renderMarkdown(finalData.assistant_message.content);
-    }
-    toBottom();
-    window.__zynxStreamController = null;
-    return finalData;
   }
 
   /* ---------- Magnetic / springy press ---------- */
