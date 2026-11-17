@@ -1,0 +1,145 @@
+#!/usr/bin/env python3
+"""Run once from your repo folder (where index.html and app.py live):
+
+    python apply_zynx_fixes.py
+
+Backs up each file as *.bak, applies the fixes, and syntax-checks app.py.
+Safe to run twice.
+"""
+import os
+import re
+import shutil
+import sys
+
+
+def load(p):
+    with open(p, encoding="utf-8") as f:
+        return f.read()
+
+
+def save(p, s):
+    shutil.copyfile(p, p + ".bak")
+    with open(p, "w", encoding="utf-8", newline="") as f:
+        f.write(s)
+
+
+def sub(s, old, new, label):
+    if old not in s:
+        print(("  = already fixed: " if new in s else "  ! NOT FOUND: ") + label)
+        return s
+    print("  + " + label)
+    return s.replace(old, new, 1)
+
+
+# --------------------------------------------------------------------------- #
+# index.html
+# --------------------------------------------------------------------------- #
+print("index.html")
+if not os.path.exists("index.html"):
+    print("  ! index.html not found in this folder")
+else:
+    s = orig = load("index.html")
+
+    # The crash: $ is querySelector (one element), so .forEach threw a TypeError
+    # at startup and stopped ALL of the page's JavaScript.
+    fixed, n = re.subn(
+        r"(?<!\$)\$\('#premiumThemes \[data-premium-theme\]'\)\.forEach\(",
+        "$$('#premiumThemes [data-premium-theme]').forEach(",
+        s,
+    )
+    if n:
+        s = fixed
+        print("  + crash fix: $ -> $$ in applyPremiumTheme()")
+    else:
+        print("  = already fixed (or not found): applyPremiumTheme crash")
+
+    # Render's free tier can take ~50s to wake up; 15s was too short.
+    s = sub(s, "? 55000 : 15000", "? 70000 : 45000", "longer request timeouts (Render cold starts)")
+
+    # Stray literal "\n" text that leaked into the markup.
+    s, n1 = re.subn(r"(?m)^[ \t]*\\n[ \t]*\r?\n", "", s)
+    s, n2 = re.subn(r"(?<=>)\\n(?=[ \t]*(?:<|\r?\n))", "\n", s)
+    print(f"  + removed {n1 + n2} stray literal \\n sequences" if n1 + n2 else "  = no stray \\n left")
+
+    if s != orig:
+        save("index.html", s)
+        print("  saved (backup: index.html.bak)")
+
+# --------------------------------------------------------------------------- #
+# app.py
+# --------------------------------------------------------------------------- #
+print("app.py")
+NEW_ROUTE = '''ASSET_EXTS = {
+    ".css", ".js", ".mjs", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
+    ".woff", ".woff2", ".ttf", ".otf", ".webmanifest",
+}
+
+
+@app.route("/<path:asset_path>")
+def serve_frontend_asset(asset_path):
+    """Serve only harmless frontend assets - never app.py, the database, or dotfiles."""
+    if asset_path == "api" or asset_path.startswith("api/"):
+        return jsonify({"error": "Not found."}), 404
+    name = os.path.basename(asset_path)
+    if name.startswith(".") or os.path.splitext(name)[1].lower() not in ASSET_EXTS:
+        return jsonify({"error": "File not found."}), 404
+    for root in (
+        BASE_DIR,
+        os.path.join(BASE_DIR, "static"),
+        os.path.join(BASE_DIR, "public"),
+        os.path.join(BASE_DIR, "frontend"),
+        os.path.join(BASE_DIR, "web"),
+    ):
+        if os.path.isfile(os.path.join(root, asset_path)):
+            return send_from_directory(root, asset_path)
+    return jsonify({"error": "File not found."}), 404
+
+'''
+
+if not os.path.exists("app.py"):
+    print("  ! app.py not found in this folder")
+else:
+    s = orig = load("app.py")
+
+    if "ASSET_EXTS" in s:
+        print("  = already fixed: asset route")
+    else:
+        pat = re.compile(
+            r'@app\.route\("/<path:asset_path>"\)\ndef serve_frontend_asset\(asset_path\):.*?(?=\n@app\.route\("/api/health"\))',
+            re.S,
+        )
+        s, n = pat.subn(lambda m: NEW_ROUTE.rstrip("\n") + "\n\n", s, count=1)
+        print("  + security fix: asset route no longer serves app.py / zynx.db" if n else "  ! NOT FOUND: asset route")
+
+    # gpt-oss models are reasoning models: with a small token cap they can spend
+    # everything on thinking and return an EMPTY reply (shown as a 500 error).
+    s = sub(s, "max_completion_tokens=max_tokens,", "max_completion_tokens=max_tokens + 800,",
+            "reply fix: token headroom for reasoning")
+    if 'reasoning_effort' not in s:
+        s = sub(s, "top_p=0.9,\n", 'top_p=0.9,\n            extra_body={"reasoning_effort": "low"},\n',
+                "reply fix: reasoning_effort=low")
+
+    try:
+        compile(s, "app.py", "exec")
+    except SyntaxError as e:
+        print(f"  ! patched app.py failed a syntax check ({e}); NOT saved")
+        sys.exit(1)
+    if s != orig:
+        save("app.py", s)
+        print("  saved (backup: app.py.bak)")
+
+# --------------------------------------------------------------------------- #
+# requirements.txt
+# --------------------------------------------------------------------------- #
+print("requirements.txt")
+REQ = "flask>=3.0\nflask-cors>=4.0\ngroq>=0.20.0\ngunicorn>=21.2\n"
+if not os.path.exists("requirements.txt"):
+    with open("requirements.txt", "w") as f:
+        f.write(REQ)
+    print("  + created")
+else:
+    have = load("requirements.txt").lower()
+    missing = [p for p in ("flask", "flask-cors", "groq", "gunicorn") if p not in have]
+    print("  = exists" + (f" - but missing: {', '.join(missing)}" if missing else ", looks complete"))
+
+print("\nDone. Now: git add -A && git commit -m 'Fix startup crash, harden server' && git push")
