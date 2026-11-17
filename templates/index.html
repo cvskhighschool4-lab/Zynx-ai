@@ -1946,6 +1946,48 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
  }
 }
 </style>
+<style id="zynx-neutral-message-and-brand-fix">
+/* Remove the residual violet brand wash in the upper-left sidebar. */
+#sidebar,
+#sidebar .sidebar-header,
+#sidebar>.p-4:first-child,
+#sidebar .brand,
+#sidebar .brand-mark,
+#sidebar .logo-wrap{
+ background:#101114!important;
+ background-image:none!important;
+ box-shadow:none!important;
+}
+#sidebar .mark,
+#sidebar>.p-4:first-child .mark,
+#sidebar .card-brand .mark{
+ background:#17181b!important;
+ background-image:none!important;
+ border:1px solid #36373d!important;
+ box-shadow:0 3px 12px rgba(0,0,0,.32)!important;
+}
+#sidebar .mark:before,#sidebar .mark:after,
+#sidebar .brand:before,#sidebar .brand:after{background:none!important;box-shadow:none!important}
+#sidebar .mark svg{filter:grayscale(1) brightness(1.65)!important}
+/* User prompts: neutral graphite, matching the dark particle canvas. */
+#app .row.user .bubble,
+#app .row:has(.bubble.user) .bubble.user,
+#app .bubble.user,
+.row.user .bubble{
+ background:#191b1f!important;
+ background-image:none!important;
+ border:1px solid #303238!important;
+ color:#e7e7ea!important;
+ border-bottom-right-radius:7px!important;
+ box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+#app .row.user .bubble:before,#app .row.user .bubble:after,
+#app .bubble.user:before,#app .bubble.user:after{background:none!important;box-shadow:none!important}
+/* Keep prompt actions quiet and integrated with the same neutral palette. */
+.zynx-prompt-actions{border-top-color:rgba(255,255,255,.07)!important}
+.zynx-prompt-action{color:#aeb0b7!important}
+.zynx-prompt-action:hover{background:#24262a!important;border-color:#3b3d43!important;color:#fff!important}
+</style>
 </head>
 <body>
 
