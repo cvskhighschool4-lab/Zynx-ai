@@ -1581,6 +1581,84 @@ html[data-dream-mode] body,html[data-bankai] body{background:#0b0c0e!important;c
 html[data-dream-mode] #welcome,html[data-bankai] #welcome{background:#0b0c0e!important;color:#f4f4f5!important}
 html[data-dream-mode] #app,html[data-bankai] #app{background:#0b0c0e!important;color:#f4f4f5!important}
 html[data-dream-mode] .dream-bg,html[data-bankai] .dream-bg{display:none!important}
+
+/* ZYNX MONOCHROME DEPTH — persistent black/white system */
+:root{--bg:#08090b!important;--bg2:#101114!important;--surface:#141519!important;--glass:rgba(18,19,22,.88)!important;--line:rgba(255,255,255,.12)!important;--accent:#f4f4f5!important;--accent-soft:#fff!important;--text:#f4f4f5!important;--muted:#a1a1aa!important}
+html,body,#app{background:#08090b!important;color:#f4f4f5!important}
+body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),transparent 48%),linear-gradient(180deg,#0b0c0e,#08090b)!important}
+.dream-bg,.cloud{display:none!important}
+#particles,.particles{display:block!important;visibility:visible!important;opacity:.58!important;position:fixed!important;inset:0!important;z-index:1!important;pointer-events:none!important;overflow:hidden!important}
+.particle{background:#e4e4e7!important;box-shadow:0 0 7px 1px rgba(255,255,255,.62)!important;opacity:.55!important}
+#app{isolation:isolate}
+#app:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.035),transparent 62%)}
+#app .sidebar,#app .chat-shell,#settings{background:rgba(16,17,20,.94)!important;border:1px solid rgba(255,255,255,.105)!important;box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.055)!important;backdrop-filter:blur(24px)!important}
+#app .chat-shell{box-shadow:0 28px 90px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.06)!important}
+#app .bubble.user{background:linear-gradient(145deg,#292a2e,#1b1c20)!important;border:1px solid #414247!important;color:#fafafa!important;box-shadow:0 12px 28px rgba(0,0,0,.28)!important}
+#app .bubble.bot{background:linear-gradient(145deg,#17181c,#111215)!important;border:1px solid #303136!important;box-shadow:0 12px 34px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.035)!important}
+#app .input-glass{background:#151619!important;border:1px solid #3a3b40!important;box-shadow:0 16px 42px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.06)!important}
+#app .input-glass:focus-within{border-color:#a1a1aa!important;box-shadow:0 0 0 3px rgba(255,255,255,.07),0 18px 48px rgba(0,0,0,.45)!important}
+#app .btn-send,#app .primary{background:#f4f4f5!important;color:#101114!important;border:1px solid #fff!important}
+#app .dream-topbar{background:rgba(12,13,15,.86)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;backdrop-filter:blur(18px)!important}
+#app .dream-top-action{color:#d4d4d8!important;border:1px solid #303136!important;background:#151619!important;border-radius:9px!important}
+#app .dream-top-action:hover{background:#242529!important;color:#fff!important;border-color:#55565c!important}
+#settings{background:rgba(15,16,19,.98)!important;border-left:1px solid #34353a!important;z-index:80!important}
+#settings .dream-personalization,#settings [aria-label*="atmosphere" i],#settings [aria-label*="theme" i]{display:none!important}
+#settings .primary{background:#f4f4f5!important;color:#111!important}
+#settings .opt{background:#18191d!important;border-color:#37383d!important;color:#ddd!important}
+#settings .opt.on{background:#303136!important;border-color:#777!important;color:#fff!important}
+#settings .field,#settings select{background:#101114!important;color:#f4f4f5!important;border-color:#37383d!important}
+#settingsBtn{display:flex!important;visibility:visible!important;opacity:1!important}
+#settingsQuickBtn{display:inline-flex!important;align-items:center;gap:7px!important;padding:8px 11px!important}
+#settingsQuickBtn svg{flex:0 0 auto}
+#welcome{
+ display:grid!important;grid-template-columns:minmax(0,1.12fr) minmax(340px,.82fr)!important;
+ align-items:center!important;justify-content:center!important;gap:clamp(28px,5vw,76px)!important;
+ width:100%!important;max-width:none!important;padding:clamp(26px,5vw,76px)!important;
+ background:#08090b!important;
+}
+#welcome .auth-card{grid-column:2!important;grid-row:1!important;width:min(100%,430px)!important;max-width:430px!important;margin:0 auto!important;background:linear-gradient(145deg,#17181c,#101114)!important;box-shadow:0 35px 100px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.06)!important}
+#welcome .card-brand .mark{display:grid!important;--s:48px!important;margin-bottom:4px!important}
+#welcome .card-brand .mark svg{filter:grayscale(1) brightness(1.65)!important;animation:none!important}
+#welcome .wordmark{color:#fafafa!important;background:none!important;-webkit-text-fill-color:#fafafa!important}
+#welcome .zynx-feature-showcase{grid-column:1!important;grid-row:1!important;width:100%!important;max-width:760px!important;margin:0 auto!important;padding:0!important;border:0!important}
+#welcome .zynx-showcase-heading{margin:0 0 26px!important}
+#welcome .zynx-showcase-heading .feature-kicker{font-size:10px!important;letter-spacing:.2em!important;color:#a1a1aa!important}
+#welcome .zynx-showcase-heading h2{font-size:clamp(30px,4.1vw,48px)!important;line-height:1.08!important;letter-spacing:-1.8px!important;margin:12px 0!important}
+#welcome .zynx-showcase-heading p{max-width:450px!important;font-size:14px!important;line-height:1.7!important;color:#a1a1aa!important}
+#welcome .zynx-feature-grid{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:14px!important;align-items:start!important}
+#welcome .zynx-feature-card{
+ position:relative!important;display:flex!important;flex-direction:column!important;grid-column:span 3!important;
+ min-height:238px!important;padding:0 0 18px!important;overflow:hidden!important;
+ border:1px solid #292a2e!important;border-radius:15px!important;
+ background:linear-gradient(150deg,#17181c,#101114)!important;
+ box-shadow:0 18px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.045)!important;
+ transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease!important;
+}
+#welcome .zynx-feature-card:nth-child(3n+1){grid-column:span 4!important;margin-top:12px!important}
+#welcome .zynx-feature-card:nth-child(3n+2){grid-column:span 2!important;margin-top:42px!important}
+#welcome .zynx-feature-card:nth-child(3n){grid-column:span 3!important;margin-top:-8px!important}
+#welcome .zynx-feature-card:hover{transform:translateY(-5px)!important;border-color:#66676d!important;box-shadow:0 26px 56px rgba(0,0,0,.5)!important}
+#welcome .zynx-feature-art{display:block!important;width:100%!important;height:112px!important;overflow:hidden!important;background:#1b1c20!important}
+#welcome .zynx-feature-art img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;filter:grayscale(1) brightness(.72)!important;transition:transform .6s ease,filter .4s ease!important}
+#welcome .zynx-feature-card:hover .zynx-feature-art img{transform:scale(1.055)!important;filter:grayscale(.72) brightness(.9)!important}
+#welcome .zynx-feature-card .feature-kicker{margin:14px 15px 5px!important;color:#a1a1aa!important;font-size:9px!important;letter-spacing:.16em!important}
+#welcome .zynx-feature-card h3{margin:0 15px 6px!important;color:#f4f4f5!important;font-size:14px!important;font-weight:650!important}
+#welcome .zynx-feature-card p{margin:0 15px!important;color:#a1a1aa!important;font-size:11px!important;line-height:1.55!important}
+#welcome .zynx-showcase-footer{margin-top:20px!important;color:#71717a!important;font-size:9px!important;letter-spacing:.16em!important}
+#welcome .hero,#welcome .w-greet{display:none!important}
+@media(max-width:900px){
+ #welcome{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:42px!important;padding:28px 18px 52px!important}
+ #welcome .auth-card{order:0!important;width:min(100%,440px)!important;margin:0 auto!important}
+ #welcome .zynx-feature-showcase{order:1!important;width:min(100%,760px)!important;margin:0 auto!important}
+ #welcome .zynx-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #welcome .zynx-feature-card,#welcome .zynx-feature-card:nth-child(3n+1),#welcome .zynx-feature-card:nth-child(3n+2),#welcome .zynx-feature-card:nth-child(3n){grid-column:span 1!important;margin:0!important}
+}
+@media(max-width:520px){
+ #welcome .zynx-feature-grid{grid-template-columns:1fr!important}
+ #welcome .zynx-feature-card{min-height:220px!important}
+ #settingsQuickBtn span{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -1675,6 +1753,7 @@ html[data-dream-mode] .dream-bg,html[data-bankai] .dream-bg{display:none!importa
           <h1 id="chatTitle" class="dream-current-title">New chat</h1>
         </div>
         <div class="dream-top-actions">
+          <button type="button" class="dream-top-action" id="settingsQuickBtn" aria-label="Open settings" title="Settings"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/></svg><span>Settings</span></button>
           <span id="userBadge" class="dream-user-badge">Guest</span>
           <button type="button" class="dream-top-action" id="zyriconConfig"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/></svg> Configuration</button>
           <button type="button" class="dream-top-action" id="zynx-install-app" hidden aria-label="Install Zynx AI app"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg> Install app</button>
@@ -2419,7 +2498,9 @@ html[data-dream-mode] .dream-bg,html[data-bankai] .dream-bg{display:none!importa
   el.overlay.addEventListener('click', closeSidebarMobile);
   $$('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
 
-  $('#settingsBtn').addEventListener('click', () => { el.settings.classList.add('open'); closeSidebarMobile(); });
+  const openSettings = () => { el.settings.classList.add('open'); closeSidebarMobile(); };
+  $('#settingsBtn').addEventListener('click', openSettings);
+  $('#settingsQuickBtn').addEventListener('click', openSettings);
   const voiceRepliesToggle = $('#voiceReplies');
   voiceRepliesToggle.checked = S.voiceReplies;
   voiceRepliesToggle.addEventListener('change', () => {
@@ -2505,6 +2586,7 @@ html[data-dream-mode] .dream-bg,html[data-bankai] .dream-bg{display:none!importa
     const headers = { 'Content-Type': 'application/json' };
     if (S.token) headers['X-Session-Token'] = S.token;
     const controller = new AbortController();
+    window.__zynxStreamController = controller;
     const timeoutId = setTimeout(() => controller.abort(), 120000);
     let response;
     try {
@@ -2516,10 +2598,15 @@ html[data-dream-mode] .dream-bg,html[data-bankai] .dream-bg{display:none!importa
     } catch (error) {
       if (controller.signal.aborted) throw Object.assign(new Error('Generation stopped'), { name: 'AbortError' });
       throw new Error("Can't reach Zynx. Check your connection and try again.");
-    } finally {
+    } catch (error) {
       clearTimeout(timeoutId);
+      window.__zynxStreamController = null;
+      if (controller.signal.aborted) throw Object.assign(new Error('Generation stopped'), { name: 'AbortError' });
+      throw new Error("Can't reach Zynx. Check your connection and try again.");
     }
     if (!response.ok) {
+      clearTimeout(timeoutId);
+      window.__zynxStreamController = null;
       const problem = await response.json().catch(() => ({}));
       throw Object.assign(new Error(problem.error || 'The request could not be completed.'), { status: response.status });
     }
