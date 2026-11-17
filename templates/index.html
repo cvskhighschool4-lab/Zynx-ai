@@ -1565,9 +1565,12 @@ body:before,body:after,.dream-bg,.dream-motes,.cloud,.particles,.fx,.space-layer
 #welcome .zynx-feature-card h3{grid-column:2!important;grid-row:1!important;margin:0 0 6px!important;font-size:15px!important;color:#f4f4f5!important;font-weight:600!important}
 #welcome .zynx-feature-card p{grid-column:2!important;grid-row:2!important;margin:0!important;font-size:13px!important;line-height:1.65!important;color:#a1a1aa!important}
 #welcome .zynx-showcase-footer{color:#71717a!important}
-.dream-personalization,.premium-theme-grid,.bankai-grid,.premium-theme,.bankai-choice{display:none!important}
-#settingsPanel .dream-personalization,#settingsPanel [aria-label*="atmosphere" i],
-#settingsPanel [aria-label*="theme" i]{display:none!important}
+.premium-theme-grid,.bankai-grid,.premium-theme,.bankai-choice{display:none!important}
+#settings .dream-personalization{display:block!important}
+#settings .dream-presets,#settings .dream-control,#settings .dream-toggle{display:none!important}
+#settings .dream-personalization{padding:14px;border:1px solid #303136;border-radius:14px;background:#111215}
+#settings .dream-personalization>div:first-child p:first-child{color:#f4f4f5!important}
+#settings .dream-personalization>div:first-child p:last-child{color:#a1a1aa!important}
 #app{background:#0b0c0e!important;color:#f4f4f5!important}
 #app .glass,.sidebar,.chat-shell,.settings-panel,.zw-workbench{
  background:rgba(18,19,22,.96)!important;border-color:rgba(255,255,255,.09)!important;
@@ -2065,6 +2068,10 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
           Settings
         </button>
+        <button id="personalizationBtn" type="button" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-sm text-slate-300">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.64 5.64l2.12 2.12m8.48 8.48 2.12 2.12m0-12.72-2.12 2.12m-8.48 8.48-2.12 2.12"/><circle cx="12" cy="12" r="4"/></svg>
+          Personalization
+        </button>
         <button id="authBtn" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-sm text-slate-300">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
           <span id="authLabel">Sign in</span>
@@ -2151,6 +2158,11 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
       </button>
     </div>
     <div class="flex-1 overflow-y-auto p-5 space-y-6">
+      <section class="space-y-3" id="zynxPromptPreferences">
+        <div><p class="text-sm font-semibold text-slate-100">Response controls</p><p class="text-xs text-slate-400 mt-1">Choose how detailed and structured Zynx replies should be.</p></div>
+        <div><span class="block text-xs text-slate-400 mb-2">Response depth</span><div class="grid grid-cols-3 gap-2"><button type="button" class="opt" data-depth="Quick">Quick</button><button type="button" class="opt on" data-depth="Balanced">Balanced</button><button type="button" class="opt" data-depth="Deep">Deep</button></div></div>
+        <div><span class="block text-xs text-slate-400 mb-2">Output format</span><div class="grid grid-cols-4 gap-2"><button type="button" class="opt on" data-format="Auto">Auto</button><button type="button" class="opt" data-format="Table">Table</button><button type="button" class="opt" data-format="Steps">Steps</button><button type="button" class="opt" data-format="Code">Code</button></div></div>
+      </section>
       <section class="space-y-3" id="zynxLanguageSection">
         <div><p class="text-sm font-semibold text-slate-100">Language & region</p><p class="text-xs text-slate-400 mt-1">Choose the language for Zynx's interface and AI replies.</p></div>
         <label class="block text-xs text-slate-400" for="zynxLanguageSelect">App and response language</label>
@@ -2830,6 +2842,10 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
   const openSettings = () => { el.settings.classList.add('open'); closeSidebarMobile(); };
   $('#settingsBtn').addEventListener('click', openSettings);
   $('#settingsQuickBtn').addEventListener('click', openSettings);
+  $('#personalizationBtn').addEventListener('click', () => {
+    openSettings();
+    document.querySelector('#settings .dream-personalization')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
   const voiceRepliesToggle = $('#voiceReplies');
   voiceRepliesToggle.checked = S.voiceReplies;
   voiceRepliesToggle.addEventListener('change', () => {
@@ -4592,6 +4608,28 @@ html[data-zw-theme="light"] .zw-panel-body{color:#333}
 @media(max-width:1050px){.zw-workbench.open{position:fixed;z-index:65;right:10px;top:10px;bottom:10px;width:min(520px,calc(100vw - 20px));min-width:0;flex-basis:auto;box-shadow:0 20px 90px #0009}}
 @media(max-width:700px){#app{padding:0!important;gap:0!important}#app .sidebar{position:fixed!important;z-index:80!important;left:0;top:0;bottom:0;width:min(260px,84vw)!important;min-width:0!important;transform:translateX(-105%)}#app .sidebar.open{transform:none!important}#app .sidebar.rail-collapsed{transform:translateX(-105%)!important}.zw-workbench.open{top:5px;right:5px;bottom:5px;width:calc(100vw - 10px)}#app .chat-shell{border-radius:0!important}.zw-preflight{padding:0 4px}}
 @media(prefers-reduced-motion:reduce){.zw-workbench,.zw-rail-controls button,.zw-selection{transition:none!important}}
+/* Sidebar refinements: calm transitions, consistent spacing, readable labels. */
+#app .sidebar{transition:width .24s ease,transform .24s ease,background .2s ease!important}
+#sidebar .dream-side-nav .chip,#sidebar .zyricon-side-nav .chip,#sidebar .zw-rail-controls button,
+#sidebar #settingsBtn,#sidebar #personalizationBtn,#sidebar #authBtn{
+ transition:background-color .16s ease,color .16s ease,border-color .16s ease,transform .16s ease!important;
+ font-size:13px!important;letter-spacing:.005em!important;font-weight:500!important;
+}
+#sidebar .zw-rail-controls button:hover,#sidebar .dream-side-nav .chip:hover,#sidebar .zyricon-side-nav .chip:hover{
+ transform:translateX(2px)!important;background:#202126!important;color:#fff!important;
+}
+#sidebar .zw-rail-controls button:active,#sidebar .dream-side-nav .chip:active{transform:scale(.99)!important}
+#sidebar .zw-section-label,#sidebar .dream-side-label,#sidebar .zyricon-side-label{letter-spacing:.16em!important;font-size:9px!important;font-weight:650!important;color:#777980!important}
+#sidebar .zw-rail-controls{scrollbar-width:thin;scrollbar-color:#393a40 transparent}
+#sidebar .zw-rail-controls::-webkit-scrollbar{width:5px}
+#sidebar .zw-rail-controls::-webkit-scrollbar-thumb{background:#393a40;border-radius:8px}
+#sidebar>div.p-3.border-t{background:#101114!important;border-top:1px solid #292a2e!important}
+#sidebar #settingsBtn,#sidebar #personalizationBtn,#sidebar #authBtn{min-height:39px!important;border-radius:9px!important}
+#sidebar #settingsBtn:hover,#sidebar #personalizationBtn:hover,#sidebar #authBtn:hover{background:#202126!important;color:#fff!important}
+#settings .dream-personalization{scroll-margin-top:14px}
+#settings .opt{border-radius:9px!important;background:#18191d!important;color:#c9c9ce!important;border:1px solid #303136!important;padding:9px 7px!important;font-size:11px!important}
+#settings .opt.on{background:#303136!important;color:#fff!important;border-color:#777980!important}
+.zw-preflight{display:none!important}
 </style>
 
 <script id="zynx-workspace-engine">
@@ -4658,8 +4696,24 @@ function downloadText(name,txt){const u=URL.createObjectURL(new Blob([txt],{type
 /* Composer HUD + depth and output-format locks */
 const inputArea=q1('.input-area',chat),inputGlass=q1('.input-glass',inputArea);
 const hud=document.createElement('div');hud.className='zw-hud';hud.id='zw-hud';inputArea.insertBefore(hud,inputGlass);
-const pre=document.createElement('div');pre.className='zw-preflight';pre.innerHTML='<span style="font-size:9px;color:#777;margin-right:3px">DEPTH</span>'+['Quick','Balanced','Deep'].map(x=>'<button data-depth="'+x+'" class="'+(x===depth?'active':'')+'">'+x+'</button>').join('')+'<span style="font-size:9px;color:#777;margin:0 3px 0 8px">FORMAT</span>'+['Auto','Table','Steps','Code'].map(x=>'<button data-format="'+x+'" class="'+(x===format?'active':'')+'">'+x+'</button>').join('');
-inputArea.insertBefore(pre,hud.nextSibling);
+/* Depth and format preferences now live in Settings, not above the composer. */
+const pre=q1('#zynxPromptPreferences');
+const depthOptions=['Quick','Balanced','Deep'],formatOptions=['Auto','Table','Steps','Code'];
+function paintPromptPreferences(){
+ if(!pre)return;
+ pre.querySelectorAll('[data-depth]').forEach(b=>b.classList.toggle('active',b.dataset.depth===depth));
+ pre.querySelectorAll('[data-format]').forEach(b=>b.classList.toggle('active',b.dataset.format===format));
+}
+pre?.addEventListener('click',e=>{
+ const d=e.target.closest('[data-depth]'),f=e.target.closest('[data-format]');
+ if(d)depth=d.dataset.depth;
+ if(f)format=f.dataset.format;
+ paintPromptPreferences();
+ try{localStorage.setItem('zynx_prompt_depth',depth);localStorage.setItem('zynx_prompt_format',format)}catch{}
+ toast('Prompt settings: '+depth+' · '+format);
+});
+try{depth=localStorage.getItem('zynx_prompt_depth')||depth;format=localStorage.getItem('zynx_prompt_format')||format}catch{}
+paintPromptPreferences();
 function paintHud(){hud.innerHTML=saved.chips.map((c,i)=>'<span class="zw-chip">'+esc(c)+' <button data-chip-remove="'+i+'" aria-label="Remove context chip">×</button></span>').join('')+(saved.pins.length?'<span class="zw-chip">📌 '+saved.pins.length+' pinned replies</span>':'');}
 paintHud();
 hud.addEventListener('click',e=>{const b=e.target.closest('[data-chip-remove]');if(b){saved.chips.splice(Number(b.dataset.chipRemove),1);persist();paintHud()}});
