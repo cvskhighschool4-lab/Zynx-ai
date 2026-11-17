@@ -2864,6 +2864,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
     setUser(null); S.chatId = null; S.messages = []; renderMessages(); el.title.textContent = 'New chat';
     await initSession(false); showWelcome(false);
   }
+  window.zynxSignOutAction = signOut;
 
   /* ---------- Voice ---------- */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
