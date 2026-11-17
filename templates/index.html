@@ -2124,7 +2124,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
       </button>
       <button class="zynx-sidebar-link zynx-tool-link" id="imageStudioBtn" type="button" aria-label="Open Image Studio">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-        Image Studio
+        <span>Create image</span><span class="zynx-ai-tag">AI</span>
       </button>
       <button class="zynx-sidebar-link zynx-tool-link" id="videoStudioBtn" type="button" aria-label="Open Video Studio">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></svg>
@@ -5056,7 +5056,18 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
       <header class="zynx-modal-head"><div><span class="zynx-eyebrow">IMAGINE · GENERATE</span><h2 id="zynxImageTitle">Image Studio</h2><p>Turn a written idea into an original image.</p></div><button class="zynx-modal-close" data-close-modal="zynxImageStudio" aria-label="Close">×</button></header>
       <form id="zynxImageForm" class="zynx-image-form">
         <label>Describe your image<textarea id="zynxImagePrompt" maxlength="1200" required rows="4" placeholder="A cinematic illustration of a floating library above soft lavender clouds at sunrise…"></textarea></label>
-        <button class="zynx-primary-btn" id="zynxImageGenerate" type="submit"><span>✦</span> Generate photo</button>
+        <label class="zynx-image-style-label">Visual style
+          <select id="zynxImageStyle" class="zynx-image-style">
+            <option value="natural, detailed, balanced composition">Auto · Balanced</option>
+            <option value="photorealistic photography, natural lighting, high detail">Photorealistic</option>
+            <option value="cinematic concept art, dramatic lighting, atmospheric depth">Cinematic</option>
+            <option value="polished 3D render, realistic materials, studio lighting">3D render</option>
+            <option value="anime illustration, expressive details, rich colors">Anime</option>
+            <option value="digital illustration, refined linework, vibrant color palette">Digital art</option>
+            <option value="soft watercolor painting, textured paper, gentle colors">Watercolor</option>
+          </select>
+        </label>
+        <button class="zynx-primary-btn" id="zynxImageGenerate" type="submit"><span>✦</span> Generate image</button>
         <p class="zynx-modal-note" id="zynxImageStatus">Powered by Pollinations · Your API key stays on the server. Provider usage limits may apply.</p>
       </form>
       <div id="zynxImageOutput" class="zynx-image-output" hidden><img id="zynxGeneratedImage" alt="AI generated image"><div class="zynx-image-actions"><a id="zynxImageDownload" class="zynx-secondary-btn" download="zynx-image.png">Download image</a><button id="zynxImageNew" class="zynx-secondary-btn" type="button">Create another</button></div></div>
@@ -5245,11 +5256,13 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
   imageForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const prompt=document.getElementById('zynxImagePrompt').value.trim(); if(!prompt)return;
-    imageButton.disabled=true; imageButton.textContent='Generating photo…';
+    const visualStyle=document.getElementById('zynxImageStyle')?.value||'';
+    const styledPrompt=visualStyle ? prompt+', '+visualStyle : prompt;
+    imageButton.disabled=true; imageButton.textContent='Creating image…';
     const status=document.getElementById('zynxImageStatus'); status.textContent='Creating your image. This may take a little while…';
     document.getElementById('zynxImageOutput').hidden=true;
     try {
-      const response=await fetch('/api/images/generate',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':localStorage.getItem('zynx_token')||''},body:JSON.stringify({prompt})});
+      const response=await fetch('/api/images/generate',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':localStorage.getItem('zynx_token')||''},body:JSON.stringify({prompt:styledPrompt})});
       const data=await response.json(); if(!response.ok) throw new Error(data.error||'Image generation failed.');
       const url='data:'+(data.mime_type||'image/png')+';base64,'+data.image_data;
       document.getElementById('zynxGeneratedImage').src=url;
@@ -5257,7 +5270,7 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
       document.getElementById('zynxImageOutput').hidden=false;
       status.textContent='Image created successfully.';
     } catch(error) { status.textContent=error.message||'Image generation is not configured yet.'; }
-    finally { imageButton.disabled=false; imageButton.innerHTML='<span>✦</span> Generate photo'; }
+    finally { imageButton.disabled=false; imageButton.innerHTML='<span>✦</span> Generate image'; }
   });
   document.getElementById('zynxImageNew')?.addEventListener('click', () => { document.getElementById('zynxImageOutput').hidden=true; document.getElementById('zynxImagePrompt').focus(); });
   // A small bridge lets the existing sign-out routine be invoked by the confirmation dialog.
@@ -5395,5 +5408,38 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
   #sidebar .zynx-game-soon{margin-left:auto;padding:4px 7px;border:1px solid rgba(196,181,253,.2);border-radius:99px;background:rgba(167,139,250,.13);color:#d9ccff;font-size:8px;font-weight:700;letter-spacing:.12em;line-height:1}
   @media(max-width:768px){#sidebar.zynx-clean-sidebar{background:rgba(5,6,10,.82)!important}}
 </style>
+
+<style id="zynx-personalization-image-glass">
+  /* A lighter, genuinely translucent workspace sidebar. */
+  #sidebar.zynx-clean-sidebar{
+    background:linear-gradient(145deg,rgba(10,12,18,.58),rgba(17,19,28,.43) 52%,rgba(8,10,16,.56))!important;
+    border-color:rgba(255,255,255,.16)!important;
+    -webkit-backdrop-filter:blur(38px) saturate(175%)!important;
+    backdrop-filter:blur(38px) saturate(175%)!important;
+    box-shadow:12px 0 46px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.1)!important;
+  }
+  #sidebar .zynx-sidebar-brand{background:rgba(255,255,255,.025)!important}
+  #sidebar .zynx-sidebar-footer{background:rgba(255,255,255,.025)!important;border-top-color:rgba(255,255,255,.12)!important}
+  #sidebar #personalizationBtn{
+    background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.09)!important;
+    color:#eeeef4!important;margin-bottom:5px!important;
+  }
+  #sidebar #personalizationBtn svg{color:#c4b5fd!important}
+  #sidebar #personalizationBtn:hover{background:rgba(167,139,250,.13)!important;border-color:rgba(196,181,253,.25)!important}
+  #sidebar #imageStudioBtn{background:rgba(167,139,250,.075)!important;border:1px solid rgba(167,139,250,.16)!important;color:#f2edff!important}
+  #sidebar #imageStudioBtn svg{color:#c4b5fd!important}
+  #sidebar #imageStudioBtn:hover{background:rgba(167,139,250,.15)!important;border-color:rgba(196,181,253,.3)!important}
+  .zynx-ai-tag{margin-left:auto;padding:3px 7px;border-radius:6px;background:rgba(167,139,250,.16);border:1px solid rgba(196,181,253,.2);color:#d9ccff;font-size:9px;font-weight:700;letter-spacing:.08em}
+  #settings.settings{background:rgba(13,15,23,.78)!important;border-left:1px solid rgba(255,255,255,.13)!important;-webkit-backdrop-filter:blur(34px) saturate(155%)!important;backdrop-filter:blur(34px) saturate(155%)!important}
+  #settings .dream-personalization{background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.13)!important}
+  .zynx-image-style-label{display:grid;gap:8px;color:#c9c6d5;font-size:12px}
+  .zynx-image-style{width:100%;padding:12px 13px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.055);color:#f4f1ff;font:inherit;font-size:13px;outline:none}
+  .zynx-image-style:focus{border-color:rgba(196,181,253,.55);box-shadow:0 0 0 3px rgba(167,139,250,.12)}
+  .zynx-image-style option{background:#15151c;color:#f4f1ff}
+  @media(max-width:700px){
+    #sidebar.zynx-clean-sidebar{background:rgba(9,11,18,.78)!important}
+  }
+</style>
+
 </body>
 </html>
