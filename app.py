@@ -601,7 +601,7 @@ def build_prompt(settings, history, wants_founder, language='auto'):
         if selected_language else
         "Automatically detect the language of the latest user message and reply in that same language. If the user mixes languages, respond naturally in the dominant language. Keep code, identifiers, and technical syntax unchanged."
     )
-    prefs += "\\n- Response language: " + language_rule
+    prefs += " Response language: " + language_rule
     msgs = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "system", "content": prefs}]
     if wants_founder:
         msgs.append(
