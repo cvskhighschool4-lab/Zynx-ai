@@ -3977,5 +3977,220 @@ input::placeholder,textarea::placeholder,.field::placeholder{color:#9385aa!impor
 }
 @media(prefers-reduced-motion:reduce){.zynx-feature-card,.zynx-feature-art img{transition:none!important}}
 </style>
+
+<style id="zynx-adaptive-workspace">
+:root{--zw-bg:#0b0c0e;--zw-panel:rgba(22,24,29,.78);--zw-line:rgba(255,255,255,.085);--zw-muted:#9a9da8;--zw-text:#f4f2ed;--zw-accent:#d7a44b;--zw-ease:cubic-bezier(.16,1,.3,1)}
+#app{gap:10px!important;padding:10px!important;background:transparent}
+#app .sidebar{width:260px!important;min-width:260px!important;flex-basis:260px;transition:width .36s var(--zw-ease),min-width .36s var(--zw-ease),flex-basis .36s var(--zw-ease),opacity .25s!important}
+#app .sidebar.rail-collapsed{width:58px!important;min-width:58px!important;flex-basis:58px!important;margin-left:0!important;opacity:1!important;pointer-events:auto!important}
+.sidebar.rail-collapsed>:not(.zw-rail-top):not(.zw-rail-controls){display:none!important}
+.zw-rail-top{display:flex;align-items:center;justify-content:center;min-height:64px;border-bottom:1px solid var(--zw-line)}
+.zw-rail-controls{display:flex;flex-direction:column;gap:7px;padding:10px}
+.zw-rail-controls button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid transparent;border-radius:11px;background:rgba(255,255,255,.035);color:#d8d7d2;text-align:left;font-size:12px;cursor:pointer;transition:all .22s var(--zw-ease)}
+.zw-rail-controls button:hover{background:rgba(215,164,75,.11);border-color:rgba(215,164,75,.2);transform:translateX(2px)}
+.zw-rail-controls .zw-glyph{width:20px;text-align:center;color:var(--zw-accent);font-size:15px}
+.zw-folders{padding:12px 12px 6px;border-top:1px solid var(--zw-line);margin-top:8px}
+.zw-section-label{font-size:9px;letter-spacing:.19em;font-weight:800;color:#8e909a;margin:3px 4px 9px}
+.zw-folder{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:9px;color:#c9c8c2;font-size:11px;cursor:pointer}
+.zw-folder:hover{background:rgba(255,255,255,.055)}
+.zw-folder small{margin-left:auto;color:#777b86}
+#app .chat-shell{flex:1 1 0;min-width:300px;border-radius:19px!important;background:rgba(12,13,16,.83)!important;border:1px solid var(--zw-line)!important;transition:flex-basis .35s var(--zw-ease)}
+#app .chat-shell .dream-topbar{min-height:62px;border-bottom:1px solid var(--zw-line);background:rgba(12,13,16,.68)!important}
+#app .chat-shell .messages{padding:28px clamp(16px,4vw,54px) 18px!important}
+#app .chat-shell .thread{max-width:74ch!important}
+#app .chat-shell .bubble.bot{background:rgba(25,27,31,.72)!important;border:1px solid rgba(255,255,255,.07)!important;line-height:1.72!important}
+#app .chat-shell .bubble.user{background:rgba(215,164,75,.12)!important;border:1px solid rgba(215,164,75,.19)!important}
+#app .chat-shell .input-area{padding:10px clamp(12px,3vw,34px) 17px!important;background:linear-gradient(0deg,rgba(10,11,13,.98),rgba(10,11,13,.66))!important}
+#app .chat-shell .input-glass{max-width:850px!important;background:rgba(28,29,33,.88)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:17px!important}
+#app .chat-shell .input-glass:focus-within{border-color:rgba(215,164,75,.48)!important;box-shadow:0 0 0 3px rgba(215,164,75,.09)!important}
+.zw-hud{max-width:850px;margin:0 auto 8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-height:27px}
+.zw-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.045);border:1px solid var(--zw-line);color:#c7c5bd;font-size:10px}
+.zw-chip button{border:0;background:none;color:#8c8c91;cursor:pointer;padding:0 1px}
+.zw-preflight{max-width:850px;margin:0 auto 7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.zw-preflight button,.zw-mini{border:1px solid var(--zw-line);background:rgba(255,255,255,.035);color:#aaa9a3;border-radius:999px;padding:5px 9px;font-size:10px;cursor:pointer;transition:all .2s}
+.zw-preflight button.active,.zw-mini.active{color:#f3d7a4;border-color:rgba(215,164,75,.38);background:rgba(215,164,75,.10)}
+.zw-workbench{width:0;min-width:0;flex:0 0 0;opacity:0;overflow:hidden;border-radius:19px;background:rgba(18,19,22,.9);border:1px solid transparent;display:flex;flex-direction:column;transition:width .38s var(--zw-ease),flex-basis .38s var(--zw-ease),opacity .25s,border-color .25s}
+.zw-workbench.open{width:min(43vw,620px);flex-basis:min(43vw,620px);min-width:320px;opacity:1;border-color:var(--zw-line)}
+.zw-workbench-head{padding:16px 16px 10px;border-bottom:1px solid var(--zw-line)}
+.zw-workbench-title{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:650;color:#f1eee7}
+.zw-tabs{display:flex;gap:5px;margin-top:14px}
+.zw-tabs button{flex:1;padding:8px 5px;border:1px solid transparent;border-radius:9px;background:transparent;color:#96969b;font-size:10px;cursor:pointer}
+.zw-tabs button.active{background:rgba(215,164,75,.1);border-color:rgba(215,164,75,.22);color:#f0d5a5}
+.zw-panel-body{padding:15px;overflow:auto;flex:1;min-height:0;color:#d9d7d0;font-size:12px}
+.zw-panel-body pre{white-space:pre-wrap;overflow:auto;background:#101114;border:1px solid var(--zw-line);padding:13px;border-radius:12px;color:#d9c7a4;font:11px/1.65 'JetBrains Mono',monospace}
+.zw-preview{background:#f7f6f1;color:#252525;border-radius:12px;min-height:220px;padding:18px}
+.zw-preview h3{font:600 22px Georgia;margin:0 0 10px}
+.zw-preview button{background:#282b31;color:white;border:0;border-radius:8px;padding:8px 12px}
+.zw-pin{border:1px solid var(--zw-line);background:rgba(255,255,255,.025);padding:12px;border-radius:12px;margin-bottom:9px;cursor:grab}
+.zw-pin p{margin:0 0 9px;line-height:1.6;color:#dedbd3}
+.zw-pin small{color:#92939a}
+.zw-context-row{display:flex;justify-content:space-between;gap:8px;padding:11px 0;border-bottom:1px solid var(--zw-line)}
+.zw-context-row span:last-child{color:#a4a19a}
+.zw-msg-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;opacity:.72}
+.zw-msg-actions button{border:1px solid var(--zw-line);background:rgba(255,255,255,.025);color:#a9a8a1;border-radius:8px;padding:5px 8px;font-size:10px;cursor:pointer}
+.zw-msg-actions button:hover{color:#f0d5a5;border-color:rgba(215,164,75,.32)}
+.zw-branch-pill{display:inline-flex;align-items:center;gap:8px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.04);font-size:10px;color:#b9b6ae;margin-top:8px}
+.zw-branch-pill button{border:0;background:none;color:#e1c18b;cursor:pointer}
+.zw-modal-layer{position:fixed;inset:0;z-index:130;display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 20px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px)}
+.zw-modal-layer.show{display:flex}
+.zw-modal{width:min(620px,100%);max-height:72vh;overflow:auto;background:rgba(23,24,28,.97);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 30px 100px #0009;padding:16px}
+.zw-modal input{width:100%;padding:14px;border:1px solid var(--zw-line);border-radius:12px;background:#111216;color:#fff;outline:0}
+.zw-result{padding:11px;border-radius:9px;color:#ccc;cursor:pointer;font-size:12px}
+.zw-result:hover{background:rgba(215,164,75,.1)}
+.zw-selection{position:fixed;z-index:140;display:none;gap:4px;align-items:center;padding:6px;background:rgba(26,27,31,.96);border:1px solid rgba(255,255,255,.14);border-radius:12px;box-shadow:0 12px 40px #0008;backdrop-filter:blur(18px)}
+.zw-selection.show{display:flex}
+.zw-selection button{border:0;border-radius:7px;padding:7px 8px;background:rgba(255,255,255,.06);color:#eee;font-size:10px;cursor:pointer}
+.zw-selection input{width:120px;background:transparent;border:0;color:white;font-size:10px;outline:0}
+.zw-jump{position:absolute;z-index:8;bottom:112px;left:50%;transform:translateX(-50%);display:none;border:1px solid rgba(215,164,75,.25);background:rgba(27,27,29,.95);color:#f2d7a8;border-radius:999px;padding:9px 14px;font-size:11px;cursor:pointer;box-shadow:0 8px 25px #0006}
+.zw-jump.show{display:block}
+.zw-light{--zw-panel:#fff;--zw-line:rgba(25,25,25,.12);--zw-muted:#6d6a63;--zw-text:#24231f}
+html[data-zw-theme="light"] #app .chat-shell{background:rgba(250,249,246,.97)!important;color:#282722}
+html[data-zw-theme="light"] #app .chat-shell .dream-topbar,html[data-zw-theme="light"] #app .chat-shell .input-area{background:rgba(250,249,246,.94)!important}
+html[data-zw-theme="light"] #app .chat-shell .bubble.bot{background:#fff!important;color:#26251f!important;border-color:#e7e4dc!important}
+html[data-zw-theme="light"] #app .chat-shell .bubble.user{background:#f4e9d2!important;color:#30291e!important}
+html[data-zw-theme="light"] #app .chat-shell .input-glass{background:#fff!important}
+html[data-zw-theme="light"] #app .chat-shell .input-glass textarea{color:#222}
+html[data-zw-theme="light"] #app .chat-shell .dream-current-title{color:#282722}
+html[data-zw-theme="light"] .zw-workbench{background:#f8f7f3;color:#292821}
+html[data-zw-theme="light"] .zw-panel-body{color:#333}
+@media(max-width:1050px){.zw-workbench.open{position:fixed;z-index:65;right:10px;top:10px;bottom:10px;width:min(520px,calc(100vw - 20px));min-width:0;flex-basis:auto;box-shadow:0 20px 90px #0009}}
+@media(max-width:700px){#app{padding:0!important;gap:0!important}#app .sidebar{position:fixed!important;z-index:80!important;left:0;top:0;bottom:0;width:min(260px,84vw)!important;min-width:0!important;transform:translateX(-105%)}#app .sidebar.open{transform:none!important}#app .sidebar.rail-collapsed{transform:translateX(-105%)!important}.zw-workbench.open{top:5px;right:5px;bottom:5px;width:calc(100vw - 10px)}#app .chat-shell{border-radius:0!important}.zw-preflight{padding:0 4px}}
+@media(prefers-reduced-motion:reduce){.zw-workbench,.zw-rail-controls button,.zw-selection{transition:none!important}}
+</style>
+
+<script id="zynx-workspace-engine">
+(() => {
+'use strict';
+const $=(q,r=document)=>r.querySelector(q), $=(q,r=document)=>Array.from(r.querySelectorAll(q));
+const app=$('#app'), sidebar=$('#sidebar'), chat=$('.chat-shell'), messages=$('#messages'), thread=$('#thread'), input=$('#input');
+if(!app||!chat||!messages||!thread||!input)return;
+const KEY='zynx_workspace_v1';
+let saved={pins:[],chips:['Mode: Balanced'],folders:['Personal','Projects','Research'],theme:'dark'};
+try{saved=Object.assign(saved,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch{}
+let depth='Balanced',format='Auto',activeTab='preview',artifactVersion=2,branches={},follow=true,lastSelection='';
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(saved))}catch{}};
+const toast=(m)=>{const t=$('#toast');if(t){t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)}};
+const esc=(s)=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icon=(s)=>'<span class="zw-glyph">'+s+'</span>';
+/* Sidebar quick actions and folder tree */
+const rail=document.createElement('div');rail.className='zw-rail-top';rail.innerHTML='<div class="mark" style="--s:34px"><svg viewBox="0 0 64 64"><use href="#zlogo"/></svg></div>';
+sidebar.insertBefore(rail,sidebar.firstChild);
+const railControls=document.createElement('nav');railControls.className='zw-rail-controls';railControls.innerHTML=
+'<button data-zact="new">'+icon('+')+'<span>New conversation</span></button>'+
+'<button data-zact="palette">'+icon('⌕')+'<span>Search everything <kbd>⌘ K</kbd></span></button>'+
+'<button data-zact="scratch">'+icon('▦')+'<span>Scratchpad pinboard</span></button>'+
+'<button data-zact="templates">'+icon('✧')+'<span>Prompt library</span></button>'+
+'<button data-zact="tree">'+icon('⑂')+'<span>Conversation map</span></button>'+
+'<div class="zw-folders"><div class="zw-section-label">PINNED WORKSPACES</div><div class="zw-folder-list"></div><button data-zact="folder" class="zw-folder">＋ Create folder</button></div>';
+sidebar.insertBefore(railControls,rail.nextSibling);
+function paintFolders(){const box=$('.zw-folder-list',railControls);box.innerHTML=saved.folders.map((f,i)=>'<div class="zw-folder" draggable="true" data-folder="'+i+'">▰ '+esc(f)+'<small>↕</small></div>').join('')}
+paintFolders();
+railControls.addEventListener('click',e=>{const b=e.target.closest('[data-zact]');if(!b)return;const a=b.dataset.zact;if(a==='new')$('#newChatBtn')?.click();if(a==='palette')openPalette();if(a==='scratch')openWorkbench('scratch');if(a==='templates')openPalette(true);if(a==='tree')openTree();if(a==='folder'){const n=prompt('Name this workspace folder');if(n?.trim()){saved.folders.push(n.trim());persist();paintFolders()}}});
+let dragFolder=null;railControls.addEventListener('dragstart',e=>{dragFolder=e.target.closest('[data-folder]')?.dataset.folder});railControls.addEventListener('dragover',e=>{if(e.target.closest('[data-folder]'))e.preventDefault()});railControls.addEventListener('drop',e=>{const target=e.target.closest('[data-folder]');if(!target||dragFolder===null)return;e.preventDefault();const from=Number(dragFolder),to=Number(target.dataset.folder);const item=saved.folders.splice(from,1)[0];saved.folders.splice(to,0,item);persist();paintFolders();dragFolder=null});
+/* Main topbar controls */
+const topActions=$('.dream-top-actions');if(topActions){const wb=document.createElement('button');wb.className='dream-top-action';wb.textContent='Workbench  ⌘ .';wb.addEventListener('click',()=>toggleWorkbench());topActions.prepend(wb);
+const theme=document.createElement('button');theme.className='dream-top-action';theme.textContent=saved.theme==='light'?'Dark mode':'Light mode';theme.addEventListener('click',()=>setTheme(saved.theme==='light'?'dark':'light'));topActions.prepend(theme)}
+const workbench=document.createElement('aside');workbench.className='zw-workbench';workbench.setAttribute('aria-label','Live workbench');workbench.innerHTML=
+'<div class="zw-workbench-head"><div class="zw-workbench-title"><span>Studio workbench</span><button class="zw-mini" data-wb-close>Close ×</button></div><div class="zw-tabs"><button data-tab="preview" class="active">Live preview</button><button data-tab="scratch">Pinboard</button><button data-tab="context">Context</button></div></div><div class="zw-panel-body" id="zw-panel-body"></div>';
+app.appendChild(workbench);
+const body=$('#zw-panel-body',workbench);
+function openWorkbench(tab){workbench.classList.add('open');if(tab)activeTab=tab;paintWorkbench()}
+function toggleWorkbench(){workbench.classList.toggle('open');if(workbench.classList.contains('open'))paintWorkbench()}
+function paintWorkbench(){
+$('[data-tab]',workbench).forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));
+if(activeTab==='preview'){body.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div><b>Artifact studio</b><div style="font-size:10px;color:#999;margin-top:4px">Interactive preview · Version history</div></div><select id="zw-version" class="zw-mini"><option>v1</option><option selected>v2</option><option>v3</option></select></div><div class="zw-preview" id="zw-live-preview"><div style="font:10px Arial;color:#777;letter-spacing:.16em">ZYNX / CONCEPT</div><h3>Ideas, in motion.</h3><p style="font:13px/1.6 Arial;color:#555">A live artifact canvas for prototypes, notes and interactive components.</p><button id="zw-demo-action">Try interaction</button><div id="zw-demo-result" style="font:11px Arial;color:#777;margin-top:12px">Preview is ready.</div></div><div style="display:flex;gap:7px;margin:12px 0"><button class="zw-mini" id="zw-toggle-code">Show code</button><button class="zw-mini" id="zw-copy-code">Copy</button><button class="zw-mini" id="zw-download-code">Download HTML</button></div><pre id="zw-code" hidden>&lt;main class="concept"&gt;\n  &lt;h1&gt;Ideas, in motion.&lt;/h1&gt;\n  &lt;p&gt;A live artifact canvas.&lt;/p&gt;\n  &lt;button&gt;Try interaction&lt;/button&gt;\n&lt;/main&gt;</pre><div style="font-size:10px;color:#85858a;margin-top:12px">Demo artifact · Code rendering is sandboxed to this preview.</div>';
+$('#zw-demo-action')?.addEventListener('click',()=>$('#zw-demo-result').textContent='Interaction triggered at '+new Date().toLocaleTimeString());
+$('#zw-toggle-code')?.addEventListener('click',()=>{$('#zw-code').hidden=!$('#zw-code').hidden;$('#zw-toggle-code').textContent=$('#zw-code').hidden?'Show code':'Hide code'});
+$('#zw-copy-code')?.addEventListener('click',()=>copyText('<main class="concept"><h1>Ideas, in motion.</h1><p>A live artifact canvas.</p><button>Try interaction</button></main>'));
+$('#zw-download-code')?.addEventListener('click',()=>downloadText('zynx-artifact.html','<!doctype html><title>Zynx artifact</title><main><h1>Ideas, in motion.</h1><p>A live artifact canvas.</p></main>'));
+$('#zw-version')?.addEventListener('change',e=>{artifactVersion=Number(e.target.value.slice(1));toast('Preview switched to '+e.target.value)});
+}else if(activeTab==='scratch'){body.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><b>Scratchpad pinboard</b><button class="zw-mini" id="zw-export-pins">Export Markdown</button></div><p style="color:#96969a;font-size:11px;line-height:1.6">Pinned excerpts stay here while you work. Drag cards to reorder them.</p><div id="zw-pins">'+(saved.pins.length?saved.pins.map((p,i)=>'<article class="zw-pin" draggable="true" data-pin="'+i+'"><p>'+esc(p.text)+'</p><small>'+esc(p.source||'Pinned reply')+'</small><button class="zw-mini" data-remove-pin="'+i+'" style="float:right">Remove</button></article>').join(''):'<div class="zw-pin"><p>Your pinboard is ready.</p><small>Use “Pin to Context” on an assistant response to collect useful passages.</small></div>')+'</div>';
+$('#zw-export-pins')?.addEventListener('click',()=>downloadText('zynx-scratchpad.md',saved.pins.map(p=>'## '+(p.source||'Pinned excerpt')+'\n\n'+p.text).join('\n\n---\n\n')||'# Zynx Scratchpad'));
+$('[data-remove-pin]',body).forEach(b=>b.addEventListener('click',()=>{saved.pins.splice(Number(b.dataset.removePin),1);persist();paintWorkbench()}));
+let moving=null;$('#zw-pins')?.addEventListener('dragstart',e=>{moving=e.target.closest('[data-pin]')?.dataset.pin});$('#zw-pins')?.addEventListener('dragover',e=>{if(e.target.closest('[data-pin]'))e.preventDefault()});$('#zw-pins')?.addEventListener('drop',e=>{const t=e.target.closest('[data-pin]');if(!t||moving===null)return;e.preventDefault();const p=saved.pins.splice(Number(moving),1)[0];saved.pins.splice(Number(t.dataset.pin),0,p);persist();paintWorkbench()});
+}else{body.innerHTML='<b>Context inspector</b><p style="color:#96969a;font-size:11px;line-height:1.6">A transparent view of the context items you have pinned in this workspace.</p><div class="zw-context-row"><span>Active conversation</span><span>'+(($('#chatTitle')?.textContent)||'New chat')+'</span></div><div class="zw-context-row"><span>Pinned excerpts</span><span>'+saved.pins.length+'</span></div><div class="zw-context-row"><span>Uploaded files</span><span>0 detected</span></div><div class="zw-context-row"><span>Response depth</span><span>'+depth+'</span></div><div class="zw-context-row"><span>Format lock</span><span>'+format+'</span></div><p style="font-size:10px;color:#8e8d88;margin-top:18px">System instructions and hidden model internals are not exposed in this inspector.</p>'}
+}
+workbench.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){activeTab=t.dataset.tab;paintWorkbench()}if(e.target.closest('[data-wb-close]'))workbench.classList.remove('open')});
+function copyText(t){if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>toast('Copied')).catch(()=>toast('Copy unavailable'));else toast('Clipboard unavailable')}
+function downloadText(name,txt){const u=URL.createObjectURL(new Blob([txt],{type:'text/markdown'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+/* Composer HUD + depth and output-format locks */
+const inputArea=$('.input-area',chat),inputGlass=$('.input-glass',inputArea);
+const hud=document.createElement('div');hud.className='zw-hud';hud.id='zw-hud';inputArea.insertBefore(hud,inputGlass);
+const pre=document.createElement('div');pre.className='zw-preflight';pre.innerHTML='<span style="font-size:9px;color:#777;margin-right:3px">DEPTH</span>'+['Quick','Balanced','Deep'].map(x=>'<button data-depth="'+x+'" class="'+(x===depth?'active':'')+'">'+x+'</button>').join('')+'<span style="font-size:9px;color:#777;margin:0 3px 0 8px">FORMAT</span>'+['Auto','Table','Steps','Code'].map(x=>'<button data-format="'+x+'" class="'+(x===format?'active':'')+'">'+x+'</button>').join('');
+inputArea.insertBefore(pre,hud.nextSibling);
+function paintHud(){hud.innerHTML=saved.chips.map((c,i)=>'<span class="zw-chip">'+esc(c)+' <button data-chip-remove="'+i+'" aria-label="Remove context chip">×</button></span>').join('')+(saved.pins.length?'<span class="zw-chip">📌 '+saved.pins.length+' pinned replies</span>':'');}
+paintHud();
+hud.addEventListener('click',e=>{const b=e.target.closest('[data-chip-remove]');if(b){saved.chips.splice(Number(b.dataset.chipRemove),1);persist();paintHud()}});
+pre.addEventListener('click',e=>{const d=e.target.closest('[data-depth]'),f=e.target.closest('[data-format]');if(d){depth=d.dataset.depth;$('[data-depth]',pre).forEach(x=>x.classList.toggle('active',x===d))}if(f){format=f.dataset.format;$('[data-format]',pre).forEach(x=>x.classList.toggle('active',x===f))}if(d||f)toast('Prompt settings: '+depth+' · '+format)});
+const slash=document.createElement('div');slash.className='zw-modal-layer';slash.id='zw-slash';slash.innerHTML='<div class="zw-modal"><b>Prompt library</b><div id="zw-template-list" style="margin-top:12px"></div></div>';document.body.appendChild(slash);
+const templates=[['Explain clearly','Explain this in clear, structured language with an example: '],['Research brief','Research this topic and separate verified facts from uncertainty: '],['Build a plan','Create a practical plan with milestones and next actions for: '],['Debug code','Help me debug this code. Explain the root cause and corrected version: ']];
+function openTemplates(){slash.classList.add('show');$('#zw-template-list').innerHTML=templates.map((t,i)=>'<div class="zw-result" data-template="'+i+'">'+esc(t[0])+' <span style="color:#888">↗</span></div>').join('')}
+slash.addEventListener('click',e=>{if(e.target===slash)slash.classList.remove('show');const t=e.target.closest('[data-template]');if(t){input.value=templates[Number(t.dataset.template)][1];input.focus();input.dispatchEvent(new Event('input',{bubbles:true}));slash.classList.remove('show')}});
+input.addEventListener('input',()=>{const v=input.value;if(v.startsWith('/')&&!v.includes(' '))openTemplates();else slash.classList.remove('show')});
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&input.value.startsWith('/')){e.preventDefault();openTemplates()}});
+/* Command palette */
+const palette=document.createElement('div');palette.className='zw-modal-layer';palette.id='zw-palette';palette.innerHTML='<div class="zw-modal"><input id="zw-search" placeholder="Search chats, snippets, artifacts and prompts…" autocomplete="off"><div id="zw-results" style="margin-top:10px"></div><div style="font-size:10px;color:#777;margin:12px 4px 2px">↑ ↓ navigate · Enter open · Esc close</div></div>';document.body.appendChild(palette);
+function openPalette(templatesOnly=false){palette.classList.add('show');const inp=$('#zw-search');inp.value=templatesOnly?'/':'';paintResults();setTimeout(()=>inp.focus(),20)}
+function paintResults(){const q=$('#zw-search').value.toLowerCase();const entries=[...templates.map(t=>({name:t[0],desc:'Prompt template',action:()=>{input.value=t[1];input.focus();palette.classList.remove('show')}})),...saved.pins.map((p,i)=>({name:p.text.slice(0,75),desc:'Pinned snippet',action:()=>{openWorkbench('scratch');palette.classList.remove('show')}})),{name:'Open live workbench',desc:'Preview · Pinboard · Context',action:()=>{openWorkbench();palette.classList.remove('show')}},{name:'Conversation tree map',desc:'Branches and versions',action:()=>{openTree();palette.classList.remove('show')}},...$('.chat-item').map(x=>({name:x.textContent.trim(),desc:'Conversation',action:()=>{x.click();palette.classList.remove('show')}}))];$('#zw-results').innerHTML=entries.filter(x=>(!q||q==='/'||x.name.toLowerCase().includes(q)||x.desc.toLowerCase().includes(q))).slice(0,12).map((x,i)=>'<div class="zw-result" data-result="'+i+'"><b>'+esc(x.name)+'</b><div style="color:#888;font-size:10px;margin-top:3px">'+esc(x.desc)+'</div></div>').join('');palette._entries=entries.filter(x=>(!q||q==='/'||x.name.toLowerCase().includes(q)||x.desc.toLowerCase().includes(q))).slice(0,12)}
+$('#zw-search').addEventListener('input',paintResults);$('#zw-results').addEventListener('click',e=>{const b=e.target.closest('[data-result]');if(b)palette._entries[Number(b.dataset.result)]?.action()});palette.addEventListener('click',e=>{if(e.target===palette)palette.classList.remove('show')});
+/* Visual tree map */
+const tree=document.createElement('div');tree.className='zw-modal-layer';tree.id='zw-tree';tree.innerHTML='<div class="zw-modal"><div style="display:flex;justify-content:space-between"><b>Conversation map</b><button class="zw-mini" data-tree-close>Close ×</button></div><div id="zw-tree-content" style="padding:18px 4px"></div></div>';document.body.appendChild(tree);
+function openTree(){tree.classList.add('show');const count=$('.row',thread).length;$('#zw-tree-content').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div class="zw-pin" style="width:min(320px,100%);text-align:center"><b>Current conversation</b><div style="font-size:10px;color:#888;margin-top:4px">'+count+' visible messages</div></div><div style="color:#888">│</div><div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center"><div class="zw-pin">Main path<br><small>Current branch</small></div><div class="zw-pin">Fork A<br><small>Local preview branch</small></div></div><p style="font-size:10px;color:#888;text-align:center">Branch map is a local UI prototype; server-persisted branching is not connected yet.</p></div>'}
+tree.addEventListener('click',e=>{if(e.target===tree||e.target.closest('[data-tree-close]'))tree.classList.remove('show')});
+/* Assistant response controls, context pinning and fork controls */
+function enhanceRow(row){
+if(row.dataset.zwEnhanced)return;const bubble=$('.bubble.bot',row);if(!bubble||bubble.classList.contains('err'))return;row.dataset.zwEnhanced='1';
+const bar=document.createElement('div');bar.className='zw-msg-actions';bar.innerHTML='<button data-msg-pin>＋ Pin to Context</button><button data-msg-fork>⑂ Fork from here</button><button data-msg-artifact>▣ Open in Studio</button>';
+bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const text=(bubble.innerText||'').trim();if(b.hasAttribute('data-msg-pin')){saved.pins.push({text,source:'Assistant response'});persist();paintHud();toast('Pinned to context');if(activeTab==='scratch')paintWorkbench()}else if(b.hasAttribute('data-msg-fork')){const idx=Number(row.dataset.branchIndex||0);const key='m'+idx;branches[key]=(branches[key]||1)+1;let pill=$('.zw-branch-pill',row);if(!pill){pill=document.createElement('div');pill.className='zw-branch-pill';row.appendChild(pill)}pill.innerHTML='<button data-branch-prev>‹</button><span>'+branches[key]+' / '+branches[key]+'</span><button data-branch-next>›</button>';toast('Fork preview created · server history unchanged')}else{openWorkbench('preview')}});
+row.appendChild(bar);
+}
+function enhanceAll(){ $('.row',thread).forEach((r,i)=>{r.dataset.branchIndex=i;enhanceRow(r)})}
+new MutationObserver(()=>enhanceAll()).observe(thread,{childList:true,subtree:true});
+enhanceAll();
+/* Highlight-to-edit selection toolbar */
+const selection=document.createElement('div');selection.className='zw-selection';selection.id='zw-selection';selection.innerHTML='<button data-edit="Shorten">Shorten</button><button data-edit="Expand">Expand</button><button data-edit="Rewrite Tone">Tone</button><button data-edit="Explain">Explain</button><input id="zw-inline-prompt" placeholder="Custom edit…"><button data-edit="Custom">↵</button>';document.body.appendChild(selection);
+let selectedRange=null;
+document.addEventListener('mouseup',e=>{if(selection.contains(e.target))return;const sel=getSelection();if(!sel||sel.isCollapsed)return;const node=sel.anchorNode?.parentElement?.closest('.bubble.bot');if(!node)return;lastSelection=sel.toString();if(!lastSelection.trim())return;selectedRange=sel.getRangeAt(0).cloneRange();const rect=selectedRange.getBoundingClientRect();selection.style.left=Math.max(8,Math.min(innerWidth-390,rect.left))+'px';selection.style.top=Math.max(8,rect.top-52)+'px';selection.classList.add('show')});
+document.addEventListener('mousedown',e=>{if(!selection.contains(e.target))selection.classList.remove('show')});
+selection.addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if(!b||!selectedRange)return;const action=b.dataset.edit;let replacement=lastSelection;if(action==='Shorten')replacement=lastSelection.split(/\\s+/).slice(0,Math.max(4,Math.ceil(lastSelection.split(/\\s+/).length*.55))).join(' ');if(action==='Expand')replacement=lastSelection+' — with additional context and a concrete example.';if(action==='Rewrite Tone')replacement=lastSelection.replace(/\\b(utilize)\\b/gi,'use').replace(/\\b(therefore)\\b/gi,'so');if(action==='Explain')replacement=lastSelection+' (In simpler terms: '+lastSelection+'.)';if(action==='Custom'){const prompt=$('#zw-inline-prompt').value.trim();if(!prompt){toast('Enter a short edit instruction');return}replacement=lastSelection+' ['+prompt+']'}try{selectedRange.deleteContents();selectedRange.insertNode(document.createTextNode(replacement));selection.classList.remove('show');toast('Selected passage updated locally')}catch{toast('Select text within one paragraph and try again')}});
+/* Smart auto-scroll yields when user scrolls upward */
+const jump=document.createElement('button');jump.className='zw-jump';jump.textContent='↓ Jump to latest';chat.appendChild(jump);
+messages.addEventListener('wheel',e=>{if(e.deltaY<0){follow=false;jump.classList.add('show')}});
+messages.addEventListener('touchstart',()=>{messages.dataset.touchY='0'},{passive:true});
+messages.addEventListener('touchmove',()=>{if(messages.scrollTop<messages.scrollHeight-messages.clientHeight-40){follow=false;jump.classList.add('show')}},{passive:true});
+messages.addEventListener('scroll',()=>{if(messages.scrollHeight-messages.scrollTop-messages.clientHeight<36){follow=true;jump.classList.remove('show')}});
+const originalScroll=window.__zynxAutoScroll;window.__zynxWorkspaceFollow=()=>{if(follow)messages.scrollTop=messages.scrollHeight};
+jump.addEventListener('click',()=>{follow=true;jump.classList.remove('show');messages.scrollTo({top:messages.scrollHeight,behavior:'smooth'})});
+/* Theme, responsive rail, keyboard shortcuts and Escape */
+function setTheme(t){saved.theme=t;persist();document.documentElement.dataset.zwTheme=t;const b=$('.dream-top-actions button').find(x=>x.textContent.includes('mode'));if(b)b.textContent=t==='light'?'Dark mode':'Light mode'}
+setTheme(saved.theme);
+$('#toggleSidebar')?.addEventListener('dblclick',()=>sidebar.classList.toggle('rail-collapsed'));
+document.addEventListener('keydown',e=>{
+const mac=/Mac|iPhone|iPad/.test(navigator.platform),mod=mac?e.metaKey:e.ctrlKey;
+if(mod&&e.key.toLowerCase()==='k'){e.preventDefault();openPalette()}
+if(mod&&e.key==='.' ){e.preventDefault();toggleWorkbench()}
+if(mod&&e.shiftKey&&e.key.toLowerCase()==='o'){e.preventDefault();$('#newChatBtn')?.click()}
+if(e.key==='Escape'){palette.classList.remove('show');slash.classList.remove('show');tree.classList.remove('show');selection.classList.remove('show');if(workbench.classList.contains('open'))workbench.classList.remove('open');if(window.__zynxStreamController){window.__zynxStreamController.abort();toast('Generation stopped · partial response preserved')}}
+});
+/* Slash / mention affordances and context chips */
+input.addEventListener('keydown',e=>{if(e.key==='@'){setTimeout(()=>{if(!hud.querySelector('[data-mention]')){const chip=document.createElement('span');chip.className='zw-chip';chip.dataset.mention='1';chip.textContent='@ Recent chats / files';hud.appendChild(chip)}},0)}});
+/* Drag-to-pin: select and drag text snippets onto pinboard drop target */
+workbench.addEventListener('dragover',e=>{if(activeTab==='scratch')e.preventDefault()});
+workbench.addEventListener('drop',e=>{if(activeTab!=='scratch')return;e.preventDefault();const text=e.dataTransfer?.getData('text/plain');if(text){saved.pins.push({text,source:'Dragged excerpt'});persist();paintWorkbench();paintHud()}});
+/* Mark chat bubbles as draggable text sources */
+thread.addEventListener('dragstart',e=>{const b=e.target.closest('.bubble.bot');if(b)e.dataTransfer.setData('text/plain',getSelection()?.toString()||b.innerText)});
+thread.addEventListener('dblclick',e=>{const b=e.target.closest('.bubble.bot');if(b){const sel=getSelection();if(sel&&!sel.isCollapsed){const t=document.createElement('span');t.textContent='Pinned excerpt';}}});
+/* Mock interactive structured blocks in Studio: parameter trade-off */
+const mock=document.createElement('div');mock.style.cssText='margin-top:14px;padding:13px;border:1px solid var(--zw-line);border-radius:12px;background:rgba(255,255,255,.025)';
+mock.innerHTML='<b style="font-size:11px">Interactive trade-off calculator</b><p style="font-size:10px;color:#999">Adjust the example parameter to see the estimate update.</p><label style="font-size:10px">Complexity <strong id="zw-complexity-value">50</strong></label><input id="zw-complexity" type="range" min="0" max="100" value="50" style="width:100%;accent-color:#d7a44b"><div id="zw-complexity-result" style="font-size:11px;color:#d8bd8c;margin-top:6px">Balanced profile · 50/100</div>';
+if(activeTab==='preview'){} 
+workbench.addEventListener('change',e=>{if(e.target.id==='zw-complexity'){const v=Number(e.target.value);$('#zw-complexity-value').textContent=v;$('#zw-complexity-result').textContent=(v<35?'Lean profile':v<70?'Balanced profile':'High-complexity profile')+' · '+v+'/100'}});
+/* Ensure the calculator is visible after preview is rendered */
+const oldPaint=paintWorkbench;
+const observer=new MutationObserver(()=>{if(activeTab==='preview'&&$('#zw-live-preview')&&!$('#zw-complexity'))$('#zw-live-preview').after(mock)});
+observer.observe(body,{childList:true});
+paintWorkbench();
+})();
+</script>
 </body>
 </html>
