@@ -2105,10 +2105,13 @@ html,body{font-size:14px!important}
       if (S.voiceReplies) speakReply(d.assistant_message.content);
     } catch (e) {
       typing.remove();
-      if (e.status === 404) S.chatId = null;
-      el.empty.style.display = 'none';
-      addRow('assistant', e.message || 'Something went wrong. Mind trying again?', true);
-      if (!el.input.value) { el.input.value = text; }
+      if (e.name === 'AbortError') { toast('Generation stopped'); }
+      else {
+        if (e.status === 404) S.chatId = null;
+        el.empty.style.display = 'none';
+        addRow('assistant', e.message || 'Something went wrong. Mind trying again?', true);
+        if (!el.input.value) { el.input.value = text; }
+      }
     } finally {
       S.sending = false; resize(); setBotState(document.activeElement === el.input ? 'listening' : 'idle'); if (!isMobile()) el.input.focus();
     }
@@ -2405,9 +2408,8 @@ html,body{font-size:14px!important}
         signal: controller.signal
       });
     } catch (error) {
-      throw new Error(error?.name === 'AbortError'
-        ? 'Zynx took too long to reply. Please try again.'
-        : "Can't reach Zynx. Check your connection and try again.");
+      if (controller.signal.aborted) throw Object.assign(new Error('Generation stopped'), { name: 'AbortError' });
+      throw new Error("Can't reach Zynx. Check your connection and try again.");
     } finally {
       clearTimeout(timeoutId);
     }
@@ -2438,7 +2440,7 @@ html,body{font-size:14px!important}
         }
         rendered += event.text || '';
         assistantBubble.textContent = rendered;
-        el.messages.scrollTop = el.messages.scrollHeight;
+        if (!window.__zynxWorkspaceFollow || window.__zynxWorkspaceFollow()) el.messages.scrollTop = el.messages.scrollHeight;
       } else if (event.type === 'done') {
         finalData = event;
       } else if (event.type === 'error') {
@@ -4131,6 +4133,7 @@ let moving=null;q1('#zw-pins')?.addEventListener('dragstart',e=>{moving=e.target
 }else{body.innerHTML='<b>Context inspector</b><p style="color:#96969a;font-size:11px;line-height:1.6">A transparent view of the context items you have pinned in this workspace.</p><div class="zw-context-row"><span>Active conversation</span><span>'+((q1('#chatTitle')?.textContent)||'New chat')+'</span></div><div class="zw-context-row"><span>Pinned excerpts</span><span>'+saved.pins.length+'</span></div><div class="zw-context-row"><span>Uploaded files</span><span>0 detected</span></div><div class="zw-context-row"><span>Response depth</span><span>'+depth+'</span></div><div class="zw-context-row"><span>Format lock</span><span>'+format+'</span></div><p style="font-size:10px;color:#8e8d88;margin-top:18px">System instructions and hidden model internals are not exposed in this inspector.</p>'}
 }
 workbench.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){activeTab=t.dataset.tab;paintWorkbench()}if(e.target.closest('[data-wb-close]'))workbench.classList.remove('open')});
+thread.addEventListener('click',e=>{const p=e.target.closest('[data-branch-prev]'),n=e.target.closest('[data-branch-next]');if(!p&&!n)return;const row=e.target.closest('.row'),pill=e.target.closest('.zw-branch-pill'),span=$('.zw-branch-pill span',row);let v=Number((span.textContent.split('/')[0]||'2').trim());v=Math.max(1,Math.min(3,v+(n?1:-1)));span.textContent=v+' / 3';toast('Branch view '+v+' of 3 · local preview')});
 function copyText(t){if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>toast('Copied')).catch(()=>toast('Copy unavailable'));else toast('Clipboard unavailable')}
 function downloadText(name,txt){const u=URL.createObjectURL(new Blob([txt],{type:'text/markdown'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
 /* Composer HUD + depth and output-format locks */
@@ -4179,7 +4182,7 @@ messages.addEventListener('wheel',e=>{if(e.deltaY<0){follow=false;jump.classList
 messages.addEventListener('touchstart',()=>{messages.dataset.touchY='0'},{passive:true});
 messages.addEventListener('touchmove',()=>{if(messages.scrollTop<messages.scrollHeight-messages.clientHeight-40){follow=false;jump.classList.add('show')}},{passive:true});
 messages.addEventListener('scroll',()=>{if(messages.scrollHeight-messages.scrollTop-messages.clientHeight<36){follow=true;jump.classList.remove('show')}});
-const originalScroll=window.__zynxAutoScroll;window.__zynxWorkspaceFollow=()=>{if(follow)messages.scrollTop=messages.scrollHeight};
+const originalScroll=window.__zynxAutoScroll;window.__zynxWorkspaceFollow=()=>{if(follow){messages.scrollTop=messages.scrollHeight;return true}return false};
 jump.addEventListener('click',()=>{follow=true;jump.classList.remove('show');messages.scrollTo({top:messages.scrollHeight,behavior:'smooth'})});
 /* Theme, responsive rail, keyboard shortcuts and Escape */
 function setTheme(t){saved.theme=t;persist();document.documentElement.dataset.zwTheme=t;const b=q1('.dream-top-actions button').find(x=>x.textContent.includes('mode'));if(b)b.textContent=t==='light'?'Dark mode':'Light mode'}
