@@ -2132,8 +2132,8 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
       </button>
       <a class="zynx-sidebar-link zynx-game-link" id="gameCornerBtn" href="/game-corner/" aria-label="Open Game Corner">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="12" rx="3"/><path d="M8 11v4m-2-2h4m6-1h.01M18 14h.01"/></svg>
-        Game Corner
-        <span class="zynx-game-soon">SPACE</span>
+        <span class="zynx-game-label">Game Corner</span>
+        <span class="zynx-game-soon">PLAY</span>
       </a>
       <div class="zynx-history-heading">CONVERSATION HISTORY</div>
       <label class="zynx-chat-search" aria-label="Search conversation history">
@@ -5369,6 +5369,31 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
   .zynx-video-panel select option{background:#111215;color:#f5f5fa}
   @media(max-width:700px){#welcome .zynx-feature-showcase{padding:19px!important;border-radius:19px!important}#welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:1fr!important}#welcome .zynx-working-features .zynx-feature-card{min-height:0!important}#app #sidebar.zynx-clean-sidebar{background:rgba(4,5,8,.93)!important}}
   @media(prefers-reduced-motion:reduce){#welcome .zynx-working-features .zynx-feature-card{transition:none!important}}
+</style>
+<style id="zynx-game-corner-glass">
+  #sidebar.zynx-clean-sidebar{
+    background:linear-gradient(155deg,rgba(5,6,10,.78),rgba(13,14,20,.62) 55%,rgba(7,8,12,.76))!important;
+    border-color:rgba(255,255,255,.13)!important;
+    -webkit-backdrop-filter:blur(34px) saturate(165%)!important;
+    backdrop-filter:blur(34px) saturate(165%)!important;
+    box-shadow:16px 0 54px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.075)!important;
+  }
+  #sidebar .zynx-game-link{
+    position:relative!important;display:flex!important;align-items:center!important;
+    width:calc(100% - 24px)!important;min-height:44px!important;margin:8px 12px 10px!important;
+    padding:0 12px!important;gap:11px!important;border:1px solid rgba(167,139,250,.22)!important;
+    border-radius:11px!important;color:#f1edff!important;
+    background:linear-gradient(110deg,rgba(139,92,246,.17),rgba(255,255,255,.055) 72%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.095),0 8px 24px rgba(0,0,0,.16)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(150%)!important;
+    backdrop-filter:blur(20px) saturate(150%)!important;
+    text-decoration:none!important;transition:background .22s,border-color .22s,transform .22s,box-shadow .22s!important;
+  }
+  #sidebar .zynx-game-link svg{color:#c4b5fd!important;filter:drop-shadow(0 0 7px rgba(167,139,250,.25))}
+  #sidebar .zynx-game-link:hover{background:linear-gradient(110deg,rgba(139,92,246,.25),rgba(255,255,255,.085))!important;border-color:rgba(196,181,253,.4)!important;transform:translateY(-1px)!important;box-shadow:0 10px 28px rgba(0,0,0,.23),0 0 22px rgba(139,92,246,.09)!important}
+  #sidebar .zynx-game-label{flex:1;white-space:nowrap}
+  #sidebar .zynx-game-soon{margin-left:auto;padding:4px 7px;border:1px solid rgba(196,181,253,.2);border-radius:99px;background:rgba(167,139,250,.13);color:#d9ccff;font-size:8px;font-weight:700;letter-spacing:.12em;line-height:1}
+  @media(max-width:768px){#sidebar.zynx-clean-sidebar{background:rgba(5,6,10,.82)!important}}
 </style>
 </body>
 </html>
