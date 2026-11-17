@@ -2118,6 +2118,14 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
           New chat
         </button>
       </div>
+      <button class="zynx-sidebar-link zynx-tool-link" id="quizStudioBtn" type="button" aria-label="Open Quiz Studio">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3m2 0h3m-8 4h8"/></svg>
+        Quiz Studio
+      </button>
+      <button class="zynx-sidebar-link zynx-tool-link" id="imageStudioBtn" type="button" aria-label="Open Image Studio">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        Image Studio
+      </button>
       <a class="zynx-sidebar-link zynx-game-link" id="gameCornerBtn" href="/game-corner/" aria-label="Open Game Corner">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="12" rx="3"/><path d="M8 11v4m-2-2h4m6-1h.01M18 14h.01"/></svg>
         Game Corner
@@ -2260,6 +2268,16 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
           <button type="button" class="zynx-theme-card" data-premium-theme="copper" aria-pressed="false" style="--theme-a:#f0b17c;--theme-b:#bd693f">
             <span class="zynx-theme-preview zynx-theme-copper"><i></i><i></i><i></i></span><b>Copper</b><small>Soft copper glow</small><span class="zynx-theme-selected">✓</span>
           </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="daylight" aria-pressed="false" style="--theme-a:#f0d5a1;--theme-b:#9cbdd8">
+            <span class="zynx-theme-preview zynx-theme-daylight"><i></i><i></i><i></i></span><b>Cloudlight</b><small>Soft morning sky</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="midnight" aria-pressed="false" style="--theme-a:#8798ff;--theme-b:#414b91">
+            <span class="zynx-theme-preview zynx-theme-midnight"><i></i><i></i><i></i></span><b>Midnight</b><small>Deep blue night</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="graphite" aria-pressed="false" style="--theme-a:#c1c5ce;--theme-b:#555c68">
+            <span class="zynx-theme-preview zynx-theme-graphite"><i></i><i></i><i></i></span><b>Graphite</b><small>Minimal charcoal</small><span class="zynx-theme-selected">✓</span>
+          </button>
+
         </div>
       </section>
       <section class="dream-personalization space-y-4" aria-label="Dream interface personalization">
@@ -2467,7 +2485,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
   applyBankaiTheme('default', false);
   /* Premium colour atmospheres */
   const PREMIUM_THEME_KEY = 'zynx_premium_atmosphere';
-  const PREMIUM_THEMES = new Set(['default','aurora','obsidian','rose','emerald','sapphire','copper']);
+  const PREMIUM_THEMES = new Set(['default','aurora','obsidian','rose','emerald','sapphire','copper','daylight','midnight','graphite']);
   function applyPremiumTheme(name, persist = true) {
     const theme = PREMIUM_THEMES.has(name) ? name : 'default';
     if (theme === 'default') delete document.documentElement.dataset.zynxSkin;
@@ -2534,7 +2552,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
     if (S.token) headers['X-Session-Token'] = S.token;
     const controller = new AbortController();
     window.__zynxStreamController = controller;
-    const timeoutMs = path.includes('/messages') ? 55000 : 15000;
+    const timeoutMs = path.includes('/messages') ? 55000 : (path.includes('/api/images/generate') ? 125000 : (path.includes('/api/quiz/generate') ? 90000 : 15000));
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     let res;
     try {
@@ -2569,7 +2587,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
   function setUser(user) {
     S.user = user;
     el.badge.textContent = user ? user.username : 'Guest';
-    el.authLabel.textContent = user ? 'Sign out' : 'Sign in';
+    el.authLabel.textContent = user ? 'Log out' : 'Sign in / account';
   }
   function setToken(t) { S.token = t; store.set('zynx_token', t); }
 
@@ -2952,7 +2970,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
     });
   });
 
-  $('#authBtn').addEventListener('click', () => { S.user ? signOut() : showWelcome(true); });
+  $('#authBtn').addEventListener('click', () => { S.user ? openSignoutConfirm() : showWelcome(true); });
   $('#seg').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b && !S.busyAuth && b.dataset.mode !== S.authMode) setAuthMode(b.dataset.mode, true); });
   $('#authForm').addEventListener('submit', handleAuth);
   $('#togglePass').addEventListener('click', () => {
@@ -5000,5 +5018,229 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
 @media(prefers-reduced-motion:reduce){#welcome:before{animation:none!important}}
 @supports not ((backdrop-filter:blur(2px))){#app #sidebar.zynx-clean-sidebar,#app .input-glass,#welcome .auth-card{background:rgba(18,20,29,.94)!important}}
 </style>
+
+  <section class="zynx-modal" id="zynxQuizStudio" aria-hidden="true" aria-labelledby="zynxQuizTitle">
+    <div class="zynx-modal-backdrop" data-close-modal="zynxQuizStudio"></div>
+    <div class="zynx-modal-panel zynx-quiz-panel">
+      <header class="zynx-modal-head"><div><span class="zynx-eyebrow">LEARN · PRACTISE · MASTER</span><h2 id="zynxQuizTitle">Quiz Studio</h2><p>Create a clickable quiz, then play it right here.</p></div><button class="zynx-modal-close" data-close-modal="zynxQuizStudio" aria-label="Close">×</button></header>
+      <form id="zynxQuizForm" class="zynx-quiz-form">
+        <label>Quiz topic<input id="zynxQuizTopic" maxlength="180" required placeholder="e.g. Indian space programme, biology, world history"></label>
+        <div class="zynx-quiz-fields">
+          <label>Questions<select id="zynxQuizCount"><option value="5">5 questions</option><option value="8" selected>8 questions</option><option value="10">10 questions</option><option value="15">15 questions</option></select></label>
+          <label>Difficulty<select id="zynxQuizDifficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option><option value="mixed">Mixed</option></select></label>
+        </div>
+        <button class="zynx-primary-btn" id="zynxQuizGenerate" type="submit"><span>✦</span> Generate quiz</button>
+        <p class="zynx-modal-note">Generated by Zynx AI · Multiple choice · Instant feedback</p>
+      </form>
+      <div id="zynxQuizPlay" class="zynx-quiz-play" hidden>
+        <div class="zynx-quiz-progress"><span id="zynxQuizProgressText">Question 1 of 8</span><span id="zynxQuizProgressPct">0%</span></div><div class="zynx-quiz-progress-track"><i id="zynxQuizProgressBar"></i></div>
+        <h3 id="zynxQuizQuestion"></h3><div id="zynxQuizOptions" class="zynx-quiz-options"></div>
+        <div id="zynxQuizFeedback" class="zynx-quiz-feedback" aria-live="polite" hidden></div>
+        <div class="zynx-quiz-controls"><button class="zynx-secondary-btn" id="zynxQuizRestart" type="button">New quiz</button><button class="zynx-primary-btn" id="zynxQuizNext" type="button" disabled>Next question →</button></div>
+      </div>
+      <div id="zynxQuizResult" class="zynx-quiz-result" hidden><div class="zynx-result-icon">✦</div><span class="zynx-eyebrow">QUIZ COMPLETE</span><h3 id="zynxQuizScore"></h3><p id="zynxQuizMessage"></p><button class="zynx-primary-btn" id="zynxQuizAgain" type="button">Create another quiz</button></div>
+    </div>
+  </section>
+  <section class="zynx-modal" id="zynxImageStudio" aria-hidden="true" aria-labelledby="zynxImageTitle">
+    <div class="zynx-modal-backdrop" data-close-modal="zynxImageStudio"></div>
+    <div class="zynx-modal-panel zynx-image-panel">
+      <header class="zynx-modal-head"><div><span class="zynx-eyebrow">IMAGINE · GENERATE</span><h2 id="zynxImageTitle">Image Studio</h2><p>Turn a written idea into an original image.</p></div><button class="zynx-modal-close" data-close-modal="zynxImageStudio" aria-label="Close">×</button></header>
+      <form id="zynxImageForm" class="zynx-image-form">
+        <label>Describe your image<textarea id="zynxImagePrompt" maxlength="1200" required rows="4" placeholder="A cinematic illustration of a floating library above soft lavender clouds at sunrise…"></textarea></label>
+        <button class="zynx-primary-btn" id="zynxImageGenerate" type="submit"><span>✦</span> Generate image</button>
+        <p class="zynx-modal-note" id="zynxImageStatus">Requires an OpenAI image API key configured securely on the server. Image requests may incur charges.</p>
+      </form>
+      <div id="zynxImageOutput" class="zynx-image-output" hidden><img id="zynxGeneratedImage" alt="AI generated image"><div class="zynx-image-actions"><a id="zynxImageDownload" class="zynx-secondary-btn" download="zynx-image.png">Download image</a><button id="zynxImageNew" class="zynx-secondary-btn" type="button">Create another</button></div></div>
+    </div>
+  </section>
+  <section class="zynx-modal" id="zynxSignoutConfirm" aria-hidden="true" aria-labelledby="zynxSignoutTitle">
+    <div class="zynx-modal-backdrop" data-close-modal="zynxSignoutConfirm"></div>
+    <div class="zynx-modal-panel zynx-signout-panel"><span class="zynx-signout-mark">↗</span><h2 id="zynxSignoutTitle">Log out of Zynx?</h2><p>Your account session will end. Your saved conversations remain in your account.</p><div class="zynx-quiz-controls"><button class="zynx-secondary-btn" data-close-modal="zynxSignoutConfirm" type="button">Cancel</button><button class="zynx-primary-btn" id="zynxConfirmSignout" type="button">Log out</button></div></div>
+  </section>
+<style id="zynx-studio-professional">
+  .zynx-modal{position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:18px;opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
+  .zynx-modal.open{opacity:1;visibility:visible}
+  .zynx-modal-backdrop{position:absolute;inset:0;background:rgba(5,7,14,.68);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .zynx-modal-panel{position:relative;width:min(100%,640px);max-height:min(88dvh,820px);overflow:auto;padding:26px;border:1px solid rgba(255,255,255,.16);border-radius:22px;background:linear-gradient(145deg,rgba(31,32,48,.94),rgba(15,17,27,.94));box-shadow:0 28px 100px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transform:translateY(14px) scale(.985);transition:transform .3s cubic-bezier(.2,.8,.2,1);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px)}
+  .zynx-modal.open .zynx-modal-panel{transform:translateY(0) scale(1)}
+  .zynx-modal-head{display:flex;justify-content:space-between;gap:16px;margin-bottom:23px}
+  .zynx-modal-head h2,.zynx-signout-panel h2{margin:5px 0 5px;color:#f7f6fb;font-size:27px;font-weight:650;letter-spacing:-.045em}
+  .zynx-modal-head p,.zynx-signout-panel p{margin:0;color:#aeb0bd;font-size:12px;line-height:1.6}
+  .zynx-eyebrow{color:#b8a5f5;font-size:9px;font-weight:700;letter-spacing:.18em}
+  .zynx-modal-close{width:34px;height:34px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.04);color:#d9d9e1;font-size:22px;line-height:1;cursor:pointer}
+  .zynx-quiz-form,.zynx-image-form{display:grid;gap:15px}
+  .zynx-quiz-form label,.zynx-image-form label{display:grid;gap:7px;color:#d9d9e3;font-size:11px;font-weight:600}
+  .zynx-quiz-form input,.zynx-quiz-form select,.zynx-image-form textarea{width:100%;min-width:0;border:1px solid rgba(255,255,255,.13);border-radius:11px;padding:12px 13px;background:rgba(5,7,14,.36);color:#f5f5fa;font:inherit;font-size:13px;outline:none;transition:border-color .2s,background .2s,box-shadow .2s}
+  .zynx-quiz-form input:focus,.zynx-quiz-form select:focus,.zynx-image-form textarea:focus{border-color:rgba(184,165,245,.6);background:rgba(5,7,14,.52);box-shadow:0 0 0 3px rgba(184,165,245,.1)}
+  .zynx-quiz-form select option{background:#1a1b29;color:#fff}
+  .zynx-quiz-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .zynx-primary-btn,.zynx-secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border-radius:10px;font-size:11px;font-weight:650;text-decoration:none;cursor:pointer;transition:transform .18s,background .18s,border-color .18s,box-shadow .18s}
+  .zynx-primary-btn{border:1px solid rgba(210,198,255,.25);background:linear-gradient(110deg,#c7b7f4,#a9bde9);color:#171625;box-shadow:0 8px 22px rgba(152,132,220,.16)}
+  .zynx-primary-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 28px rgba(152,132,220,.24)}
+  .zynx-primary-btn:disabled{opacity:.5;cursor:wait}
+  .zynx-secondary-btn{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.045);color:#e6e6ed}
+  .zynx-secondary-btn:hover{background:rgba(255,255,255,.09)}
+  .zynx-modal-note{margin:0;color:#858998;font-size:10px;line-height:1.6}
+  .zynx-quiz-play{padding-top:5px}
+  .zynx-quiz-progress{display:flex;justify-content:space-between;color:#b8bac5;font-size:10px}
+  .zynx-quiz-progress-track{height:5px;margin:10px 0 23px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden}
+  .zynx-quiz-progress-track i{display:block;width:0;height:100%;border-radius:9px;background:linear-gradient(90deg,#b8a5f5,#8daee5);transition:width .35s ease}
+  .zynx-quiz-play h3{margin:0 0 17px;color:#f5f4fa;font-size:19px;font-weight:600;line-height:1.45;letter-spacing:-.02em}
+  .zynx-quiz-options{display:grid;gap:9px}
+  .zynx-quiz-option{display:flex;align-items:center;gap:11px;width:100%;min-height:48px;padding:10px 12px;text-align:left;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(255,255,255,.035);color:#e3e3eb;font-size:12px;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+  .zynx-quiz-option:hover:not(:disabled){transform:translateX(2px);background:rgba(255,255,255,.075);border-color:rgba(184,165,245,.32)}
+  .zynx-quiz-option .letter{display:grid;place-items:center;width:25px;height:25px;flex:0 0 25px;border-radius:7px;background:rgba(255,255,255,.075);color:#b8a5f5;font-size:10px;font-weight:700}
+  .zynx-quiz-option.correct{border-color:rgba(93,190,143,.55);background:rgba(54,139,103,.13)}
+  .zynx-quiz-option.wrong{border-color:rgba(225,116,129,.48);background:rgba(180,70,83,.12)}
+  .zynx-quiz-feedback{margin-top:14px;padding:12px 13px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:#c6c7d0;font-size:11px;line-height:1.6}
+  .zynx-quiz-controls{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+  .zynx-quiz-result{text-align:center;padding:24px 0 4px}
+  .zynx-result-icon{display:grid;place-items:center;width:62px;height:62px;margin:0 auto 15px;border-radius:20px;background:rgba(184,165,245,.13);color:#d3c6ff;font-size:26px}
+  .zynx-quiz-result h3{margin:9px 0;color:#fff;font-size:30px;letter-spacing:-.05em}
+  .zynx-quiz-result p{margin:0 0 20px;color:#aeb0bd;font-size:12px}
+  .zynx-image-output{margin-top:20px}
+  .zynx-image-output img{display:block;width:100%;max-height:440px;object-fit:contain;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(0,0,0,.2)}
+  .zynx-image-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:12px}
+  .zynx-signout-panel{width:min(100%,390px);text-align:center;padding:28px}
+  .zynx-signout-mark{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 14px;border:1px solid rgba(255,255,255,.13);border-radius:15px;background:rgba(255,255,255,.05);color:#c9bdf4;font-size:22px}
+  .zynx-signout-panel .zynx-quiz-controls{justify-content:center}
+  #sidebar .zynx-tool-link{min-height:38px}
+  #sidebar .zynx-tool-link svg{color:#b9acd9}
+  #sidebar .zynx-tool-link:hover{background:rgba(184,165,245,.09)!important;border-color:rgba(184,165,245,.13)!important}
+  #sidebar .zynx-game-link{margin:2px 12px 0;width:calc(100% - 24px)}
+  #sidebar .zynx-tool-link{margin:1px 12px 0;width:calc(100% - 24px)}
+  .zynx-theme-daylight{background:linear-gradient(135deg,#9dbbd0,#f0d9b0)!important}
+  .zynx-theme-midnight{background:linear-gradient(135deg,#090f27,#283b77)!important}
+  .zynx-theme-graphite{background:linear-gradient(135deg,#14171c,#444a55)!important}
+  html[data-zynx-skin="aurora"] .dream-bg{background:radial-gradient(ellipse at 20% 20%,rgba(66,218,190,.2),transparent 42%),linear-gradient(145deg,#07191d,#0d2634 58%,#08151f)!important}
+  html[data-zynx-skin="obsidian"] .dream-bg{background:radial-gradient(ellipse at 78% 20%,rgba(184,137,84,.18),transparent 40%),linear-gradient(145deg,#0d0c0b,#211b17 58%,#100e0c)!important}
+  html[data-zynx-skin="rose"] .dream-bg{background:radial-gradient(ellipse at 20% 25%,rgba(222,135,176,.2),transparent 42%),linear-gradient(145deg,#1a101c,#2a1830 58%,#130f1b)!important}
+  html[data-zynx-skin="emerald"] .dream-bg{background:radial-gradient(ellipse at 18% 22%,rgba(102,186,125,.18),transparent 42%),linear-gradient(145deg,#09150f,#14291e 58%,#0a1511)!important}
+  html[data-zynx-skin="sapphire"] .dream-bg{background:radial-gradient(ellipse at 22% 22%,rgba(99,159,236,.2),transparent 42%),linear-gradient(145deg,#091120,#142744 58%,#0a1220)!important}
+  html[data-zynx-skin="copper"] .dream-bg{background:radial-gradient(ellipse at 80% 20%,rgba(231,149,93,.2),transparent 42%),linear-gradient(145deg,#160f0b,#2d1b13 58%,#120d0a)!important}
+  html[data-zynx-skin="midnight"] .dream-bg{background:radial-gradient(ellipse at 22% 20%,rgba(103,121,239,.2),transparent 42%),linear-gradient(145deg,#080d20,#141d3a 58%,#080d1a)!important}
+  html[data-zynx-skin="graphite"] .dream-bg{background:radial-gradient(ellipse at 22% 20%,rgba(166,176,192,.12),transparent 42%),linear-gradient(145deg,#0e1014,#20242b 58%,#101216)!important}
+  html[data-zynx-skin="daylight"] body{color:#1e293b!important}
+  html[data-zynx-skin="daylight"] .dream-bg{background:radial-gradient(ellipse at 20% 18%,rgba(255,255,255,.75),transparent 38%),linear-gradient(145deg,#dbe7f0,#c5d9e7 55%,#f3e5d0)!important}
+  html[data-zynx-skin="daylight"] #app .chat-shell{background:rgba(246,249,252,.62)!important;border-color:rgba(255,255,255,.6)!important}
+  html[data-zynx-skin="daylight"] #app .zynx-clean-sidebar{background:rgba(245,249,253,.65)!important;border-color:rgba(255,255,255,.72)!important}
+  html[data-zynx-skin="daylight"] #app .zynx-brand-lockup,html[data-zynx-skin="daylight"] #app .dream-current-title{color:#273347!important}
+  html[data-zynx-skin="daylight"] #app #sidebar .zynx-sidebar-link,html[data-zynx-skin="daylight"] #app #sidebar .zynx-history-heading{color:#435066!important}
+  html[data-zynx-skin="daylight"] #app .input-glass{background:rgba(249,251,255,.68)!important;border-color:rgba(255,255,255,.8)!important}
+  html[data-zynx-skin="daylight"] #app .input-glass textarea{color:#1f2937!important}
+  html[data-zynx-skin="daylight"] #app .input-glass textarea::placeholder{color:#64748b!important}
+  #app .chat-shell,#app .zynx-clean-sidebar,#app .input-glass,.dream-topbar,.zynx-sidebar-link,.zynx-new-chat{transition:background .3s ease,border-color .3s ease,box-shadow .3s ease,color .2s ease,transform .22s cubic-bezier(.2,.8,.2,1)!important}
+  #app .row{animation:zynxMessageIn .32s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes zynxMessageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:600px){.zynx-modal{padding:8px}.zynx-modal-panel{padding:20px 16px;border-radius:18px}.zynx-quiz-fields{grid-template-columns:1fr 1fr}.zynx-modal-head h2{font-size:23px}}
+  @media(prefers-reduced-motion:reduce){.zynx-modal,.zynx-modal-panel,.zynx-primary-btn,.zynx-quiz-option,#app .row{transition:none!important;animation:none!important}}
+</style>
+<script id="zynx-studio-interactions">
+(() => {
+  const $ = (selector) => document.querySelector(selector);
+  const openModal = (id) => { const node = document.getElementById(id); if (!node) return; node.classList.add('open'); node.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const closeModal = (id) => { const node = document.getElementById(id); if (!node) return; node.classList.remove('open'); node.setAttribute('aria-hidden','true'); if (!document.querySelector('.zynx-modal.open')) document.body.style.overflow=''; };
+  document.addEventListener('click', (event) => {
+    const close = event.target.closest('[data-close-modal]');
+    if (close) closeModal(close.dataset.closeModal);
+  });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') document.querySelectorAll('.zynx-modal.open').forEach(node => closeModal(node.id)); });
+  document.getElementById('quizStudioBtn')?.addEventListener('click', () => openModal('zynxQuizStudio'));
+  document.getElementById('imageStudioBtn')?.addEventListener('click', () => openModal('zynxImageStudio'));
+  window.openSignoutConfirm = () => openModal('zynxSignoutConfirm');
+  document.getElementById('zynxConfirmSignout')?.addEventListener('click', async () => {
+    const button = document.getElementById('zynxConfirmSignout'); button.disabled = true; button.textContent = 'Logging out…';
+    try { await window.zynxSignOutAction?.(); } finally { closeModal('zynxSignoutConfirm'); button.disabled=false; button.textContent='Log out'; }
+  });
+  // Bridge to the existing authenticated session handler without exposing tokens.
+  const authButton = document.getElementById('authBtn');
+  authButton?.addEventListener('zynx-confirm-signout', () => {});
+  const quizForm = document.getElementById('zynxQuizForm');
+  const quizPlay = document.getElementById('zynxQuizPlay');
+  const quizResult = document.getElementById('zynxQuizResult');
+  let activeQuiz = null, questionIndex = 0, score = 0, answered = false;
+  const escapeHtml = (value) => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const quizButton = document.getElementById('zynxQuizGenerate');
+  function renderQuestion() {
+    if (!activeQuiz) return;
+    const q = activeQuiz.questions[questionIndex];
+    const progress = Math.round(questionIndex / activeQuiz.questions.length * 100);
+    document.getElementById('zynxQuizProgressText').textContent = 'Question ' + (questionIndex + 1) + ' of ' + activeQuiz.questions.length;
+    document.getElementById('zynxQuizProgressPct').textContent = progress + '%';
+    document.getElementById('zynxQuizProgressBar').style.width = progress + '%';
+    document.getElementById('zynxQuizQuestion').textContent = q.question;
+    document.getElementById('zynxQuizFeedback').hidden = true;
+    document.getElementById('zynxQuizNext').disabled = true;
+    answered = false;
+    const options = document.getElementById('zynxQuizOptions'); options.innerHTML = '';
+    q.options.forEach((option, index) => {
+      const button = document.createElement('button'); button.type='button'; button.className='zynx-quiz-option';
+      button.innerHTML = '<span class="letter">' + String.fromCharCode(65+index) + '</span><span>' + escapeHtml(option) + '</span>';
+      button.addEventListener('click', () => {
+        if (answered) return; answered = true;
+        const correct = index === q.answer; if (correct) score++;
+        Array.from(options.children).forEach((item, i) => { item.disabled=true; if (i === q.answer) item.classList.add('correct'); else if (i === index) item.classList.add('wrong'); });
+        const feedback = document.getElementById('zynxQuizFeedback');
+        feedback.textContent = (correct ? 'Correct. ' : 'Not quite. ') + (q.explanation || 'The correct answer is ' + q.options[q.answer] + '.');
+        feedback.hidden = false;
+        document.getElementById('zynxQuizNext').disabled = false;
+        document.getElementById('zynxQuizNext').textContent = questionIndex === activeQuiz.questions.length - 1 ? 'See results →' : 'Next question →';
+      });
+      options.appendChild(button);
+    });
+  }
+  function startQuiz(quiz) {
+    activeQuiz=quiz; questionIndex=0; score=0; quizForm.hidden=true; quizPlay.hidden=false; quizResult.hidden=true; renderQuestion();
+  }
+  function resetQuiz() { activeQuiz=null; quizForm.hidden=false; quizPlay.hidden=true; quizResult.hidden=true; quizButton.disabled=false; quizButton.innerHTML='<span>✦</span> Generate quiz'; }
+  quizForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const topic=document.getElementById('zynxQuizTopic').value.trim();
+    if (!topic) return;
+    quizButton.disabled=true; quizButton.textContent='Creating your quiz…';
+    try {
+      const response=await fetch('/api/quiz/generate',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':localStorage.getItem('zynx_token')||''},body:JSON.stringify({topic,count:Number(document.getElementById('zynxQuizCount').value),difficulty:document.getElementById('zynxQuizDifficulty').value})});
+      const data=await response.json(); if(!response.ok) throw new Error(data.error||'Quiz generation failed.');
+      startQuiz(data);
+    } catch(error) { alert(error.message || 'Could not create quiz.'); }
+    finally { quizButton.disabled=false; quizButton.innerHTML='<span>✦</span> Generate quiz'; }
+  });
+  document.getElementById('zynxQuizNext')?.addEventListener('click', () => {
+    if (!answered) return;
+    if (questionIndex < activeQuiz.questions.length - 1) { questionIndex++; renderQuestion(); return; }
+    quizPlay.hidden=true; quizResult.hidden=false;
+    const pct=Math.round(score/activeQuiz.questions.length*100);
+    document.getElementById('zynxQuizProgressBar').style.width='100%';
+    document.getElementById('zynxQuizScore').textContent=score+' / '+activeQuiz.questions.length;
+    document.getElementById('zynxQuizMessage').textContent=pct>=80?'Excellent work — you have a strong grasp of this topic.':pct>=50?'Good effort. Review the explanations and give it another try.':'A useful first attempt. Review the explanations and try again.';
+  });
+  document.getElementById('zynxQuizRestart')?.addEventListener('click',resetQuiz);
+  document.getElementById('zynxQuizAgain')?.addEventListener('click',resetQuiz);
+  // Image generation is routed through the server; the provider key never reaches the browser.
+  const imageForm=document.getElementById('zynxImageForm');
+  const imageButton=document.getElementById('zynxImageGenerate');
+  imageForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const prompt=document.getElementById('zynxImagePrompt').value.trim(); if(!prompt)return;
+    imageButton.disabled=true; imageButton.textContent='Generating image…';
+    const status=document.getElementById('zynxImageStatus'); status.textContent='Creating your image. This may take a little while…';
+    document.getElementById('zynxImageOutput').hidden=true;
+    try {
+      const response=await fetch('/api/images/generate',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':localStorage.getItem('zynx_token')||''},body:JSON.stringify({prompt})});
+      const data=await response.json(); if(!response.ok) throw new Error(data.error||'Image generation failed.');
+      const url='data:image/png;base64,'+data.image_data;
+      document.getElementById('zynxGeneratedImage').src=url;
+      document.getElementById('zynxImageDownload').href=url;
+      document.getElementById('zynxImageOutput').hidden=false;
+      status.textContent='Image created successfully.';
+    } catch(error) { status.textContent=error.message||'Image generation is not configured yet.'; }
+    finally { imageButton.disabled=false; imageButton.innerHTML='<span>✦</span> Generate image'; }
+  });
+  document.getElementById('zynxImageNew')?.addEventListener('click', () => { document.getElementById('zynxImageOutput').hidden=true; document.getElementById('zynxImagePrompt').focus(); });
+  // A small bridge lets the existing sign-out routine be invoked by the confirmation dialog.
+  document.getElementById('zynxConfirmSignout')?.addEventListener('click', async () => {});
+  window.addEventListener('zynx-signout-request', () => openModal('zynxSignoutConfirm'));
+})();
+</script>
 </body>
 </html>
