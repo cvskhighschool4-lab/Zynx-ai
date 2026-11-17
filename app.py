@@ -764,7 +764,7 @@ def append_source_citations(reply, sources):
     for source in sources[:4]:
         title = re.sub(r"[\[\]\r\n]", "", source["title"]).strip() or urllib.parse.urlparse(source["url"]).netloc
         url = source["url"].replace(" ", "%20").replace(")", "%29")
-        lines.append(f"- [{title}](<{url}>)")
+        lines.append(f"- [{title}]({url})")
     return reply.rstrip() + "\n" + "\n".join(lines)
 
 
