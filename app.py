@@ -820,12 +820,13 @@ def generate_quiz():
                 {"role": "user", "content": prompt},
             ],
             temperature=0.35,
-            max_completion_tokens=2200,
+            max_completion_tokens=3500,
             top_p=0.9,
             extra_body={"reasoning_effort": "low"},
         )
         raw = (completion.choices[0].message.content or "").strip()
-        raw = re.sub(r"^\`\`\`(?:json)?\\s*|\\s*\`\`\`$", "", raw, flags=re.IGNORECASE)
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
         quiz = json.loads(raw)
         questions = quiz.get("questions")
         if not isinstance(questions, list) or len(questions) < 5:
