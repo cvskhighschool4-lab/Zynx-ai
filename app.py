@@ -566,7 +566,7 @@ def delete_chat(chat_id):
     return jsonify({"ok": True})
 
 
-def build_prompt(settings, history, wants_founder):
+def build_prompt(settings, history, wants_founder, language='auto'):
     length_rule, _ = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     humor = float(settings["humor_level"])
     humor_desc = (
@@ -589,6 +589,19 @@ def build_prompt(settings, history, wants_founder):
         f"- {length_rule}\n"
         f"- {STYLE_RULES.get(settings['response_style'], STYLE_RULES['warm'])}"
     )
+    language_names = {
+        "en": "English", "kn": "Kannada", "hi": "Hindi", "te": "Telugu",
+        "ta": "Tamil", "ml": "Malayalam", "mr": "Marathi", "bn": "Bengali",
+        "gu": "Gujarati", "pa": "Punjabi", "ur": "Urdu", "fr": "French",
+        "es": "Spanish", "ar": "Arabic",
+    }
+    selected_language = language_names.get(language)
+    language_rule = (
+        f"Reply in {selected_language} unless the user explicitly requests another language. Keep code, identifiers, and technical syntax unchanged."
+        if selected_language else
+        "Automatically detect the language of the latest user message and reply in that same language. If the user mixes languages, respond naturally in the dominant language. Keep code, identifiers, and technical syntax unchanged."
+    )
+    prefs += "\\n- Response language: " + language_rule
     msgs = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "system", "content": prefs}]
     if wants_founder:
         msgs.append(
@@ -610,6 +623,10 @@ def send_message(chat_id):
 
     data = request.get_json(silent=True) or {}
     content = str(data.get("content") or "").strip()
+    requested_language = str(data.get("language") or "auto").strip().lower()
+    allowed_languages = {"auto", "en", "kn", "hi", "te", "ta", "ml", "mr", "bn", "gu", "pa", "ur", "fr", "es", "ar"}
+    if requested_language not in allowed_languages:
+        requested_language = "auto"
     if not content:
         return jsonify({"error": "Message content is required."}), 400
     if len(content) > MAX_MESSAGE_CHARS:
@@ -637,7 +654,7 @@ def send_message(chat_id):
     _, max_tokens = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     temperature = round(min(0.78, 0.62 + float(settings["humor_level"]) * 0.14), 2)
 
-    prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)))
+    prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)), requested_language)
 
     def request_completion(model_id):
         return client.chat.completions.create(
