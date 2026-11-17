@@ -1,0 +1,1 @@
+{"name":"zynx-game-corner","private":true,"version":"1.0.0","type":"module","scripts":{"dev":"vite --config vite.config.js","build":"vite build --config vite.config.js"},"dependencies":{"cannon-es":"^0.20.0","three":"^0.180.0"},"devDependencies":{"vite":"^6.4.1"}}

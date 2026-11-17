@@ -407,6 +407,17 @@ def index():
     return resp
 
 
+@app.route("/game-corner")
+@app.route("/game-corner/")
+def game_corner():
+    game_root = os.path.join(BASE_DIR, "static", "game-corner")
+    if not os.path.isfile(os.path.join(game_root, "index.html")):
+        return "Game Corner is not available yet.", 404
+    response = send_from_directory(game_root, "index.html")
+    response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 # Only harmless frontend assets are ever served - never app.py, the database, or dotfiles.
 ASSET_EXTS = {
     ".css", ".js", ".mjs", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
