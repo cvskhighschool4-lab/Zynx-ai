@@ -1431,7 +1431,7 @@ html,body{font-size:14px!important}
 .zynx-activity-orb{width:9px;height:9px;flex:none;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#c084fc);box-shadow:0 0 14px #8b5cf6;animation:zynx-orb-pulse 1.3s ease-in-out infinite}
 .zynx-activity-copy{display:flex;flex-direction:column;gap:3px}
 .zynx-activity-copy strong{font-size:11px;font-weight:600;color:#f4f1ff}
-.zynx-activity-copy small{font-size:10px;line-height:1.5;color:#aebbd4}
+.zynx-activity-copy small{font-size:10px;line-height:1.5;color:#aebbd4}.bubble.bot a{color:#9fc4ff;text-decoration:underline;text-decoration-color:#9fc4ff66;text-underline-offset:3px}.bubble.bot a:hover{color:#d9c5ff;text-decoration-color:#d9c5ff}
 @keyframes zynx-orb-pulse{50%{opacity:.45;transform:scale(.72);box-shadow:0 0 5px #8b5cf6}}
 .zynx-feature-card{position:relative!important;overflow:hidden!important;padding:0 0 15px!important;min-height:210px!important;background:linear-gradient(180deg,#111a2c 0%,#0a0b18 100%)!important}
 .zynx-feature-art{position:relative!important;display:block!important;width:100%!important;height:104px!important;overflow:hidden!important;border-bottom:1px solid rgba(174,190,255,.15)!important;background:#080b19!important}
@@ -1843,6 +1843,7 @@ html,body{font-size:14px!important}
 
   function inline(t) {
     return esc(t)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
       .replace(/`([^`\n]+)`/g, '<code>$1</code>')
       .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
       .replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g, '$1<em>$2</em>');
