@@ -2118,6 +2118,11 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
           New chat
         </button>
       </div>
+      <a class="zynx-sidebar-link zynx-game-link" id="gameCornerBtn" href="/game-corner/" aria-label="Open Game Corner">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="12" rx="3"/><path d="M8 11v4m-2-2h4m6-1h.01M18 14h.01"/></svg>
+        Game Corner
+        <span class="zynx-game-soon">SPACE</span>
+      </a>
       <div class="zynx-history-heading">CONVERSATION HISTORY</div>
       <label class="zynx-chat-search" aria-label="Search conversation history">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -2230,7 +2235,33 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         </label>
         <p class="text-xs text-slate-500">Use the microphone button beside the message box to speak. Microphone permission is required.</p>
       </section>
-      <div id="bankaiThemes" hidden></div><div id="premiumThemes" hidden></div>
+      <div id="bankaiThemes" hidden></div>
+      <section class="zynx-theme-section" aria-label="Interface themes">
+        <div class="zynx-theme-heading"><p class="text-sm font-semibold text-slate-100">Interface themes</p><p class="text-xs text-slate-400 mt-1">Choose the atmosphere for your workspace.</p></div>
+        <div id="premiumThemes" class="zynx-theme-grid" role="group" aria-label="Choose a theme">
+          <button type="button" class="zynx-theme-card" data-premium-theme="default" aria-pressed="true" style="--theme-a:#b8a5f5;--theme-b:#7899d8">
+            <span class="zynx-theme-preview zynx-theme-dream"><i></i><i></i><i></i></span><b>Dreamspace</b><small>Soft clouds · Lavender glass</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="aurora" aria-pressed="false" style="--theme-a:#74e5d1;--theme-b:#3479bd">
+            <span class="zynx-theme-preview zynx-theme-aurora"><i></i><i></i><i></i></span><b>Aurora</b><small>Cool teal light</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="obsidian" aria-pressed="false" style="--theme-a:#d6b77b;--theme-b:#6d5541">
+            <span class="zynx-theme-preview zynx-theme-obsidian"><i></i><i></i><i></i></span><b>Obsidian</b><small>Warm graphite</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="rose" aria-pressed="false" style="--theme-a:#f0a9c5;--theme-b:#7956b3">
+            <span class="zynx-theme-preview zynx-theme-rose"><i></i><i></i><i></i></span><b>Rose</b><small>Muted rose and plum</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="emerald" aria-pressed="false" style="--theme-a:#9bd49b;--theme-b:#397e55">
+            <span class="zynx-theme-preview zynx-theme-emerald"><i></i><i></i><i></i></span><b>Emerald</b><small>Deep green</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="sapphire" aria-pressed="false" style="--theme-a:#91c9ff;--theme-b:#3476c6">
+            <span class="zynx-theme-preview zynx-theme-sapphire"><i></i><i></i><i></i></span><b>Sapphire</b><small>Midnight blue</small><span class="zynx-theme-selected">✓</span>
+          </button>
+          <button type="button" class="zynx-theme-card" data-premium-theme="copper" aria-pressed="false" style="--theme-a:#f0b17c;--theme-b:#bd693f">
+            <span class="zynx-theme-preview zynx-theme-copper"><i></i><i></i><i></i></span><b>Copper</b><small>Soft copper glow</small><span class="zynx-theme-selected">✓</span>
+          </button>
+        </div>
+      </section>
       <section class="dream-personalization space-y-4" aria-label="Dream interface personalization">
         <div><p class="text-sm font-semibold text-slate-100">Dream atmosphere</p><p class="text-xs text-slate-400 mt-1">Tune the interface to your preferred level of haze and light.</p></div>
         <div class="dream-presets" id="dreamPresets" role="group" aria-label="Atmosphere presets">
@@ -2383,15 +2414,13 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         <h2>One space. <span>More possibilities.</span></h2>
         <p>Scroll through the tools and ideas you can explore with Zynx.</p>
       </div>
-      <div class="zynx-feature-grid" aria-label="Explore Zynx AI features">
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=85" alt="Planet Earth and a digital network from space" loading="lazy" decoding="async"></div><span class="feature-kicker">01 · THINK</span><h3>Understand anything</h3><p>Explore ideas, ask follow-up questions, and turn complex topics into clear explanations.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85" alt="Creative writing workspace with a notebook" loading="lazy" decoding="async"></div><span class="feature-kicker">02 · CREATE</span><h3>Make ideas happen</h3><p>Draft content, shape plans, brainstorm projects, and refine your writing with AI.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85" alt="Close-up of an electronic circuit board" loading="lazy" decoding="async"></div><span class="feature-kicker">03 · BUILD</span><h3>Code with confidence</h3><p>Work through programming concepts, debug errors, and develop step-by-step solutions.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1400&q=85" alt="Studio microphone for voice conversations" loading="lazy" decoding="async"></div><span class="feature-kicker">04 · SPEAK</span><h3>Talk naturally</h3><p>Use voice input and listen to spoken replies for a more hands-free conversation.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1400&q=85" alt="A vivid nebula and stars across deep space" loading="lazy" decoding="async"></div><span class="feature-kicker">05 · DISCOVER</span><h3>Explore the universe</h3><p>Unpack astronomy, science, technology and the questions that spark your curiosity.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=85" alt="People collaborating around a digital workspace" loading="lazy" decoding="async"></div><span class="feature-kicker">06 · ORGANIZE</span><h3>Turn thoughts into plans</h3><p>Break ambitious goals into clear steps, useful checklists and practical next actions.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1400&q=85" alt="Digital learning and collaboration" loading="lazy" decoding="async"></div><span class="feature-kicker">07 · LEARN</span><h3>Learn at your own pace</h3><p>Get guided explanations, examples, revision notes and practice questions on new topics.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85" alt="Retro-futuristic electronic technology" loading="lazy" decoding="async"></div><span class="feature-kicker">08 · IMAGINE</span><h3>Think beyond the obvious</h3><p>Generate fresh directions, compare possibilities and develop original concepts.</p></article>
+      <div class="zynx-feature-grid zynx-working-features" aria-label="Available Zynx AI features">
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>✦</span><i>01</i></div><span class="feature-kicker">01 · CONVERSE</span><h3>AI conversations</h3><p>Ask questions, explore ideas and continue with contextual follow-ups in one workspace.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>↺</span><i>02</i></div><span class="feature-kicker">02 · REMEMBER</span><h3>Conversation history</h3><p>Return to previous chats, search your history and pick up where you left off.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>⌁</span><i>03</i></div><span class="feature-kicker">03 · SPEAK</span><h3>Voice controls</h3><p>Use microphone input and turn spoken assistant replies on or off in Settings.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>≋</span><i>04</i></div><span class="feature-kicker">04 · SHAPE</span><h3>Response controls</h3><p>Choose quick, balanced or deep replies, plus a format that suits your task.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>◌</span><i>05</i></div><span class="feature-kicker">05 · PERSONALIZE</span><h3>Your own atmosphere</h3><p>Switch between Dreamspace and other interface themes, then tune the glass and accent.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>⇩</span><i>06</i></div><span class="feature-kicker">06 · KEEP</span><h3>Export conversations</h3><p>Save a copy of your conversation when you need it outside Zynx.</p></article>
       </div>
       <div class="zynx-showcase-footer">BUILT FOR CURIOSITY · POWERED BY IDEAS</div>
     </section>
@@ -2446,7 +2475,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
     if (persist) store.set(PREMIUM_THEME_KEY, theme);
     $('#premiumThemes [data-premium-theme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.premiumTheme === theme)));
   }
-  applyPremiumTheme('default', false);
+  applyPremiumTheme(store.get(PREMIUM_THEME_KEY) || 'default', false);
   $('#premiumThemes')?.addEventListener('click', (event) => {
     const choice = event.target.closest('[data-premium-theme]');
     if (!choice) return;
@@ -3392,7 +3421,7 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
 })();
 </script>
 
-<script id="zynx-dream-personalization">(()=>{const r=document.documentElement,k='zynx_dream_preferences',d={preset:'medium',accent:'lavender',opacity:72,blur:24,font:14,mode:'dark',clouds:true,particles:false},a={blue:['#a9c8ed','169,200,237'],lavender:['#b8a5f5','184,165,245'],mint:['#9bd7c9','155,215,201'],rose:['#dfa9bd','223,169,189'],gold:['#dfc99a','223,201,154']};let p={...d};try{p={...p,...JSON.parse(localStorage.getItem(k)||'{}')}}catch{}const $=id=>document.getElementById(id),save=()=>{try{localStorage.setItem(k,JSON.stringify(p))}catch{}},apply=()=>{const [c,g]=a[p.accent]||a.lavender;r.style.setProperty('--dream-accent',c);r.style.setProperty('--dream-accent-rgb',g);r.style.setProperty('--dream-glass-opacity',p.opacity/100);r.style.setProperty('--dream-blur',p.blur+'px');r.style.setProperty('--dream-font',p.font+'px');r.dataset.dreamPreset=['soft','medium','deep'].includes(p.preset)?p.preset:'medium';r.dataset.dreamMode=p.mode;r.dataset.dreamClouds=p.clouds?'on':'off';r.dataset.dreamParticles=p.particles?'on':'off';[['dreamAccent','accent'],['dreamOpacity','opacity'],['dreamBlur','blur'],['dreamFont','font'],['dreamMode','mode']].forEach(([id,key])=>{if($(id))$(id).value=p[key]});if($('dreamClouds'))$('dreamClouds').checked=!!p.clouds;if($('dreamParticles'))$('dreamParticles').checked=false;[['dreamOpacityValue',p.opacity+'%'],['dreamBlurValue',p.blur+'px'],['dreamFontValue',p.font+'px']].forEach(([id,v])=>{if($(id))$(id).textContent=v});document.querySelectorAll('[data-dream-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dreamPreset===p.preset)))};const vals={soft:{opacity:58,blur:17},medium:{opacity:72,blur:24},deep:{opacity:84,blur:32}};$('dreamPresets')?.addEventListener('click',e=>{const b=e.target.closest('[data-dream-preset]');if(!b)return;p.preset=b.dataset.dreamPreset;Object.assign(p,vals[p.preset]);apply();save()});[['dreamAccent','accent','text'],['dreamOpacity','opacity','number'],['dreamBlur','blur','number'],['dreamFont','font','number'],['dreamMode','mode','text']].forEach(([id,key,type])=>$(id)?.addEventListener('input',e=>{p[key]=type==='number'?Number(e.target.value):e.target.value;if(id==='dreamOpacity'||id==='dreamBlur')p.preset='custom';apply();save()}));$('dreamClouds')?.addEventListener('change',e=>{p.clouds=e.target.checked;apply();save()});$('dreamParticles')?.addEventListener('change',e=>{p.particles=e.target.checked;apply();save()});apply();try{localStorage.removeItem('zynx_premium_atmosphere');localStorage.removeItem('zynx_bankai_theme')}catch{}delete r.dataset.zynxSkin;delete r.dataset.bankai})();</script>
+<script id="zynx-dream-personalization">(()=>{const r=document.documentElement,k='zynx_dream_preferences',d={preset:'medium',accent:'lavender',opacity:72,blur:24,font:14,mode:'dark',clouds:true,particles:false},a={blue:['#a9c8ed','169,200,237'],lavender:['#b8a5f5','184,165,245'],mint:['#9bd7c9','155,215,201'],rose:['#dfa9bd','223,169,189'],gold:['#dfc99a','223,201,154']};let p={...d};try{p={...p,...JSON.parse(localStorage.getItem(k)||'{}')}}catch{}const $=id=>document.getElementById(id),save=()=>{try{localStorage.setItem(k,JSON.stringify(p))}catch{}},apply=()=>{const [c,g]=a[p.accent]||a.lavender;r.style.setProperty('--dream-accent',c);r.style.setProperty('--dream-accent-rgb',g);r.style.setProperty('--dream-glass-opacity',p.opacity/100);r.style.setProperty('--dream-blur',p.blur+'px');r.style.setProperty('--dream-font',p.font+'px');r.dataset.dreamPreset=['soft','medium','deep'].includes(p.preset)?p.preset:'medium';r.dataset.dreamMode=p.mode;r.dataset.dreamClouds=p.clouds?'on':'off';r.dataset.dreamParticles=p.particles?'on':'off';[['dreamAccent','accent'],['dreamOpacity','opacity'],['dreamBlur','blur'],['dreamFont','font'],['dreamMode','mode']].forEach(([id,key])=>{if($(id))$(id).value=p[key]});if($('dreamClouds'))$('dreamClouds').checked=!!p.clouds;if($('dreamParticles'))$('dreamParticles').checked=false;[['dreamOpacityValue',p.opacity+'%'],['dreamBlurValue',p.blur+'px'],['dreamFontValue',p.font+'px']].forEach(([id,v])=>{if($(id))$(id).textContent=v});document.querySelectorAll('[data-dream-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dreamPreset===p.preset)))};const vals={soft:{opacity:58,blur:17},medium:{opacity:72,blur:24},deep:{opacity:84,blur:32}};$('dreamPresets')?.addEventListener('click',e=>{const b=e.target.closest('[data-dream-preset]');if(!b)return;p.preset=b.dataset.dreamPreset;Object.assign(p,vals[p.preset]);apply();save()});[['dreamAccent','accent','text'],['dreamOpacity','opacity','number'],['dreamBlur','blur','number'],['dreamFont','font','number'],['dreamMode','mode','text']].forEach(([id,key,type])=>$(id)?.addEventListener('input',e=>{p[key]=type==='number'?Number(e.target.value):e.target.value;if(id==='dreamOpacity'||id==='dreamBlur')p.preset='custom';apply();save()}));$('dreamClouds')?.addEventListener('change',e=>{p.clouds=e.target.checked;apply();save()});$('dreamParticles')?.addEventListener('change',e=>{p.particles=e.target.checked;apply();save()});apply()})();</script>
 <style id="zynx-purple-minimal-refinement">
 
 /* ---------- Purple Dream refinement: quiet chrome, minimal composer ---------- */
@@ -4863,5 +4892,113 @@ observer.observe(body,{childList:true});
 paintWorkbench();
 })();
 </script>
+<style id="zynx-glass-cloud-redesign">
+/* A consistent translucent surface system, placed last to win over legacy theme rules. */
+#app #sidebar.zynx-clean-sidebar{
+  position:relative!important;isolation:isolate!important;display:flex!important;flex-direction:column!important;
+  width:272px!important;min-width:272px!important;flex:0 0 272px!important;gap:0!important;
+  padding:0!important;overflow:hidden!important;border-radius:18px!important;
+  background:linear-gradient(155deg,rgba(30,32,45,.58),rgba(14,16,24,.48))!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.13)!important;
+  -webkit-backdrop-filter:blur(34px) saturate(165%)!important;backdrop-filter:blur(34px) saturate(165%)!important;
+}
+#app #sidebar.zynx-clean-sidebar:before{content:""!important;display:block!important;position:absolute!important;inset:0 0 auto!important;height:150px!important;z-index:-1!important;opacity:1!important;pointer-events:none!important;background:radial-gradient(ellipse at 12% 0%,rgba(184,165,245,.19),transparent 72%)!important}
+#app #sidebar .zynx-sidebar-brand{height:68px!important;flex:0 0 68px!important;padding:0 17px!important;background:transparent!important;border-bottom:1px solid rgba(255,255,255,.10)!important}
+#app #sidebar .zynx-brand-lockup{font-size:16px!important;letter-spacing:-.04em!important;color:#f7f7fb!important}
+#app #sidebar .zynx-sidebar-actions{padding:15px 12px 16px!important;display:flex!important;flex-direction:column!important;gap:7px!important}
+#app #sidebar .zynx-sidebar-link{display:flex!important;align-items:center!important;width:100%!important;min-height:41px!important;gap:11px!important;padding:0 11px!important;border:1px solid transparent!important;border-radius:10px!important;background:transparent!important;color:rgba(240,241,248,.78)!important;font-size:12.5px!important;font-weight:520!important;text-decoration:none!important;transform:none!important}
+#app #sidebar .zynx-sidebar-link svg{color:rgba(210,213,229,.7)!important;flex:0 0 auto!important}
+#app #sidebar .zynx-sidebar-link:hover{background:rgba(255,255,255,.085)!important;border-color:rgba(255,255,255,.075)!important;color:#fff!important}
+#app #sidebar .zynx-new-chat{min-height:43px!important;background:linear-gradient(115deg,rgba(184,165,245,.22),rgba(120,153,216,.12))!important;border:1px solid rgba(196,181,253,.24)!important;border-radius:11px!important;color:#fff!important}
+#app #sidebar .zynx-new-chat:hover{background:linear-gradient(115deg,rgba(184,165,245,.3),rgba(120,153,216,.19))!important}
+#app #sidebar .zynx-history-heading{padding:7px 17px 10px!important;color:#9295a5!important;font-size:9px!important;letter-spacing:.15em!important}
+#app #sidebar .zynx-chat-search{height:36px!important;margin:0 12px 10px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.11)!important;border-radius:10px!important}
+#app #sidebar .zynx-chat-search:focus-within{background:rgba(255,255,255,.085)!important;border-color:rgba(196,181,253,.42)!important}
+#app #sidebar .zynx-history-list{flex:1 1 auto!important;min-height:80px!important;padding:0 9px 12px!important;background:transparent!important;overflow-y:auto!important}
+#app #sidebar .zynx-history-list .chat-item{background:transparent!important;border:1px solid transparent!important;color:#c8cad3!important;border-radius:9px!important}
+#app #sidebar .zynx-history-list .chat-item:hover,#app #sidebar .zynx-history-list .chat-item.active{background:rgba(255,255,255,.075)!important;border-color:rgba(255,255,255,.07)!important;color:#fff!important}
+#app #sidebar .zynx-sidebar-footer{flex:0 0 auto!important;padding:10px 12px 12px!important;border-top:1px solid rgba(255,255,255,.11)!important;background:rgba(8,9,15,.17)!important}
+#app #sidebar .zynx-game-soon{margin-left:auto;font-size:8px;letter-spacing:.1em;color:#aaa3c8;border:1px solid rgba(196,181,253,.2);border-radius:5px;padding:2px 5px}
+#app .input-area{background:transparent!important;border:0!important;padding:12px 18px 14px!important}
+#app .input-glass{
+  background:linear-gradient(125deg,rgba(36,38,54,.57),rgba(19,21,31,.55))!important;
+  border:1px solid rgba(255,255,255,.19)!important;border-radius:19px!important;
+  -webkit-backdrop-filter:blur(32px) saturate(175%)!important;backdrop-filter:blur(32px) saturate(175%)!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.13)!important;
+  transition:border-color .2s,background .2s,box-shadow .2s!important;
+}
+#app .input-glass:focus-within{background:rgba(32,34,49,.72)!important;border-color:rgba(196,181,253,.42)!important;box-shadow:0 0 0 3px rgba(184,165,245,.09),0 20px 52px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.15)!important}
+#app .input-glass textarea{color:#f5f4fb!important}
+#app .input-glass textarea::placeholder{color:#a2a2b2!important}
+/* Dreamspace is the default atmosphere: soft, layered clouds behind readable glass. */
+html:not([data-zynx-skin]) .dream-bg,.dream-bg{display:block!important;position:fixed!important;inset:0!important;z-index:0!important;opacity:1!important;pointer-events:none!important;background:radial-gradient(ellipse at 18% 16%,rgba(177,161,231,.24),transparent 42%),radial-gradient(ellipse at 84% 78%,rgba(113,145,205,.2),transparent 45%),linear-gradient(145deg,#101321 0%,#1b1a2d 48%,#101522 100%)!important}
+.cloud{display:block!important;opacity:.25!important;filter:blur(78px)!important;mix-blend-mode:screen!important;pointer-events:none!important;animation-duration:90s!important}
+.cloud-1{background:rgba(184,165,245,.65)!important}
+.cloud-2{background:rgba(122,161,220,.58)!important}
+.cloud-3{background:rgba(218,205,246,.5)!important}
+html[data-dream-clouds="off"] .cloud{opacity:0!important}
+#particles,.particles{opacity:.12!important}
+html:not([data-zynx-skin]) body{background:#101321!important}
+html:not([data-zynx-skin]) #app{background:transparent!important}
+html:not([data-zynx-skin]) .chat-shell{background:rgba(14,16,25,.42)!important;border-color:rgba(255,255,255,.1)!important}
+html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdrop-filter:blur(20px) saturate(145%);backdrop-filter:blur(20px) saturate(145%)}
+.zynx-theme-section{padding:15px;border:1px solid rgba(255,255,255,.1);border-radius:15px;background:rgba(255,255,255,.025)}
+.zynx-theme-heading{margin-bottom:12px}
+.zynx-theme-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.zynx-theme-card{position:relative;min-width:0;padding:8px;text-align:left;border:1px solid rgba(255,255,255,.11);border-radius:12px;background:rgba(255,255,255,.035);color:#f3f4f6;transition:border-color .2s,background .2s,transform .2s}
+.zynx-theme-card:hover{transform:translateY(-2px);background:rgba(255,255,255,.07)}
+.zynx-theme-card[aria-pressed=true]{border-color:var(--theme-a);background:color-mix(in srgb,var(--theme-a) 12%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--theme-a) 35%,transparent)}
+.zynx-theme-preview{height:49px;display:block;position:relative;overflow:hidden;border-radius:8px;margin-bottom:8px;background:linear-gradient(135deg,#111827,#29223f)}
+.zynx-theme-preview i{position:absolute;width:70px;height:45px;border-radius:50%;filter:blur(13px);background:var(--theme-a);opacity:.8}
+.zynx-theme-preview i:nth-child(1){left:-8px;top:-13px}.zynx-theme-preview i:nth-child(2){right:-10px;bottom:-20px;background:var(--theme-b)}.zynx-theme-preview i:nth-child(3){left:40%;top:15px;width:45px;height:24px;background:#fff;opacity:.22}
+.zynx-theme-card b{display:block;font-size:11px}.zynx-theme-card small{display:block;margin-top:3px;font-size:9px;color:#aeb1bd;line-height:1.35}
+.zynx-theme-selected{position:absolute;right:12px;top:13px;font-size:11px;color:var(--theme-a);opacity:0}.zynx-theme-card[aria-pressed=true] .zynx-theme-selected{opacity:1}
+.zynx-theme-aurora{background:linear-gradient(135deg,#06171d,#102d39)}.zynx-theme-obsidian{background:linear-gradient(135deg,#0c0b0a,#30251c)}.zynx-theme-rose{background:linear-gradient(135deg,#160e1b,#38203a)}.zynx-theme-emerald{background:linear-gradient(135deg,#09140f,#1a3828)}.zynx-theme-sapphire{background:linear-gradient(135deg,#071020,#152b4a)}.zynx-theme-copper{background:linear-gradient(135deg,#160e0a,#3b2517)}
+/* Refined login: editorial welcome panel + focused, frosted sign-in card. */
+#welcome{isolation:isolate!important;overflow-x:hidden!important;overflow-y:auto!important;gap:clamp(24px,5vw,7vw)!important;padding:clamp(22px,5vw,72px)!important;background:linear-gradient(125deg,#111426 0%,#1b1a2d 48%,#101522 100%)!important}
+#welcome:before{content:""!important;position:absolute!important;inset:-18%!important;z-index:-1!important;pointer-events:none!important;background:radial-gradient(ellipse at 18% 26%,rgba(187,171,239,.24),transparent 38%),radial-gradient(ellipse at 78% 72%,rgba(116,153,210,.2),transparent 42%)!important;filter:blur(22px)!important;animation:zynxCloudDrift 24s ease-in-out infinite alternate!important}
+#welcome:after{content:""!important;position:absolute!important;inset:0!important;z-index:-1!important;pointer-events:none!important;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.035) 48%,transparent 76%)!important}
+@keyframes zynxCloudDrift{from{transform:translate3d(-2%,0,0) scale(1)}to{transform:translate3d(3%,2%,0) scale(1.08)}}
+#welcome .space-layer,#welcome #stars{display:none!important}
+#welcome .hero{display:flex!important;justify-content:center!important;gap:20px!important;padding:clamp(12px,3vw,42px)!important;min-width:0!important}
+#welcome .hero-top{font-size:10px!important;letter-spacing:.2em!important;color:#c4b9e8!important}
+#welcome .hero-top .dot{background:#b9e2cf!important;box-shadow:0 0 14px rgba(185,226,207,.65)!important}
+#welcome .orb-wrap{display:none!important}
+#welcome .hero-bottom{max-width:650px!important;margin:auto 0!important;text-align:left!important}
+#welcome .tagline{font-size:10px!important;letter-spacing:.2em!important;color:#b8a5f5!important}
+#welcome .headline{max-width:620px!important;font-size:clamp(42px,6vw,76px)!important;line-height:1.03!important;letter-spacing:-.065em!important;color:#f4f2fb!important}
+#welcome .headline .w{animation:none!important}
+#welcome .hero-sub{max-width:430px!important;margin-top:18px!important;color:#c0bfd0!important;font-size:15px!important;line-height:1.8!important}
+#welcome .credit{margin-top:28px!important;color:#aaa7bb!important;font-size:11px!important;letter-spacing:.08em!important}
+#welcome .auth-card{width:min(100%,450px)!important;max-width:450px!important;align-self:center!important;margin:auto!important;border:1px solid rgba(255,255,255,.2)!important;border-radius:24px!important;background:linear-gradient(145deg,rgba(34,35,54,.68),rgba(17,19,31,.64))!important;box-shadow:0 28px 90px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.16)!important;-webkit-backdrop-filter:blur(34px) saturate(155%)!important;backdrop-filter:blur(34px) saturate(155%)!important}
+#welcome .auth-card:before{display:none!important}
+#welcome .auth-card:after{display:none!important}
+#welcome .auth-inner{padding:clamp(25px,4vw,38px)!important}
+#welcome .card-brand .mark{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:0 10px 35px rgba(0,0,0,.18)!important}
+#welcome .wordmark{font-size:25px!important;letter-spacing:-.05em!important;color:#fff!important}
+#welcome .auth-title{font-size:25px!important;letter-spacing:-.04em!important}
+#welcome .auth-card .field{min-height:48px!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:11px!important;background:rgba(7,9,17,.32)!important;color:#fff!important}
+#welcome .auth-card .field:focus{background:rgba(7,9,17,.48)!important;border-color:rgba(196,181,253,.62)!important;box-shadow:0 0 0 3px rgba(184,165,245,.12)!important}
+#welcome .auth-card .auth-btn{height:48px!important;border-radius:11px!important;background:linear-gradient(110deg,#c8b8f5,#a8bce8)!important;color:#171624!important;box-shadow:0 10px 28px rgba(151,132,218,.18)!important}
+#welcome .auth-card .ghost{border:1px solid rgba(255,255,255,.14)!important;border-radius:11px!important;background:rgba(255,255,255,.045)!important}
+#welcome .seg{background:rgba(0,0,0,.2)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:11px!important}
+#welcome .zynx-feature-showcase{width:min(100%,1200px)!important;margin:58px auto 24px!important;padding:36px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:24px!important;background:rgba(12,14,24,.38)!important;-webkit-backdrop-filter:blur(24px)!important;backdrop-filter:blur(24px)!important}
+#welcome .zynx-showcase-heading h2{font-size:clamp(27px,4vw,42px)!important;letter-spacing:-.05em!important}
+#welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:13px!important}
+#welcome .zynx-working-features .zynx-feature-card{padding:15px!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:15px!important;background:rgba(255,255,255,.035)!important;transition:transform .2s,border-color .2s,background .2s!important}
+#welcome .zynx-working-features .zynx-feature-card:hover{transform:translateY(-3px)!important;background:rgba(255,255,255,.065)!important;border-color:rgba(196,181,253,.28)!important}
+#welcome .zynx-working-features .zynx-feature-art{height:82px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;padding:14px!important;border-radius:11px!important;background:radial-gradient(circle at 20% 30%,rgba(184,165,245,.28),transparent 48%),linear-gradient(135deg,rgba(110,128,183,.14),rgba(255,255,255,.025))!important}
+#welcome .zynx-working-features .zynx-feature-art img{display:none!important}
+#welcome .zynx-working-features .zynx-feature-art span{font-size:30px!important;color:#d7ccfa!important}
+#welcome .zynx-working-features .zynx-feature-art i{font-size:10px!important;font-style:normal!important;color:#a9a6ba!important}
+#welcome .zynx-working-features .feature-kicker{color:#bdb0e9!important}
+#welcome .zynx-working-features h3{font-size:16px!important;letter-spacing:-.025em!important}
+#welcome .zynx-working-features p{font-size:12px!important;line-height:1.65!important;color:#b4b4c2!important}
+@media(max-width:900px){#welcome{display:flex!important;flex-direction:column!important;align-items:center!important;gap:24px!important}#welcome .hero{width:100%!important;min-height:auto!important;padding:18px 4px!important}#welcome .hero-bottom{margin:20px 0!important}#welcome .auth-card{width:min(100%,470px)!important}#welcome .zynx-feature-showcase{margin-top:25px!important;padding:20px!important}#welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:600px){#app #sidebar.zynx-clean-sidebar{width:min(84vw,300px)!important;min-width:min(84vw,300px)!important;flex-basis:min(84vw,300px)!important;border-radius:0 18px 18px 0!important;background:rgba(18,20,29,.86)!important}#app .input-area{padding:8px 10px 12px!important}#welcome{padding:16px!important}#welcome .headline{font-size:clamp(38px,12vw,54px)!important}#welcome .auth-inner{padding:24px 19px!important}#welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:1fr!important}#welcome .zynx-feature-showcase{padding:16px!important}}
+@media(prefers-reduced-motion:reduce){#welcome:before{animation:none!important}}
+@supports not ((backdrop-filter:blur(2px))){#app #sidebar.zynx-clean-sidebar,#app .input-glass,#welcome .auth-card{background:rgba(18,20,29,.94)!important}}
+</style>
 </body>
 </html>
