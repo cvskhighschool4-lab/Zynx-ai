@@ -2074,19 +2074,24 @@ html,body{font-size:14px!important}
     if (!text || S.sending) return;
     if (S.listening && recognition) recognition.stop();
     S.sending = true; setBotState('thinking'); el.input.value = ''; resize();
+    const optimisticUser = { id: 'pending-' + Date.now(), role: 'user', content: text, created_at: new Date().toISOString() };
+    S.messages.push(optimisticUser);
     const userRow = addRow('user', text);
     const typing = showTyping();
     try {
       if (!S.chatId) { S.chatId = (await api('/api/chats', { method: 'POST', body: { title: 'New Chat' } })).id; }
       const d = await streamReply(S.chatId, text, typing);
-      S.messages.push(d.user_message, d.assistant_message);
+      const pendingIndex = S.messages.findIndex((m) => m.id === optimisticUser.id);
+      if (pendingIndex >= 0) S.messages[pendingIndex] = d.user_message;
+      else S.messages.push(d.user_message);
+      S.messages.push(d.assistant_message);
       el.title.textContent = d.chat_title || 'Chat';
       loadChats();
       if (S.voiceReplies) speakReply(d.assistant_message.content);
     } catch (e) {
       typing.remove();
       if (e.status === 404) S.chatId = null;
-      if (!S.messages.length) el.empty.style.display = 'flex';
+      el.empty.style.display = 'none';
       addRow('assistant', e.message || 'Something went wrong. Mind trying again?', true);
       if (!el.input.value) { el.input.value = text; }
     } finally {
