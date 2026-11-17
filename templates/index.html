@@ -1192,171 +1192,42 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
 
 </style>
 
-<style id="zynx-zyricon-design">
-:root{--zy-bg:#07040b;--zy-panel:#100c17;--zy-panel2:#171020;--zy-purple:#694788;--zy-violet:#3b2568;--zy-rose:#98578d;--zy-pink:#c27595;--zy-pearl:#c4a5b8;--zy-blue:#313498;--zy-line:rgba(196,165,184,.16);--zy-muted:#a89aaa}
-body{background:var(--zy-bg)!important;color:#f8f1fa}
-.dream-bg{background:radial-gradient(ellipse at 15% 8%,rgba(152,87,141,.28),transparent 38%),radial-gradient(ellipse at 88% 78%,rgba(49,52,152,.3),transparent 42%),radial-gradient(ellipse at 55% 45%,rgba(105,71,136,.18),transparent 50%),linear-gradient(135deg,#08050d,#1a1022 52%,#090711)!important}
-.dream-bg:after{content:"";position:absolute;inset:0;opacity:.2;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(transparent,#000 20%,#000 85%,transparent)}
-#app{gap:0!important;padding:clamp(12px,2.3vw,34px)!important;max-width:1800px;margin:0 auto}
-.sidebar{width:252px!important;border-radius:22px 0 0 22px!important;border:1px solid rgba(196,165,184,.13)!important;border-right:0!important;background:linear-gradient(180deg,rgba(14,10,20,.97),rgba(10,8,15,.98))!important;box-shadow:0 30px 100px rgba(0,0,0,.48)!important;backdrop-filter:blur(30px) saturate(135%)!important}
-.sidebar:before{height:170px!important;background:radial-gradient(ellipse at 10% 0%,rgba(152,87,141,.2),transparent 72%)!important}
-.sidebar>div:first-child{min-height:66px!important;padding:17px 18px!important;border-color:var(--zy-line)!important}
-.sidebar>div:first-child:after{content:none!important}
-.sidebar .mark{filter:drop-shadow(0 0 12px rgba(194,117,149,.35))}
-.sidebar .font-semibold{font-size:15px;letter-spacing:.045em}
-#newChatBtn{min-height:42px!important;border-radius:10px!important;justify-content:flex-start!important;background:linear-gradient(105deg,rgba(152,87,141,.2),rgba(105,71,136,.13))!important;border:1px solid rgba(194,165,184,.18)!important;color:#f6eaf3!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);font-weight:500}
-#newChatBtn:hover{background:linear-gradient(105deg,rgba(152,87,141,.32),rgba(105,71,136,.22))!important}
-.zyricon-shortcut{margin-left:auto;padding:2px 6px;border:1px solid rgba(255,255,255,.1);border-radius:5px;color:#82768b;font-size:9px}
-.zyricon-side-label{padding:13px 18px 6px;color:#82758a;font-size:9px;font-weight:650;letter-spacing:.17em}
-.zyricon-workspace-label{padding-top:20px}
-.zyricon-side-nav{display:grid;gap:3px;padding:0 10px}
-.zyricon-side-nav .chip{display:flex;align-items:center;justify-content:flex-start;gap:11px;width:100%;min-height:34px;padding:7px 10px!important;border:1px solid transparent!important;border-radius:8px!important;background:transparent!important;color:#b6aabb!important;text-align:left;font-size:11px!important;box-shadow:none!important}
-.zyricon-side-nav .chip span{width:15px;text-align:center;color:#b58bb7;font-size:13px}
-.zyricon-side-nav .chip:hover,.zyricon-side-nav .zyricon-nav-active{background:linear-gradient(90deg,rgba(152,87,141,.2),rgba(105,71,136,.08))!important;border-color:rgba(194,165,184,.13)!important;color:#fff!important;transform:translateX(2px)}
-.zynx-chat-search{margin:3px 12px 12px!important;min-height:36px!important;border-radius:8px!important;background:rgba(255,255,255,.035)!important;border-color:rgba(196,165,184,.12)!important}
-.zynx-chat-search input{font-size:11px!important}
-#chatList{padding:4px 10px 14px!important}
-#chatList:empty:after{content:"No conversations yet";padding:8px 8px;font-size:10px;color:#746b7b}
-.chat-item{border-radius:8px!important;font-size:11px!important;color:#b8acbd!important;min-height:34px!important}
-.chat-item.active{background:rgba(152,87,141,.16)!important;border-color:rgba(194,165,184,.16)!important}
-.sidebar>div:last-child{margin-top:auto;border-color:var(--zy-line)!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.2))!important;padding:12px!important}
-#settingsBtn,#authBtn{font-size:11px!important;border-radius:8px!important}
-.chat-shell{position:relative;border-radius:0 22px 22px 0!important;border:1px solid rgba(196,165,184,.14)!important;background:linear-gradient(145deg,rgba(24,16,32,.94),rgba(12,9,19,.97))!important;box-shadow:0 30px 100px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.04)!important;overflow:hidden}
-.chat-shell:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 0%,rgba(105,71,136,.17),transparent 52%),radial-gradient(ellipse at 100% 100%,rgba(49,52,152,.1),transparent 44%)}
-.chat-shell>*{position:relative;z-index:1}
-.zyricon-topbar{height:62px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 22px;border-bottom:1px solid rgba(196,165,184,.12);background:rgba(9,7,14,.26)}
-.zyricon-top-left,.zyricon-top-actions{display:flex;align-items:center;gap:11px;min-width:0}
-.zyricon-model-pill{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(196,165,184,.14);border-radius:8px;background:rgba(0,0,0,.24);color:#d8c9d8;font-size:10px;white-space:nowrap}
-.zyricon-model-dot{width:6px;height:6px;border-radius:50%;background:#c27595;box-shadow:0 0 10px #c27595}
-.zyricon-chevron{color:#89758e;margin-left:3px}
-.zyricon-current-title{max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b5a8b8;font-size:10px;font-weight:500}
-.zyricon-user-badge{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9f91a5;font-size:10px}
-.zyricon-top-action{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid rgba(196,165,184,.14);border-radius:8px;background:rgba(0,0,0,.18);color:#c9b9cb;font-size:10px;transition:all .22s ease}
-.zyricon-top-action:hover{border-color:rgba(194,117,149,.42);background:rgba(152,87,141,.13);color:#fff;transform:translateY(-1px)}
-.zyricon-export{background:linear-gradient(110deg,rgba(105,71,136,.34),rgba(152,87,141,.2))}
-#toggleSidebar{width:32px;height:32px;border:1px solid rgba(196,165,184,.12);border-radius:8px;background:rgba(255,255,255,.025)}
-.messages{padding:0 24px 14px!important;scrollbar-color:rgba(152,87,141,.32) transparent}
-.zyricon-empty{height:100%;min-height:0;max-width:940px;margin:0 auto;padding:clamp(20px,4vh,46px) 20px 18px!important;justify-content:center;overflow-y:auto}
-.zyricon-orb-wrap{width:62px;height:62px;display:grid;place-items:center;margin-bottom:14px}
-.zyricon-orb{position:relative;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#f8d5ee 0,#c275b5 12%,#694788 39%,#313498 67%,#100b19 100%);box-shadow:0 0 20px rgba(194,117,149,.5),0 0 48px rgba(105,71,136,.35),inset -7px -8px 16px rgba(0,0,0,.55),inset 5px 4px 12px rgba(255,255,255,.35);animation:zyricon-float 5s ease-in-out infinite}
-.zyricon-orb:before{content:"";position:absolute;inset:-9px;border:1px solid rgba(194,165,184,.17);border-radius:50%;animation:zyricon-orbit 9s linear infinite}
-.zyricon-orb:after{content:"";position:absolute;inset:-15px;border:1px solid rgba(152,87,141,.13);border-radius:50%;transform:rotateX(68deg);animation:zyricon-orbit 13s linear infinite reverse}
-.zyricon-orb span{position:absolute;width:11px;height:7px;top:9px;left:10px;border-radius:50%;background:rgba(255,255,255,.72);filter:blur(4px)}
-.zyricon-orb i{position:absolute;inset:0;border-radius:50%;background:linear-gradient(145deg,transparent 38%,rgba(7,4,11,.65))}
-@keyframes zyricon-float{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-8px) rotate(7deg)}}
-@keyframes zyricon-orbit{to{transform:rotate(360deg)}}
-.zyricon-empty h2{margin:0!important;color:#f2e9f2!important;font-family:Inter,sans-serif!important;font-size:clamp(20px,2.3vw,27px)!important;font-weight:450!important;letter-spacing:-.035em!important;text-align:center;background:none!important;-webkit-text-fill-color:initial!important;text-shadow:0 5px 34px rgba(194,117,149,.12)}
-.zyricon-empty>p{margin:9px 0 19px!important;max-width:480px;color:#a798aa!important;font-size:11px!important;line-height:1.7}
-.zyricon-quick-prompts{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.zyricon-quick-prompts .chip{display:flex;align-items:center;gap:8px;padding:8px 12px!important;border:1px solid rgba(196,165,184,.17)!important;border-radius:8px!important;background:rgba(6,4,10,.45)!important;color:#d7c9d8!important;font-size:10px!important}
-.zyricon-quick-prompts .chip span{color:#c78cc3}.zyricon-quick-prompts .chip b{font-size:10px;color:#9e85a5;font-weight:500}
-.zyricon-quick-prompts .chip:hover{transform:translateY(-2px)!important;border-color:rgba(194,117,149,.42)!important;background:rgba(105,71,136,.2)!important}
-.zyricon-feature-grid{width:min(100%,820px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.zyricon-feature-card{position:relative;display:flex;min-height:142px;flex-direction:column;align-items:flex-start;gap:7px;padding:13px!important;border:1px solid rgba(196,165,184,.15)!important;border-radius:12px!important;background:linear-gradient(145deg,rgba(18,13,25,.88),rgba(8,7,13,.86))!important;color:#f4eaf4!important;text-align:left;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 12px 26px rgba(0,0,0,.12)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,background .28s,box-shadow .28s!important}
-.zyricon-feature-card:hover{transform:translateY(-4px)!important;border-color:rgba(194,117,149,.38)!important;background:linear-gradient(145deg,rgba(50,30,57,.9),rgba(15,10,22,.95))!important;box-shadow:0 16px 34px rgba(0,0,0,.25),0 0 22px rgba(152,87,141,.08)!important}
-.zyricon-feature-icon{width:25px;height:25px;display:grid;place-items:center;border:1px solid rgba(194,165,184,.2);border-radius:7px;background:rgba(152,87,141,.12);color:#d7a5cc;font-size:14px}
-.zyricon-feature-tag{margin-top:2px;color:#88768e;font-size:7px;font-weight:700;letter-spacing:.15em}
-.zyricon-feature-card strong{font-size:11px;font-weight:600;color:#eee2ef}
-.zyricon-feature-card small{color:#9b8ca0;font-size:9px;line-height:1.55;font-weight:400}
-.zyricon-feature-card i{margin-top:auto;color:#c38db8;font-size:9px;font-style:normal}
-.input-area{padding:12px 22px 16px!important;background:linear-gradient(0deg,rgba(5,4,9,.72),rgba(9,6,14,.3))!important;border-top:1px solid rgba(196,165,184,.1)}
-.zynx-composer-note{display:none!important}
-.zynx-mode-rail{max-width:820px!important;justify-content:flex-start!important;margin:0 auto 8px!important;padding:0 3px!important}
-.zynx-mode{padding:6px 10px!important;border-radius:7px!important;border-color:rgba(196,165,184,.13)!important;background:rgba(0,0,0,.18)!important;color:#a99aab!important;font-size:9px!important}
-.zynx-mode[aria-pressed=true]{border-color:rgba(194,117,149,.4)!important;background:rgba(152,87,141,.16)!important;color:#f2dced!important}
-.input-glass{max-width:820px!important;min-height:88px!important;align-items:flex-end!important;flex-wrap:wrap!important;padding:10px 12px 8px!important;border:1px solid rgba(196,165,184,.32)!important;border-radius:13px!important;background:linear-gradient(135deg,rgba(28,19,35,.96),rgba(12,9,17,.98))!important;box-shadow:0 16px 42px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.055)!important}
-.input-glass:focus-within{border-color:rgba(194,117,149,.65)!important;box-shadow:0 0 0 3px rgba(152,87,141,.12),0 18px 50px rgba(0,0,0,.36)!important}
-.input-glass textarea{flex-basis:100%;order:-1;min-height:42px!important;padding:6px 8px!important;font-size:13px!important;color:#f4edf5!important}
-.input-glass textarea::placeholder{color:#897b8e!important}
-#voiceBtn{width:34px!important;height:32px!important;border-radius:8px!important;background:rgba(255,255,255,.035)!important}
-.btn-send{width:34px!important;height:32px!important;border-radius:9px!important;background:linear-gradient(135deg,#98578d,#694788 65%,#313498)!important;border:1px solid rgba(220,175,210,.3)!important;box-shadow:0 4px 15px rgba(105,71,136,.3)!important}
-.input-area>p{font-size:9px!important;color:#766c7b!important}
-@media(max-width:1100px){.zyricon-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{width:220px!important}}
-@media(max-width:768px){
-#app{padding:0!important}.sidebar{width:min(285px,86vw)!important;border-radius:0 16px 16px 0!important;border:1px solid var(--zy-line)!important;background:rgba(11,8,15,.98)!important}
-.chat-shell{border-radius:0!important;border:0!important}.zyricon-topbar{height:58px;min-height:58px;padding:0 10px}.zyricon-top-left,.zyricon-top-actions{gap:6px}.zyricon-current-title,.zyricon-user-badge{display:none}.zyricon-model-pill{font-size:9px;padding:6px 8px}.zyricon-top-action{font-size:0;padding:8px}.zyricon-top-action svg{width:16px;height:16px}.messages{padding:0 10px 10px!important}.zyricon-empty{padding:22px 10px 14px!important}.zyricon-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.zyricon-feature-card{min-height:132px;padding:10px!important}.zyricon-quick-prompts{gap:6px;margin-bottom:15px}.zyricon-quick-prompts .chip{font-size:9px!important;padding:7px 9px!important}.input-area{padding:8px 10px calc(9px + env(safe-area-inset-bottom))!important}.zynx-mode-rail{overflow-x:auto;flex-wrap:nowrap!important}.zynx-mode{white-space:nowrap;flex:0 0 auto}.input-glass{min-height:78px!important;border-radius:11px!important}
-}
-@media(max-height:720px){.zyricon-empty{padding-top:12px!important;padding-bottom:8px!important}.zyricon-orb-wrap{transform:scale(.78);margin-bottom:3px}.zyricon-empty>p{margin:5px 0 10px!important}.zyricon-quick-prompts{margin-bottom:12px}.zyricon-feature-card{min-height:118px}}
-@media(prefers-reduced-motion:reduce){.zyricon-orb,.zyricon-orb:before,.zyricon-orb:after{animation:none!important}.zyricon-feature-card,.zyricon-quick-prompts .chip,.zyricon-top-action{transition:none!important}}
-</style>
 
-<style id="zynx-dream-cloud-fix">
-:root{
-  --zy-bg:#090711;--zy-panel:#151020;--zy-panel2:#1c1428;
-  --zy-purple:#76539a;--zy-violet:#4d397e;--zy-rose:#a66f9e;
-  --zy-pink:#cf91b6;--zy-pearl:#d8c0dc;--zy-blue:#5556a8;
-  --zy-line:rgba(216,192,220,.17);--zy-muted:#b5a6bd;
-  --glass:rgba(27,19,39,.48);--glass-border:rgba(216,192,220,.16);
-  --accent:#c99bd7;--accent-soft:#dfc2e8;
-}
-html,body{background:#090711!important;color:#f8f0fa}
-.dream-bg{
-  background:
-    radial-gradient(ellipse 72% 48% at 12% 16%,rgba(166,111,158,.32),transparent 70%),
-    radial-gradient(ellipse 65% 52% at 88% 24%,rgba(85,86,168,.30),transparent 72%),
-    radial-gradient(ellipse 75% 48% at 48% 100%,rgba(118,83,154,.30),transparent 70%),
-    linear-gradient(145deg,#090711 0%,#171023 48%,#0b0915 100%)!important;
-}
-.dream-bg:after{display:none!important}
-.cloud{filter:blur(105px)!important;opacity:.55!important;mix-blend-mode:screen}
-.cloud-1{background:rgba(177,124,183,.32)!important;width:560px;height:390px}
-.cloud-2{background:rgba(103,105,190,.29)!important;width:540px;height:360px}
-.cloud-3{background:rgba(202,151,198,.22)!important;width:470px;height:320px}
-#startup{
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 45%,rgba(118,83,154,.24),transparent 72%),
-    radial-gradient(ellipse at 18% 20%,rgba(166,111,158,.22),transparent 60%),
-    linear-gradient(145deg,#090711,#171023 55%,#0b0915)!important;
-}
-#startup:before,#startup:after{
-  content:"";position:absolute;inset:-15%;pointer-events:none;filter:blur(85px);
-  background:radial-gradient(ellipse at 22% 40%,rgba(177,124,183,.26),transparent 38%),
-             radial-gradient(ellipse at 78% 62%,rgba(103,105,190,.25),transparent 42%);
-  animation:startup-cloud-drift 16s ease-in-out infinite alternate;
-}
-#startup:after{opacity:.6;transform:scale(1.15);animation-duration:22s;animation-direction:alternate-reverse}
-@keyframes startup-cloud-drift{to{transform:translate3d(3%,-2%,0) scale(1.08)}}
-.boot-glow{background:radial-gradient(ellipse at 50% 45%,rgba(201,155,215,.10),transparent 58%)}
-.boot-label,.boot-skip{color:#c4b3ce!important}
-.boot-bar{background:rgba(216,192,220,.18)!important}
-.boot-bar i{background:linear-gradient(90deg,#76539a,#cf91b6,#d8c0dc)!important}
-.boot-core .bc-glow{background:radial-gradient(circle,rgba(166,111,158,.42),rgba(85,86,168,.18) 42%,transparent 68%)!important}
-.boot-core .bc-pulse{border-color:rgba(207,145,182,.58)!important}
-.boot-core .bc-svg .trail{stroke:#d8b6db!important;filter:drop-shadow(0 0 5px rgba(207,145,182,.7))!important}
-#app{background:transparent}
-.sidebar{background:linear-gradient(180deg,rgba(25,17,35,.94),rgba(13,10,21,.96))!important}
-.chat-shell{background:linear-gradient(145deg,rgba(28,20,40,.91),rgba(13,10,21,.96))!important}
-.chat-shell:before{background:radial-gradient(ellipse at 50% 0%,rgba(166,111,158,.19),transparent 55%),radial-gradient(ellipse at 100% 100%,rgba(85,86,168,.16),transparent 48%)!important}
-#chatFx,.particles,.particle,#stars,.space-layer:before,.space-layer:after,.burst{display:none!important;visibility:hidden!important;opacity:0!important}
-#particles{display:none!important}
-#stars{display:none!important}
-#welcome{
-  background:
-    radial-gradient(ellipse 72% 60% at 16% 18%,rgba(166,111,158,.23),transparent 70%),
-    radial-gradient(ellipse 70% 58% at 86% 80%,rgba(85,86,168,.25),transparent 72%),
-    linear-gradient(145deg,rgba(9,7,17,.88),rgba(23,16,35,.82))!important;
-  backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
-}
-#welcome .space-layer{background:
-  radial-gradient(ellipse 46% 34% at 24% 26%,rgba(177,124,183,.18),transparent 75%),
-  radial-gradient(ellipse 48% 38% at 78% 68%,rgba(103,105,190,.18),transparent 75%)}
-#welcome .nebula{background:conic-gradient(from 20deg,#76539a,#a66f9e,#5556a8,#76539a)!important;opacity:.23!important;filter:blur(95px)!important}
-.auth-card{background:rgba(24,17,34,.78)!important;border-color:rgba(216,192,220,.22)!important;box-shadow:0 24px 90px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07)!important}
-.auth-card:before{background:conic-gradient(from 0deg,transparent 0 55%,#76539a 72%,#a66f9e 84%,#d8c0dc 94%,transparent 100%)!important}
-.auth-card.loading:after,.auth-card.success:after{background:rgba(24,17,34,.97)!important}
-.auth-card .field{background:rgba(10,8,17,.62)!important;border-color:rgba(216,192,220,.17)!important}
-.auth-card .field:focus{border-color:rgba(207,145,182,.58)!important;box-shadow:0 0 0 4px rgba(166,111,158,.12),0 0 24px rgba(118,83,154,.18)!important}
-.auth-card .auth-btn{color:#fff!important;background:linear-gradient(105deg,#76539a,#a66f9e 58%,#5556a8)!important;box-shadow:0 8px 30px rgba(118,83,154,.26)!important}
-.auth-card .auth-btn:hover:not(:disabled){box-shadow:0 10px 36px rgba(166,111,158,.35)!important}
-.auth-inner:before{background:linear-gradient(90deg,transparent,#a66f9e,#d8c0dc,transparent)!important;box-shadow:0 0 18px rgba(207,145,182,.55)!important}
-.auth-card .terms .box{border-color:rgba(216,192,220,.3)!important}
-.auth-card .terms input:checked+.box{background:linear-gradient(135deg,#76539a,#cf91b6)!important}
-.empty h2,.wordmark,.s-logo{background:linear-gradient(135deg,#f2e4f2,#d8b6db 48%,#a66f9e)!important;-webkit-background-clip:text!important;background-clip:text!important}
-.btn-send,.primary{background:linear-gradient(135deg,#76539a,#a66f9e 58%,#5556a8)!important}
-.input-glass:focus-within{border-color:rgba(207,145,182,.48)!important;box-shadow:0 0 0 3px rgba(166,111,158,.13),0 8px 40px rgba(5,8,20,.35)!important}
-@media(prefers-reduced-motion:reduce){#startup:before,#startup:after{animation:none!important}}
-</style>
 
+
+
+<style id="zynx-dream-codex-interface">
+:root{--dream-accent:#b8a5f5;--dream-accent-rgb:184,165,245;--dream-glass-opacity:.72;--dream-blur:24px;--dream-font:14px;--dream-bg:#0b1020;--dream-line:rgba(207,218,255,.14);--dream-text:#f4f6ff;--dream-muted:#aeb9d3;--zy-bg:#0b1020;--zy-panel:#141b2f;--zy-panel2:#19233c;--zy-line:rgba(207,218,255,.14);--zy-muted:#aeb9d3;--accent:var(--dream-accent);--accent-soft:#e3dcff;--glass:rgba(20,27,47,.72);--glass-border:var(--dream-line)}
+html,body{background:var(--dream-bg)!important;color:var(--dream-text)!important;font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;font-size:var(--dream-font)}
+.dream-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 68% 48% at 8% 4%,rgba(123,153,211,.22),transparent 72%),radial-gradient(ellipse 58% 54% at 92% 22%,rgba(154,139,213,.19),transparent 72%),radial-gradient(ellipse 76% 54% at 52% 105%,rgba(137,168,207,.17),transparent 70%),linear-gradient(145deg,#0a1020,#151b32 48%,#0c1426)!important}
+.dream-bg:before,.dream-bg:after{content:"";position:absolute;inset:-12%;filter:blur(85px);opacity:.48;pointer-events:none;background:radial-gradient(ellipse at 24% 38%,rgba(174,190,233,.22),transparent 36%),radial-gradient(ellipse at 76% 66%,rgba(173,155,226,.19),transparent 40%);animation:dream-drift 34s ease-in-out infinite alternate}
+.dream-bg:after{opacity:.28;animation-duration:48s;animation-direction:alternate-reverse}@keyframes dream-drift{to{transform:translate(2.5%,-1.5%) scale(1.06)}}
+.cloud{filter:blur(100px)!important;opacity:.42!important;mix-blend-mode:screen;pointer-events:none}.cloud-1{background:rgba(133,164,220,.28)!important}.cloud-2{background:rgba(161,151,218,.25)!important}.cloud-3{background:rgba(191,205,233,.19)!important}
+.particles,.particle,#chatFx,#stars,.dream-particle{display:none!important;visibility:hidden!important}
+#startup{z-index:100;background:radial-gradient(ellipse at 50% 42%,rgba(153,171,222,.18),transparent 64%),linear-gradient(145deg,#0a1020,#171d34 55%,#0b1426)!important;transition:opacity .42s,visibility .42s!important}
+#startup:before,#startup:after{content:"";position:absolute;inset:-15%;filter:blur(90px);pointer-events:none;background:radial-gradient(ellipse at 20% 42%,rgba(145,169,218,.23),transparent 42%),radial-gradient(ellipse at 80% 58%,rgba(177,164,226,.2),transparent 44%);animation:dream-drift 24s ease-in-out infinite alternate}
+#startup:after{opacity:.55;animation-duration:38s}.boot-core,#bootCore{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+.boot-label,.boot-note b{color:#e2e9fb!important}.boot-note small,.boot-skip{color:#aab8d4!important}.boot-bar{background:rgba(206,218,250,.17)!important}.boot-bar i{background:linear-gradient(90deg,#829dce,#b8a5f5,#d6e2fa)!important}
+#app{position:relative;z-index:5;gap:12px!important;padding:clamp(10px,1.5vw,22px)!important;opacity:0;transition:opacity .45s!important}#app.ready{opacity:1}
+.glass,.sidebar,.chat-shell,.settings,.modal,.auth-card,.input-glass{background:rgba(17,25,44,var(--dream-glass-opacity))!important;border:1px solid var(--dream-line)!important;backdrop-filter:blur(var(--dream-blur)) saturate(125%)!important;-webkit-backdrop-filter:blur(var(--dream-blur)) saturate(125%)!important;box-shadow:0 20px 65px #0004,inset 0 1px 0 #ffffff0e!important}
+.sidebar{width:260px!important;flex-shrink:0;border-radius:19px!important;background:#0d1425d6!important;overflow:hidden}.sidebar>div:first-child{padding:18px!important;border-color:var(--dream-line)!important}.sidebar .font-semibold{font-size:15px;letter-spacing:-.02em}
+#newChatBtn{min-height:42px;border-radius:11px!important;background:linear-gradient(110deg,rgba(var(--dream-accent-rgb),.22),rgba(125,165,210,.1))!important;border:1px solid rgba(var(--dream-accent-rgb),.28)!important;color:#f4f6ff!important}
+.dream-side-label{padding:13px 18px 6px;color:#8391ad;font-size:9px;font-weight:650;letter-spacing:.14em}.dream-side-nav{display:grid;gap:4px;padding:0 10px}.dream-side-nav .chip{display:flex;align-items:center;gap:10px;width:100%;min-height:36px;padding:8px 10px!important;border:1px solid transparent!important;border-radius:9px!important;background:transparent!important;color:#b8c3da!important;text-align:left;font-size:11px!important}.dream-side-nav .chip:hover{background:rgba(var(--dream-accent-rgb),.1)!important;color:white!important}.dream-shortcut{margin-left:auto;color:#8491aa;font-size:9px}
+.zynx-chat-search{border-radius:10px!important;background:#050a1633!important;border-color:var(--dream-line)!important}.chat-item{border-radius:9px!important;color:#b7c2d9!important}.chat-item.active{background:rgba(var(--dream-accent-rgb),.14)!important}
+.chat-shell{position:relative;min-width:0;flex:1;border-radius:19px!important;overflow:hidden;background:#0e1527b8!important}.chat-shell:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 60% 0%,rgba(150,171,222,.1),transparent 55%)}.chat-shell>*{position:relative;z-index:1}
+.dream-topbar{height:62px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 22px;border-bottom:1px solid var(--dream-line);background:#0b111f52}.dream-top-left,.dream-top-actions{display:flex;align-items:center;gap:11px;min-width:0}.dream-model-pill{display:flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid var(--dream-line);border-radius:9px;background:#ffffff09;color:#e0e7f8;font-size:11px;white-space:nowrap}.dream-model-dot{width:7px;height:7px;border-radius:50%;background:#a9c6e8;box-shadow:0 0 12px #a9c6e8a6}.dream-current-title,.dream-user-badge{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dream-muted);font-size:11px}.dream-top-action{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--dream-line);border-radius:9px;background:#ffffff09;color:#d9e2f5;font-size:11px;transition:.2s}.dream-top-action:hover{background:rgba(var(--dream-accent-rgb),.14);transform:translateY(-1px)}
+.messages{padding:0 24px 16px!important;scrollbar-color:#aebbd455 transparent}.dream-empty{height:100%;max-width:900px;margin:0 auto;padding:clamp(20px,5vh,58px) 20px 22px!important;justify-content:center;overflow-y:auto}.dream-orb-wrap{width:62px;height:62px;display:grid;place-items:center;margin-bottom:18px}.dream-orb{position:relative;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#f3f6ff,#c7d7f2 12%,#899fc8 38%,#656c9e 68%,#1b2340);box-shadow:0 0 22px #97b1de4d,0 0 56px #9291cd2e;animation:dream-float 6s ease-in-out infinite}@keyframes dream-float{50%{transform:translateY(-7px)}}.dream-orb:before{content:"";position:absolute;inset:-10px;border:1px solid #c3d3f33b;border-radius:50%}
+.dream-empty h2{margin:0!important;color:#f2f5ff!important;font-size:clamp(22px,2.5vw,30px)!important;font-weight:550!important;letter-spacing:-.04em!important;text-align:center}.dream-empty>p{max-width:520px;margin:10px 0 22px!important;color:#aebbd4!important;font-size:12px!important;line-height:1.7}
+.dream-quick-prompts{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:24px}.dream-quick-prompts .chip{padding:8px 12px!important;border:1px solid var(--dream-line)!important;border-radius:9px!important;background:#ffffff09!important;color:#dce5f7!important;font-size:10px!important}.dream-quick-prompts .chip:hover{transform:translateY(-2px)!important;background:rgba(var(--dream-accent-rgb),.12)!important}
+.dream-feature-grid{width:min(100%,820px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.dream-feature-card{display:flex;min-height:132px;flex-direction:column;align-items:flex-start;gap:8px;padding:14px!important;border:1px solid var(--dream-line)!important;border-radius:13px!important;background:#141d3285!important;color:#f1f5ff!important;text-align:left;box-shadow:inset 0 1px 0 #ffffff0b!important;transition:transform .22s,border-color .22s!important}.dream-feature-card:hover{transform:translateY(-3px)!important;border-color:rgba(var(--dream-accent-rgb),.38)!important}.dream-feature-icon{width:27px;height:27px;display:grid;place-items:center;border:1px solid rgba(var(--dream-accent-rgb),.22);border-radius:8px;background:rgba(var(--dream-accent-rgb),.12);color:#d8e1fb}.dream-feature-tag{color:#9eacc8;font-size:8px;font-weight:700;letter-spacing:.13em}.dream-feature-card strong{font-size:12px;color:#edf2ff}.dream-feature-card small{color:#aebbd4;font-size:10px;line-height:1.55}.dream-feature-card i{margin-top:auto;color:#c2cdec;font-size:10px;font-style:normal}
+.input-area{padding:12px 22px 16px!important;background:linear-gradient(0deg,#080d19c7,#0a101e33)!important;border-top:1px solid var(--dream-line)}.zynx-mode-rail{max-width:820px!important;margin:0 auto 8px!important}.zynx-mode{border-radius:8px!important;border-color:var(--dream-line)!important;background:#ffffff09!important;color:#b9c5dc!important}.zynx-mode[aria-pressed=true]{border-color:rgba(var(--dream-accent-rgb),.48)!important;background:rgba(var(--dream-accent-rgb),.14)!important;color:#f0f4ff!important}.input-glass{max-width:820px!important;min-height:82px!important;margin:auto;border-radius:14px!important;background:#121b2fd1!important;border-color:#c3d3f333!important}.input-glass:focus-within{border-color:rgba(var(--dream-accent-rgb),.55)!important;box-shadow:0 0 0 3px rgba(var(--dream-accent-rgb),.11),0 18px 48px #0004!important}.input-glass textarea{font-size:13px!important;color:#f1f5ff!important}.input-glass textarea::placeholder{color:#8f9db8!important}.btn-send,.primary{background:linear-gradient(135deg,var(--dream-accent),#8199c8)!important;color:#10182b!important;border:0!important}
+#settings{background:#0e1526f0!important}#settings select{background:#0b1426!important;color:#edf2ff!important;border-color:var(--dream-line)!important}#settings .text-slate-100{color:#edf2ff!important}#settings .text-slate-400,#settings .text-slate-500{color:#a9b6cf!important}#settings input[type=range]{accent-color:var(--dream-accent)}
+.dream-personalization{padding:14px;border:1px solid var(--dream-line);border-radius:14px;background:#ffffff06}.dream-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.dream-presets button{padding:9px 7px;border:1px solid var(--dream-line);border-radius:9px;background:#ffffff06;color:#e6edfc;text-align:left}.dream-presets button b{display:block;font-size:10px}.dream-presets button small{display:block;margin-top:4px;color:#9eacc5;font-size:9px;line-height:1.35}.dream-presets button[aria-pressed=true]{border-color:rgba(var(--dream-accent-rgb),.6);background:rgba(var(--dream-accent-rgb),.13)}.dream-control{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;color:#cbd5e8;font-size:11px}.dream-control select,.dream-control input{grid-column:1/-1;width:100%}.dream-control output{color:#aebcda;font-variant-numeric:tabular-nums}.dream-control select{padding:9px;border:1px solid var(--dream-line);border-radius:9px;background:#111a2e;color:#eaf0ff}.dream-toggle{display:flex;justify-content:space-between;align-items:center;color:#cbd5e8;font-size:11px}.dream-toggle input{width:17px;height:17px;accent-color:var(--dream-accent)}
+html[data-dream-mode="light"]{--dream-bg:#e9eef7;--dream-text:#202a40;--dream-muted:#4d5b74;--dream-line:rgba(74,91,128,.18)}html[data-dream-mode="light"] body{color:#202a40!important}html[data-dream-mode="light"] .dream-bg{background:radial-gradient(ellipse at 12% 8%,#a0b8e17a,transparent 68%),radial-gradient(ellipse at 88% 30%,#c5b8e666,transparent 68%),linear-gradient(145deg,#edf2fa,#dfe7f4 58%,#f5f6fb)!important}html[data-dream-mode="light"] .sidebar,html[data-dream-mode="light"] .chat-shell,html[data-dream-mode="light"] .settings{background:#f6f9ffd1!important;color:#24314a!important}html[data-dream-mode="light"] .dream-topbar,html[data-dream-mode="light"] .input-area{background:#e8eef99e!important}html[data-dream-mode="light"] .dream-model-pill,html[data-dream-mode="light"] .dream-top-action,html[data-dream-mode="light"] .dream-feature-card,html[data-dream-mode="light"] .input-glass{background:#ffffffb8!important;color:#26334d!important}html[data-dream-mode="light"] .dream-empty h2,html[data-dream-mode="light"] .dream-feature-card strong{color:#26334d!important}html[data-dream-mode="light"] .dream-empty>p,html[data-dream-mode="light"] .dream-feature-card small{color:#53617a!important}html[data-dream-mode="light"] .chat-item,html[data-dream-mode="light"] .dream-side-nav .chip{color:#43516c!important}html[data-dream-mode="light"] .input-glass textarea{color:#26334d!important}
+html[data-dream-clouds="off"] .dream-bg:before,html[data-dream-clouds="off"] .dream-bg:after,html[data-dream-clouds="off"] #startup:before,html[data-dream-clouds="off"] #startup:after{animation:none!important;opacity:.12!important}
+html[data-dream-preset="soft"]{--dream-glass-opacity:.58;--dream-blur:17px}html[data-dream-preset="medium"]{--dream-glass-opacity:.72;--dream-blur:24px}html[data-dream-preset="deep"]{--dream-glass-opacity:.84;--dream-blur:32px}
+@media(max-width:1100px){.dream-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{width:232px!important}}@media(max-width:768px){#app{padding:0!important;gap:0!important}.sidebar{width:min(285px,86vw)!important;border-radius:0 16px 16px 0!important}.chat-shell{border-radius:0!important;border:0!important}.dream-topbar{height:58px;min-height:58px;padding:0 10px}.dream-top-left,.dream-top-actions{gap:6px}.dream-current-title,.dream-user-badge{display:none}.dream-top-action{font-size:0;padding:8px}.messages{padding:0 10px 10px!important}.dream-empty{padding:22px 10px 14px!important}.dream-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.dream-feature-card{min-height:118px;padding:10px!important}.input-area{padding:8px 10px calc(9px + env(safe-area-inset-bottom))!important}.zynx-mode-rail{overflow-x:auto;flex-wrap:nowrap!important}.zynx-mode{white-space:nowrap;flex:0 0 auto}}@media(prefers-reduced-motion:reduce){.dream-bg:before,.dream-bg:after,#startup:before,#startup:after,.dream-orb{animation:none!important}.dream-feature-card,.dream-top-action{transition:none!important}}
+</style>
 </head>
 <body>
 
@@ -1383,18 +1254,7 @@ html,body{background:#090711!important;color:#f8f0fa}
     </div>
     <div class="boot-skip">Tap to skip</div>
   </div>
-  <div class="boot-core show" id="bootCore" aria-hidden="true">
-    <span class="bc-glow"></span><span class="bc-pulse"></span><span class="bc-pulse p2"></span>
-    <svg class="bc-svg" viewBox="0 0 120 120">
-      <circle class="base" cx="60" cy="60" r="54" pathLength="100"/>
-      <circle class="base b2" cx="60" cy="60" r="44" pathLength="100"/>
-      <circle class="trail t1" cx="60" cy="60" r="54" pathLength="100"/>
-      <circle class="trail t2" cx="60" cy="60" r="44" pathLength="100"/>
-      <circle class="trail t3" cx="60" cy="60" r="34" pathLength="100"/>
-    </svg>
-    <svg class="bc-mark" viewBox="0 0 64 64"><use href="#zlogo"/></svg>
-  </div>
-
+  <!-- Floating startup logo removed; workspace appears directly after boot. -->
   <div class="dream-bg"></div>
   <div class="cloud cloud-1"></div><div class="cloud cloud-2"></div><div class="cloud cloud-3"></div>
   <div class="particles" id="particles"></div>
@@ -1415,11 +1275,11 @@ html,body{background:#090711!important;color:#f8f0fa}
       <div class="p-3">
         <button id="newChatBtn" class="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition text-sm font-medium">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-          New chat <span class="zyricon-shortcut">⌘ K</span>
+          New chat <span class="dream-shortcut">⌘ K</span>
         </button>
       </div>
-      <div class="zyricon-side-label">FEATURES</div>
-      <nav class="zyricon-side-nav" aria-label="Creative workspaces">
+      <div class="dream-side-label">FEATURES</div>
+      <nav class="dream-side-nav" aria-label="Creative workspaces">
         <button class="chip zyricon-nav-active" data-prompt="Let's have a general conversation. Help me with: "><span>◉</span> Chat</button>
         <button class="chip" data-prompt="Help me explore and organize the useful information in this conversation: "><span>▤</span> Library</button>
         <button class="chip" data-prompt="Help me plan a project from idea to milestones, tasks and deliverables: "><span>⌑</span> Projects</button>
@@ -1453,32 +1313,32 @@ html,body{background:#090711!important;color:#f8f0fa}
     <main class="chat-shell glass">
       <canvas class="fx" id="chatFx" aria-hidden="true"></canvas>
       <div class="sweep" aria-hidden="true"><i></i></div>
-      <header class="zyricon-topbar" style="padding-top:max(.75rem, env(safe-area-inset-top))">
-        <div class="zyricon-top-left">
+      <header class="dream-topbar" style="padding-top:max(.75rem, env(safe-area-inset-top))">
+        <div class="dream-top-left">
           <button class="btn-icon" id="toggleSidebar" aria-label="Toggle sidebar"><svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-          <div class="zyricon-model-pill"><span class="zyricon-model-dot"></span><span>Zynx Intelligence</span><span class="zyricon-chevron">⌄</span></div>
-          <h1 id="chatTitle" class="zyricon-current-title">New chat</h1>
+          <div class="dream-model-pill"><span class="dream-model-dot"></span><span>Zynx · AI Workspace</span><span class="dream-chevron">⌄</span></div>
+          <h1 id="chatTitle" class="dream-current-title">New chat</h1>
         </div>
-        <div class="zyricon-top-actions">
-          <span id="userBadge" class="zyricon-user-badge">Guest</span>
-          <button type="button" class="zyricon-top-action" id="zyriconConfig"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/></svg> Configuration</button>
-          <button type="button" class="zyricon-top-action zyricon-export" id="zyriconExport"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4"/><path d="M5 17v3h14v-3"/></svg> Export</button>
+        <div class="dream-top-actions">
+          <span id="userBadge" class="dream-user-badge">Guest</span>
+          <button type="button" class="dream-top-action" id="zyriconConfig"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/></svg> Configuration</button>
+          <button type="button" class="dream-top-action dream-export" id="zyriconExport"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4"/><path d="M5 17v3h14v-3"/></svg> Export</button>
         </div>
       </header>
 
       <div class="messages" id="messages" aria-live="polite">
-        <div class="empty zyricon-empty" id="empty">
-          <div class="zyricon-orb-wrap"><div class="zyricon-orb"><span></span><i></i></div></div>
-          <h2>Ready to create something new?</h2>
-          <p>Ask anything, explore an idea, or choose a workspace to begin.</p>
-          <div class="zyricon-quick-prompts">
+        <div class="empty dream-empty" id="empty">
+          <div class="dream-orb-wrap"><div class="dream-orb"><span></span><i></i></div></div>
+          <h2>A clearer space to think.</h2>
+          <p>A calm, focused workspace for questions, ideas and ambitious projects.</p>
+          <div class="dream-quick-prompts">
             <button class="chip" data-prompt="Help me generate a detailed, original image concept and a polished prompt for it."><span>✦</span> Create image <b>↗</b></button>
             <button class="chip" data-prompt="Help me brainstorm an original idea. Give me several strong directions and develop the best one."><span>✧</span> Brainstorm <b>✳</b></button>
             <button class="chip" data-prompt="Help me create a practical step-by-step plan for this goal: "><span>▤</span> Make a plan <b>↗</b></button>
           </div>
-          <div class="zyricon-feature-grid">
+          <div class="dream-feature-grid">
             <button class="chip zyricon-feature-card" data-prompt="Act as my creative studio assistant. Help me develop an original visual concept, style direction, composition and image-generation prompt.">
-              <span class="zyricon-feature-icon">✧</span><span class="zyricon-feature-tag">CREATIVE STUDIO</span><strong>Image concepts</strong><small>Shape a visual idea into a detailed creative brief.</small><i>Explore studio ↗</i>
+              <span class="dream-feature-icon">✧</span><span class="dream-feature-tag">CREATIVE STUDIO</span><strong>Image concepts</strong><small>Shape a visual idea into a detailed creative brief.</small><i>Explore studio ↗</i>
             </button>
             <button class="chip zyricon-feature-card" data-prompt="Help me build a polished presentation. First ask for the topic if I have not provided it, then create a slide-by-slide structure with concise content and visual direction.">
               <span class="zyricon-feature-icon">▧</span><span class="zyricon-feature-tag">PRESENTATION</span><strong>AI presentation</strong><small>Turn a topic into a clear, engaging slide plan.</small><i>Make slides ↗</i>
@@ -1548,17 +1408,21 @@ html,body{background:#090711!important;color:#f8f0fa}
         </label>
         <p class="text-xs text-slate-500">Use the microphone button beside the message box to speak. Microphone permission is required.</p>
       </section>
-      <section class="space-y-3" aria-label="Premium atmosphere themes">
-        <div><p class="text-sm font-semibold text-slate-100">Personalization · Choose your atmosphere</p><p class="text-xs text-slate-400 mt-1">Seven carefully tuned colour systems. Your selection is saved on this device.</p></div>
-        <div class="premium-theme-grid" id="premiumThemes">
-          <button type="button" class="premium-theme" data-premium-theme="default" aria-pressed="true" style="--swatch:linear-gradient(120deg,#24174b,#7656dc 55%,#d8b4fe);--glow:#d8b4fe"><span class="premium-swatch"></span><b>Dreamspace</b><small>Signature violet · original Zynx</small><i class="theme-check">✓</i></button>
-          <button type="button" class="premium-theme" data-premium-theme="aurora" aria-pressed="false" style="--swatch:linear-gradient(120deg,#09252a,#167e79 55%,#8de8d1);--glow:#8de8d1"><span class="premium-swatch"></span><b>Aurora Glass</b><small>Arctic teal · atmospheric</small><i class="theme-check">✓</i></button>
-          <button type="button" class="premium-theme" data-premium-theme="obsidian" aria-pressed="false" style="--swatch:linear-gradient(120deg,#100e0c,#5c4030 55%,#d6b77b);--glow:#d6b77b"><span class="premium-swatch"></span><b>Obsidian Luxe</b><small>Charcoal · champagne gold</small><i class="theme-check">✓</i></button>
-          <button type="button" class="premium-theme" data-premium-theme="rose" aria-pressed="false" style="--swatch:linear-gradient(120deg,#211224,#8c4778 55%,#f0a9c5);--glow:#f0a9c5"><span class="premium-swatch"></span><b>Rose Quartz</b><small>Plum · soft rose · pearl</small><i class="theme-check">✓</i></button>
-          <button type="button" class="premium-theme" data-premium-theme="emerald" aria-pressed="false" style="--swatch:linear-gradient(120deg,#0b1912,#326c49 55%,#9bd49b);--glow:#9bd49b"><span class="premium-swatch"></span><b>Emerald Atelier</b><small>Deep forest · jade</small><i class="theme-check">✓</i></button>
-          <button type="button" class="premium-theme" data-premium-theme="sapphire" aria-pressed="false" style="--swatch:linear-gradient(120deg,#081326,#24528d 55%,#91c9ff);--glow:#91c9ff"><span class="premium-swatch"></span><b>Sapphire Night</b><small>Midnight blue · ice light</small><i class="theme-check">✓</i></button>
-          <button type="button" class="premium-theme" data-premium-theme="copper" aria-pressed="false" style="--swatch:linear-gradient(120deg,#1a100c,#8d4e2e 55%,#f0b17c);--glow:#f0b17c"><span class="premium-swatch"></span><b>Copper Dusk</b><small>Warm bronze · sunset ember</small><i class="theme-check">✓</i></button>
+      <section class="dream-personalization space-y-4" aria-label="Dream interface personalization">
+        <div><p class="text-sm font-semibold text-slate-100">Dream atmosphere</p><p class="text-xs text-slate-400 mt-1">Tune the interface to your preferred level of haze and light.</p></div>
+        <div class="dream-presets" id="dreamPresets" role="group" aria-label="Atmosphere presets">
+          <button type="button" data-dream-preset="soft" aria-pressed="false"><b>Soft Haze</b><small>Airy, gentle glass</small></button>
+          <button type="button" data-dream-preset="medium" aria-pressed="true"><b>Medium Dream</b><small>Balanced cloud depth</small></button>
+          <button type="button" data-dream-preset="deep" aria-pressed="false"><b>Deep Mist</b><small>Rich, cinematic layers</small></button>
         </div>
+        <label class="dream-control">Accent colour<select id="dreamAccent"><option value="blue">Soft blue</option><option value="lavender" selected>Lavender</option><option value="mint">Mint</option><option value="rose">Rose</option><option value="gold">Soft gold</option></select></label>
+        <label class="dream-control">Glass opacity <output id="dreamOpacityValue">72%</output><input id="dreamOpacity" type="range" min="35" max="92" value="72"></label>
+        <label class="dream-control">Background blur <output id="dreamBlurValue">24px</output><input id="dreamBlur" type="range" min="8" max="40" value="24"></label>
+        <label class="dream-control">Font size <output id="dreamFontValue">14px</output><input id="dreamFont" type="range" min="12" max="18" value="14"></label>
+        <label class="dream-control">Appearance<select id="dreamMode"><option value="dark">Dream dark</option><option value="light">Cloud light</option></select></label>
+        <label class="dream-toggle"><span>Slow cloud movement</span><input id="dreamClouds" type="checkbox" checked></label>
+        <label class="dream-toggle"><span>Floating particles</span><input id="dreamParticles" type="checkbox"></label>
+        <p class="text-xs text-slate-500">Visual preferences save automatically on this device.</p>
       </section>
       <section class="zynx-motion-section">
         <div><p class="text-sm font-semibold">Motion & startup</p><p class="text-xs text-slate-400 mt-1">Choose how Zynx transitions and welcomes you.</p></div>
@@ -1568,16 +1432,7 @@ html,body{background:#090711!important;color:#f8f0fa}
           <button type="button" data-zynx-motion="cinematic" aria-pressed="false"><b>Cinematic</b><small>Expressive entrance</small></button>
         </div>
       </section>
-      <section class="bankai-settings space-y-3">
-        <div><p class="text-sm font-semibold text-slate-100">Personalization · Bankai realms</p><p class="text-xs text-slate-400 mt-1">Optional themes. Dreamspace remains the default.</p></div>
-        <div class="bankai-grid" id="bankaiThemes">
-          <button type="button" class="bankai-choice" data-bankai="default" aria-pressed="true"><span class="bankai-swatch swatch-default">✦</span><span><b>Dreamspace</b><small>Original Zynx theme</small></span><i>✓</i></button>
-          <button type="button" class="bankai-choice" data-bankai="senbonzakura" aria-pressed="false"><span class="bankai-swatch swatch-sakura">❀</span><span><b>Senbonzakura</b><small>Silver · sakura · lavender</small></span><i>✓</i></button>
-          <button type="button" class="bankai-choice" data-bankai="zanka" aria-pressed="false"><span class="bankai-swatch swatch-zanka">☼</span><span><b>Zanka no Tachi</b><small>Obsidian · ember · gold</small></span><i>✓</i></button>
-          <button type="button" class="bankai-choice" data-bankai="tensa" aria-pressed="false"><span class="bankai-swatch swatch-tensa">✧</span><span><b>Tensa Zangetsu</b><small>Midnight · crimson · silver</small></span><i>✓</i></button>
-          <button type="button" class="bankai-choice" data-bankai="hyorinmaru" aria-pressed="false"><span class="bankai-swatch swatch-hyorin">❄</span><span><b>Hyorinmaru</b><small>Ice · glacier · starlight</small></span><i>✓</i></button>
-        </div>
-      </section>
+      
       <div class="border-t border-white/10 pt-5">
         <label class="text-sm text-slate-300 mb-2 block" for="theme">Theme intensity</label>
         <input type="range" id="theme" min="0" max="1" step="0.05" value="0.7" />
@@ -1984,7 +1839,7 @@ html,body{background:#090711!important;color:#f8f0fa}
   }
   function showWelcome(openedFromApp) {
     el.startup.classList.add('hidden');
-    $('#bootCore').classList.remove('show');
+    $('#bootCore')?.classList.remove('show');
     fromApp = !!openedFromApp;
     el.welcome.classList.remove('leaving');
     el.card.classList.remove('loading', 'success', 'shake', 'enter');
@@ -2266,28 +2121,12 @@ html,body{background:#090711!important;color:#f8f0fa}
     return /ms$/.test(v) ? parseFloat(v) : parseFloat(v) * 1000;
   }
   let revealed = false;
-  function playReveal() {                 // Phase 2 + 3: dock core, expand container, cascade
+  function playReveal() {
     if (revealed) { el.app.classList.add('ready'); return; }
     revealed = true;
-    const core = $('#bootCore');
-    if (reduceMotion) { el.app.classList.add('ready'); avatar.classList.add('landed'); core.classList.remove('show'); return; }
-    const p2 = cssTime('--p2'), total = cssTime('--boot-duration');
-    core.getAnimations().forEach((a) => a.cancel());
-    core.classList.add('show');
-    el.app.classList.add('ready', 'boot-run');
-    requestAnimationFrame(() => {
-      const a = core.getBoundingClientRect(), b = avatar.getBoundingClientRect();
-      const dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
-      const anim = core.animate(
-        [{ transform: 'translate(0,0) scale(1)' }, { transform: `translate(${dx}px,${dy}px) scale(${b.width / a.width})` }],
-        { duration: p2, delay: 80, easing: getComputedStyle(document.documentElement).getPropertyValue('--ease-spring').trim() || 'ease', fill: 'forwards' }
-      );
-      setTimeout(() => avatar.classList.add('landed'), 80 + p2 * .8);
-      anim.finished.then(() => { core.classList.remove('show'); setTimeout(() => core.getAnimations().forEach((x) => x.cancel()), 300); }).catch(() => {});
-      setTimeout(() => { core.classList.remove('show'); core.getAnimations().forEach((x) => x.cancel()); }, Math.max(1800, p2 + 900));
-    });
-    setTimeout(() => el.app.classList.remove('boot-run'), total + 600);
-    setTimeout(() => avatar.classList.add('landed'), total + 1200);   // safety net
+    el.app.classList.add('ready');
+    avatar.classList.add('landed');
+    el.app.classList.remove('boot-run');
   }
 
   /* ---------- Persistent chat particles ---------- */
@@ -2545,5 +2384,6 @@ html,body{background:#090711!important;color:#f8f0fa}
 })();
 </script>
 
+<script id="zynx-dream-personalization">(()=>{const r=document.documentElement,k='zynx_dream_preferences',d={preset:'medium',accent:'lavender',opacity:72,blur:24,font:14,mode:'dark',clouds:true,particles:false},a={blue:['#a9c8ed','169,200,237'],lavender:['#b8a5f5','184,165,245'],mint:['#9bd7c9','155,215,201'],rose:['#dfa9bd','223,169,189'],gold:['#dfc99a','223,201,154']};let p={...d};try{p={...p,...JSON.parse(localStorage.getItem(k)||'{}')}}catch{}const $=id=>document.getElementById(id),save=()=>{try{localStorage.setItem(k,JSON.stringify(p))}catch{}},apply=()=>{const [c,g]=a[p.accent]||a.lavender;r.style.setProperty('--dream-accent',c);r.style.setProperty('--dream-accent-rgb',g);r.style.setProperty('--dream-glass-opacity',p.opacity/100);r.style.setProperty('--dream-blur',p.blur+'px');r.style.setProperty('--dream-font',p.font+'px');r.dataset.dreamPreset=['soft','medium','deep'].includes(p.preset)?p.preset:'medium';r.dataset.dreamMode=p.mode;r.dataset.dreamClouds=p.clouds?'on':'off';r.dataset.dreamParticles='off';[['dreamAccent','accent'],['dreamOpacity','opacity'],['dreamBlur','blur'],['dreamFont','font'],['dreamMode','mode']].forEach(([id,key])=>{if($(id))$(id).value=p[key]});if($('dreamClouds'))$('dreamClouds').checked=!!p.clouds;if($('dreamParticles'))$('dreamParticles').checked=false;[['dreamOpacityValue',p.opacity+'%'],['dreamBlurValue',p.blur+'px'],['dreamFontValue',p.font+'px']].forEach(([id,v])=>{if($(id))$(id).textContent=v});document.querySelectorAll('[data-dream-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dreamPreset===p.preset)))};const vals={soft:{opacity:58,blur:17},medium:{opacity:72,blur:24},deep:{opacity:84,blur:32}};$('dreamPresets')?.addEventListener('click',e=>{const b=e.target.closest('[data-dream-preset]');if(!b)return;p.preset=b.dataset.dreamPreset;Object.assign(p,vals[p.preset]);apply();save()});[['dreamAccent','accent','text'],['dreamOpacity','opacity','number'],['dreamBlur','blur','number'],['dreamFont','font','number'],['dreamMode','mode','text']].forEach(([id,key,type])=>$(id)?.addEventListener('input',e=>{p[key]=type==='number'?Number(e.target.value):e.target.value;if(id==='dreamOpacity'||id==='dreamBlur')p.preset='custom';apply();save()}));$('dreamClouds')?.addEventListener('change',e=>{p.clouds=e.target.checked;apply();save()});$('dreamParticles')?.addEventListener('change',()=>{p.particles=false;apply();save()});apply();try{localStorage.removeItem('zynx_premium_atmosphere');localStorage.removeItem('zynx_bankai_theme')}catch{}delete r.dataset.zynxSkin;delete r.dataset.bankai})();</script>
 </body>
 </html>
