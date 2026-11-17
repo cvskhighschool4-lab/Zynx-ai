@@ -11,7 +11,7 @@ function exit(){dispose();view.classList.add("hidden");selector.classList.remove
 function togglePause(){if(!engine)return;paused=!paused;engine.setPaused(paused);$("#pauseOverlay").classList.toggle("hidden",!paused);$("#pauseGame").textContent=paused?"RESUME":"PAUSE"}
 document.querySelectorAll("[data-game]").forEach(b=>b.addEventListener("click",()=>launch(b.dataset.game)));
 $("#exitGame").addEventListener("click",exit);$("#pauseGame").addEventListener("click",togglePause);$("#resumeGame").addEventListener("click",togglePause);$("#restartGame").addEventListener("click",()=>current&&launch(current));
-$("#fxToggle").addEventListener("click",async()=>{if(!engine)return;const on=!engine.fx;await engine.setFX(on);$("#fxToggle").textContent=on?"FX ON":"FX LOW"});
+$("#fxToggle").addEventListener("click",async()=>{if(!engine)return;const on=!engine.fx;await engine.setFX(on);$("#fxToggle").textContent=engine.fx?"FX ON":"FX LOW"});
 window.addEventListener("keydown",e=>{if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();if(e.code==="Escape"&&engine){togglePause();return}keys.add(e.code)});
 window.addEventListener("keyup",e=>keys.delete(e.code));window.addEventListener("blur",()=>{keys.clear();if(engine&&!paused)togglePause()});
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;const down=e=>{e.preventDefault();keys.add(k)},up=e=>{e.preventDefault();keys.delete(k)};b.addEventListener("pointerdown",down);b.addEventListener("pointerup",up);b.addEventListener("pointercancel",up);b.addEventListener("pointerleave",up)});
