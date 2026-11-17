@@ -9,7 +9,7 @@ from collections import defaultdict, deque
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 
-from flask import Flask, g, jsonify, request, send_from_directory
+from flask import Flask, Response, g, jsonify, request, send_from_directory
 from flask_cors import CORS
 try:
     import groq as _groq
@@ -18,6 +18,7 @@ except ImportError:  # keeps the server booting even if the package is missing
     _groq, Groq = None, None
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
+
 
 def _exc(name):
     cls = getattr(_groq, name, None) if _groq else None
@@ -53,17 +54,11 @@ def _resolve_db_path():
 DATABASE = _resolve_db_path()
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
-# Keep Zynx on Groq's documented Free-plan chat models only.
-# The environment variable is accepted only when it matches this allowlist.
+# Groq Free-plan chat models only (env var accepted only if on this list).
 FREE_GROQ_MODELS = ("openai/gpt-oss-120b", "openai/gpt-oss-20b")
 _requested_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b").strip()
 GROQ_MODEL = _requested_model if _requested_model in FREE_GROQ_MODELS else "openai/gpt-oss-120b"
-GROQ_FALLBACK_MODEL = (
-    "openai/gpt-oss-20b" if GROQ_MODEL == "openai/gpt-oss-120b"
-    else "openai/gpt-oss-120b"
-)
-if _requested_model != GROQ_MODEL:
-    logging.warning("Ignoring GROQ_MODEL=%r because it is not on the configured free-model allowlist.", _requested_model)
+GROQ_FALLBACK_MODEL = "openai/gpt-oss-20b" if GROQ_MODEL == "openai/gpt-oss-120b" else "openai/gpt-oss-120b"
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
 MAX_MESSAGE_CHARS = 4000
 HISTORY_LIMIT = 30
@@ -71,6 +66,8 @@ SESSION_TTL_DAYS = 90
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("zynx")
+if _requested_model != GROQ_MODEL:
+    log.warning("Ignoring GROQ_MODEL=%r (not on the free-model allowlist).", _requested_model)
 
 # static_folder=None so source code and the database are never served publicly.
 app = Flask(__name__, static_folder=None)
@@ -91,13 +88,15 @@ if GROQ_API_KEY and Groq is not None:
         client = Groq(api_key=GROQ_API_KEY, timeout=25.0, max_retries=0)
     except Exception:
         log.exception("Could not create the Groq client")
+elif GROQ_API_KEY and Groq is None:
+    log.error("The 'groq' package is not installed - add it to requirements.txt.")
 
 SYSTEM_PROMPT = """You are Zynx AI: sharp-minded, warm, naturally conversational, and genuinely useful.
 Think carefully before answering. Prioritize correctness, clear reasoning, practical next steps, and relevant context over sounding impressive.
 VOICE AND PERSONALITY:
 - Sound human and confident, never stiff, corporate, or needlessly verbose.
 - Be witty, quick, and occasionally sarcastic in a clever, good-natured way. Use playful observations, dry humor, and smart one-liners when they improve the conversation.
-- Aim humor at situations, confusing technology, or harmless absurdities — never at the user's intelligence, identity, appearance, vulnerability, or mistakes.
+- Aim humor at situations, confusing technology, or harmless absurdities - never at the user's intelligence, identity, appearance, vulnerability, or mistakes.
 - Match the user's energy without copying hostility. If they are frustrated, help first; a tiny light joke is optional, not the priority.
 - In serious, sensitive, safety-related, medical, legal, financial, or emotionally difficult conversations, put empathy and accuracy first and turn sarcasm off.
 INTELLIGENCE AND QUALITY:
@@ -337,7 +336,7 @@ def read_settings(db, owner_id):
 
 
 # --------------------------------------------------------------------------- #
-# Routes: static + health
+# Routes: frontend + health
 # --------------------------------------------------------------------------- #
 def find_index():
     """Locate index.html (case-insensitive) next to app.py, in the cwd, or in common subfolders."""
@@ -354,6 +353,36 @@ def find_index():
     return None, None
 
 
+_html_cache = {}
+
+
+def repaired_index(root, name):
+    """Read index.html and repair known front-end bugs on the fly (cached by file time).
+
+    - $('#premiumThemes ...').forEach threw a TypeError at startup ($ returns ONE element,
+      $$ returns a list), which stopped every script on the page.
+    - Stray literal "\\n" text had leaked into the markup.
+    - Request timeouts were too short for Render's slow free-tier wake-up.
+    """
+    path = os.path.join(root, name)
+    mtime = os.path.getmtime(path)
+    hit = _html_cache.get(path)
+    if hit and hit[0] == mtime:
+        return hit[1]
+    with open(path, encoding="utf-8") as f:
+        html = f.read()
+    html = re.sub(
+        r"(?<!\$)\$\('#premiumThemes \[data-premium-theme\]'\)\.forEach\(",
+        "$$('#premiumThemes [data-premium-theme]').forEach(",
+        html,
+    )
+    html = html.replace("? 55000 : 15000", "? 70000 : 45000")
+    html = re.sub(r"(?m)^[ \t]*\\n[ \t]*\r?\n", "", html)
+    html = re.sub(r"(?<=>)\\n(?=[ \t]*(?:<|\r?\n))", "\n", html)
+    _html_cache[path] = (mtime, html)
+    return html
+
+
 @app.route("/")
 @app.route("/index.html")
 def index():
@@ -365,37 +394,34 @@ def index():
             "Make sure index.html is in the same folder as app.py in your GitHub repo.",
             404,
         )
-    return send_from_directory(root, name)
+    resp = Response(repaired_index(root, name), mimetype="text/html")
+    resp.headers["Cache-Control"] = "no-cache"
+    return resp
+
+
+# Only harmless frontend assets are ever served - never app.py, the database, or dotfiles.
+ASSET_EXTS = {
+    ".css", ".js", ".mjs", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
+    ".woff", ".woff2", ".ttf", ".otf", ".webmanifest",
+}
 
 
 @app.route("/<path:asset_path>")
 def serve_frontend_asset(asset_path):
-    """Serve frontend assets without exposing files outside known frontend roots."""
-    # Keep unknown API routes handled by the API 404 handler.
     if asset_path == "api" or asset_path.startswith("api/"):
         return jsonify({"error": "Not found."}), 404
-
-    roots = [
+    name = os.path.basename(asset_path)
+    if name.startswith(".") or os.path.splitext(name)[1].lower() not in ASSET_EXTS:
+        return jsonify({"error": "File not found."}), 404
+    for root in (
         BASE_DIR,
-        os.getcwd(),
         os.path.join(BASE_DIR, "static"),
         os.path.join(BASE_DIR, "public"),
         os.path.join(BASE_DIR, "frontend"),
         os.path.join(BASE_DIR, "web"),
-    ]
-
-    checked = set()
-    for root in roots:
-        root = os.path.abspath(root)
-        if root in checked:
-            continue
-        checked.add(root)
-
-        candidate = os.path.join(root, asset_path)
-        if os.path.isfile(candidate):
-            # send_from_directory safely prevents path traversal.
+    ):
+        if os.path.isfile(os.path.join(root, asset_path)):
             return send_from_directory(root, asset_path)
-
     return jsonify({"error": "File not found."}), 404
 
 
@@ -566,7 +592,15 @@ def delete_chat(chat_id):
     return jsonify({"ok": True})
 
 
-def build_prompt(settings, history, wants_founder, language='auto'):
+LANGUAGE_NAMES = {
+    "en": "English", "kn": "Kannada", "hi": "Hindi", "te": "Telugu",
+    "ta": "Tamil", "ml": "Malayalam", "mr": "Marathi", "bn": "Bengali",
+    "gu": "Gujarati", "pa": "Punjabi", "ur": "Urdu", "fr": "French",
+    "es": "Spanish", "ar": "Arabic",
+}
+
+
+def build_prompt(settings, history, wants_founder, language="auto"):
     length_rule, _ = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     humor = float(settings["humor_level"])
     humor_desc = (
@@ -589,13 +623,7 @@ def build_prompt(settings, history, wants_founder, language='auto'):
         f"- {length_rule}\n"
         f"- {STYLE_RULES.get(settings['response_style'], STYLE_RULES['warm'])}"
     )
-    language_names = {
-        "en": "English", "kn": "Kannada", "hi": "Hindi", "te": "Telugu",
-        "ta": "Tamil", "ml": "Malayalam", "mr": "Marathi", "bn": "Bengali",
-        "gu": "Gujarati", "pa": "Punjabi", "ur": "Urdu", "fr": "French",
-        "es": "Spanish", "ar": "Arabic",
-    }
-    selected_language = language_names.get(language)
+    selected_language = LANGUAGE_NAMES.get(language)
     language_rule = (
         f"Reply in {selected_language} unless the user explicitly requests another language. Keep code, identifiers, and technical syntax unchanged."
         if selected_language else
@@ -624,8 +652,7 @@ def send_message(chat_id):
     data = request.get_json(silent=True) or {}
     content = str(data.get("content") or "").strip()
     requested_language = str(data.get("language") or "auto").strip().lower()
-    allowed_languages = {"auto", "en", "kn", "hi", "te", "ta", "ml", "mr", "bn", "gu", "pa", "ur", "fr", "es", "ar"}
-    if requested_language not in allowed_languages:
+    if requested_language != "auto" and requested_language not in LANGUAGE_NAMES:
         requested_language = "auto"
     if not content:
         return jsonify({"error": "Message content is required."}), 400
@@ -653,48 +680,38 @@ def send_message(chat_id):
 
     _, max_tokens = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     temperature = round(min(0.78, 0.62 + float(settings["humor_level"]) * 0.14), 2)
-
     prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)), requested_language)
 
     def request_completion(model_id):
+        # gpt-oss models are reasoning models: part of the token budget goes to thinking,
+        # so a tight cap can produce an EMPTY reply. Add headroom and keep reasoning light.
         return client.chat.completions.create(
             model=model_id,
             messages=prompt_messages,
             temperature=temperature,
-            max_completion_tokens=max_tokens,
+            max_completion_tokens=max_tokens + 800,
             top_p=0.9,
+            extra_body={"reasoning_effort": "low"},
         )
 
     try:
         try:
             completion = request_completion(GROQ_MODEL)
         except RateLimitError:
-            # The Free plan has separate per-model limits. Try the other
-            # allowlisted free model once before returning a rate-limit response.
-            log.warning(
-                "Groq free model %s hit a rate limit; retrying once with %s",
-                GROQ_MODEL, GROQ_FALLBACK_MODEL
-            )
+            # Free-plan limits are per model: try the other free model once.
+            log.warning("Groq model %s hit a rate limit; retrying once with %s", GROQ_MODEL, GROQ_FALLBACK_MODEL)
             completion = request_completion(GROQ_FALLBACK_MODEL)
         except APIStatusError as first_error:
-            # If the selected free model is unavailable or retired, retry once
-            # with the other model from the free-only allowlist.
             error_body = getattr(first_error, "body", None)
             error_text = str(error_body if error_body is not None else first_error).lower()
             status_code = getattr(first_error, "status_code", None)
-            model_error = (
-                status_code in (400, 404)
-                and any(term in error_text for term in (
-                    "model", "decommission", "retired", "not found", "does not exist",
-                    "unsupported_model", "model_decommissioned"
-                ))
+            model_error = status_code in (400, 404) and any(
+                term in error_text
+                for term in ("model", "decommission", "retired", "not found", "does not exist", "unsupported_model")
             )
             if not model_error:
                 raise
-            log.warning(
-                "Groq free model %s is unavailable (HTTP %s); retrying with %s",
-                GROQ_MODEL, status_code, GROQ_FALLBACK_MODEL
-            )
+            log.warning("Groq model %s unavailable (HTTP %s); retrying with %s", GROQ_MODEL, status_code, GROQ_FALLBACK_MODEL)
             completion = request_completion(GROQ_FALLBACK_MODEL)
 
         reply = (completion.choices[0].message.content or "").strip()
@@ -710,10 +727,9 @@ def send_message(chat_id):
         return jsonify({"error": "Zynx couldn't connect to its AI provider. Please try again shortly.", "code": "network"}), 503
     except APIStatusError as e:
         status_code = getattr(e, "status_code", "unknown")
-        error_body = getattr(e, "body", None)
-        log.error("Groq API status error (HTTP %s): %s", status_code, error_body or str(e))
+        log.error("Groq API status error (HTTP %s): %s", status_code, getattr(e, "body", None) or str(e))
         return jsonify({
-            "error": "The AI provider rejected the request. Check the Render logs for the exact provider error and confirm the GROQ_MODEL setting.",
+            "error": "The AI provider rejected the request. Check the Render logs for the exact provider error.",
             "code": "provider",
             "provider_status": status_code,
         }), 502
