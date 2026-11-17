@@ -1664,6 +1664,187 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
 #particles .particle{display:none!important}
 
 </style>
+
+<style id="zynx-editorial-sidebar-and-masonry">
+/* Clean, editorial navigation inspired by modern AI workspaces (not a pixel copy). */
+#app .sidebar{
+ width:264px!important;min-width:264px!important;border-radius:18px!important;
+ background:#101114!important;border:1px solid #292a2e!important;
+ box-shadow:0 22px 65px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.035)!important;
+ padding:0!important;gap:0!important;
+}
+#sidebar>.p-4:first-child{
+ min-height:64px!important;padding:18px 18px 15px!important;
+ border-bottom:1px solid #242529!important;
+}
+#sidebar>.p-4:first-child .mark{
+ width:30px!important;height:30px!important;--s:30px!important;
+ background:#f4f4f5!important;border-radius:9px!important;padding:4px!important;
+ box-shadow:0 2px 10px rgba(0,0,0,.22)!important;
+}
+#sidebar>.p-4:first-child .mark svg{filter:grayscale(1) brightness(.1)!important}
+#sidebar>.p-4:first-child .font-semibold{
+ color:#f4f4f5!important;font-size:15px!important;font-weight:650!important;
+ letter-spacing:-.035em!important;
+}
+#sidebar>.p-3{padding:14px 12px 10px!important}
+#newChatBtn{
+ min-height:42px!important;justify-content:flex-start!important;gap:11px!important;
+ padding:0 12px!important;border:1px solid #34353a!important;border-radius:10px!important;
+ background:#1b1c20!important;color:#f4f4f5!important;font-size:13px!important;
+ font-weight:560!important;letter-spacing:-.01em!important;
+}
+#newChatBtn:hover{background:#25262b!important;border-color:#505158!important}
+#newChatBtn svg{width:15px!important;height:15px!important;color:#e4e4e7!important}
+#sidebar .dream-side-label,#sidebar .zyricon-side-label{
+ display:block!important;margin:18px 18px 7px!important;padding:0!important;
+ color:#777980!important;font-size:10px!important;font-weight:650!important;
+ letter-spacing:.105em!important;line-height:1.4!important;
+}
+#sidebar .dream-side-nav,#sidebar .zyricon-side-nav{
+ display:flex!important;flex-direction:column!important;gap:2px!important;
+ padding:0 9px!important;margin:0!important;
+}
+#sidebar .dream-side-nav .chip,#sidebar .zyricon-side-nav .chip{
+ display:flex!important;align-items:center!important;gap:11px!important;
+ width:100%!important;min-height:36px!important;padding:7px 10px!important;
+ border:1px solid transparent!important;border-radius:8px!important;
+ background:transparent!important;color:#c4c5ca!important;
+ font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+ font-size:12.5px!important;font-weight:510!important;letter-spacing:-.012em!important;
+ text-align:left!important;box-shadow:none!important;
+}
+#sidebar .dream-side-nav .chip>span,#sidebar .zyricon-side-nav .chip>span{
+ display:inline-grid!important;place-items:center!important;width:17px!important;
+ color:#92949c!important;font-size:15px!important;line-height:1!important;
+}
+#sidebar .dream-side-nav .chip:hover,#sidebar .zyricon-side-nav .chip:hover{
+ background:#1c1d21!important;color:#fafafa!important;
+}
+#sidebar .dream-side-nav .chip.zyricon-nav-active{
+ background:#242529!important;border-color:#303136!important;color:#fff!important;
+}
+#sidebar .zyricon-side-label{margin-top:19px!important}
+#sidebar .zynx-chat-search{
+ display:flex!important;align-items:center!important;gap:9px!important;
+ margin:8px 12px 10px!important;padding:8px 10px!important;
+ border:1px solid #303136!important;border-radius:9px!important;
+ background:#151619!important;color:#8f9199!important;
+}
+#sidebar .zynx-chat-search input{
+ min-width:0!important;width:100%!important;background:transparent!important;
+ color:#f4f4f5!important;font:12px/1.4 Inter,ui-sans-serif,system-ui,sans-serif!important;
+ outline:none!important;
+}
+#sidebar .zynx-chat-search input::placeholder{color:#777980!important}
+#chatList{padding:0 9px 10px!important;gap:2px!important}
+#chatList button,#chatList a{
+ border-radius:8px!important;color:#bfc0c6!important;
+ font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+ font-size:12px!important;font-weight:480!important;letter-spacing:-.012em!important;
+}
+#chatList button:hover,#chatList a:hover{background:#1d1e22!important;color:#fff!important}
+#sidebar>.p-3.border-t{
+ padding:12px!important;border-top:1px solid #292a2e!important;
+ background:linear-gradient(180deg,rgba(16,17,20,.1),rgba(10,11,13,.72))!important;
+}
+#sidebar #settingsBtn,#sidebar #authBtn{
+ min-height:37px!important;padding:8px 10px!important;border-radius:8px!important;
+ color:#bfc0c6!important;font-size:12.5px!important;font-weight:520!important;
+ letter-spacing:-.01em!important;
+}
+#sidebar #settingsBtn:hover,#sidebar #authBtn:hover{background:#202125!important;color:#fff!important}
+#sidebar #settingsBtn svg,#sidebar #authBtn svg{color:#92949c!important}
+#sidebar .dream-shortcut{margin-left:auto!important;color:#777980!important;font:10px ui-monospace,monospace!important}
+#sidebar .zyricon-workspace-label{margin-top:18px!important}
+/* Feature wall: asymmetric 12-column masonry rhythm, with the gaps deliberately occupied. */
+#welcome .zynx-feature-showcase{
+ width:100%!important;max-width:900px!important;align-self:center!important;
+ margin:0!important;padding:0!important;border:0!important;
+}
+#welcome .zynx-showcase-heading{margin:0 0 22px!important}
+#welcome .zynx-showcase-heading h2{
+ max-width:600px!important;font-size:clamp(32px,4.2vw,50px)!important;
+ line-height:1.04!important;letter-spacing:-.055em!important;font-weight:680!important;
+}
+#welcome .zynx-showcase-heading p{max-width:490px!important;font-size:13px!important;line-height:1.7!important}
+#welcome .zynx-feature-grid{
+ display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;
+ grid-auto-rows:6px!important;gap:12px!important;align-items:stretch!important;
+}
+#welcome .zynx-feature-card{
+ grid-column:span 6!important;grid-row:span 42!important;
+ display:flex!important;flex-direction:column!important;min-width:0!important;
+ min-height:0!important;height:auto!important;margin:0!important;padding:0 0 14px!important;
+ border:1px solid #303136!important;border-radius:14px!important;overflow:hidden!important;
+ background:linear-gradient(145deg,#1a1b1f,#111215)!important;
+ box-shadow:0 18px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+#welcome .zynx-feature-card:nth-child(8n+1){grid-column:span 7!important;grid-row:span 45!important}
+#welcome .zynx-feature-card:nth-child(8n+2){grid-column:span 5!important;grid-row:span 38!important}
+#welcome .zynx-feature-card:nth-child(8n+3){grid-column:span 5!important;grid-row:span 40!important}
+#welcome .zynx-feature-card:nth-child(8n+4){grid-column:span 7!important;grid-row:span 43!important}
+#welcome .zynx-feature-card:nth-child(8n+5){grid-column:span 4!important;grid-row:span 37!important}
+#welcome .zynx-feature-card:nth-child(8n+6){grid-column:span 8!important;grid-row:span 42!important}
+#welcome .zynx-feature-card:nth-child(8n+7){grid-column:span 6!important;grid-row:span 40!important}
+#welcome .zynx-feature-card:nth-child(8n){grid-column:span 6!important;grid-row:span 36!important}
+#welcome .zynx-feature-art{
+ display:block!important;position:relative!important;flex:0 0 58%!important;
+ width:100%!important;height:auto!important;min-height:0!important;overflow:hidden!important;
+ background:#202126!important;border:0!important;border-bottom:1px solid #34353a!important;
+}
+#welcome .zynx-feature-art img{
+ display:block!important;width:100%!important;height:100%!important;min-height:130px!important;
+ object-fit:cover!important;object-position:center!important;
+ filter:grayscale(.72) brightness(.82) contrast(1.08)!important;
+ transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s ease!important;
+}
+#welcome .zynx-feature-card:hover .zynx-feature-art img{
+ transform:scale(1.055)!important;filter:grayscale(.25) brightness(.96) contrast(1.04)!important;
+}
+#welcome .zynx-feature-art:after{
+ content:"";position:absolute;inset:35% 0 0!important;
+ background:linear-gradient(180deg,transparent,rgba(8,9,11,.36))!important;pointer-events:none!important;
+}
+#welcome .zynx-feature-card .feature-kicker{
+ margin:12px 15px 5px!important;color:#9b9da5!important;
+ font-size:9px!important;font-weight:650!important;letter-spacing:.15em!important;
+}
+#welcome .zynx-feature-card h3{
+ margin:0 15px 5px!important;color:#f4f4f5!important;
+ font-size:14px!important;font-weight:650!important;letter-spacing:-.025em!important;
+}
+#welcome .zynx-feature-card p{
+ margin:0 15px!important;color:#a1a1aa!important;
+ font-size:11.5px!important;line-height:1.55!important;
+}
+#welcome .zynx-feature-card:hover{
+ transform:translateY(-3px)!important;border-color:#5a5b61!important;
+ box-shadow:0 25px 55px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+#welcome .zynx-showcase-footer{margin-top:18px!important}
+@media(max-width:900px){
+ #welcome{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:38px!important}
+ #welcome .auth-card{order:0!important}
+ #welcome .zynx-feature-showcase{order:1!important}
+ #welcome .zynx-feature-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+ #welcome .zynx-feature-card,#welcome .zynx-feature-card:nth-child(n){
+  grid-column:span 3!important;grid-row:span 38!important;
+ }
+ #welcome .zynx-feature-card:nth-child(3n+1){grid-column:span 4!important;grid-row:span 40!important}
+ #welcome .zynx-feature-card:nth-child(3n+2){grid-column:span 2!important;grid-row:span 34!important}
+}
+@media(max-width:560px){
+ #welcome .zynx-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:6px!important;gap:9px!important}
+ #welcome .zynx-feature-card,#welcome .zynx-feature-card:nth-child(n){
+  grid-column:span 1!important;grid-row:span 34!important;
+ }
+ #welcome .zynx-feature-card:nth-child(3n+1){grid-row:span 38!important}
+ #welcome .zynx-feature-card:nth-child(3n+2){grid-row:span 31!important}
+ #welcome .zynx-feature-art img{min-height:110px!important}
+ #sidebar{width:min(286px,88vw)!important;min-width:min(286px,88vw)!important}
+}
+</style>
 </head>
 <body>
 
@@ -1994,13 +2175,13 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
       </div>
       <div class="zynx-feature-grid" aria-label="Explore Zynx AI features">
         <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=85" alt="Planet Earth and a digital network from space" loading="lazy" decoding="async"></div><span class="feature-kicker">01 · THINK</span><h3>Understand anything</h3><p>Explore ideas, ask follow-up questions, and turn complex topics into clear explanations.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1455390582262-044c5084fd33?auto=format&fit=crop&w=1400&q=85" alt="Creative writing workspace with a notebook" loading="lazy" decoding="async"></div><span class="feature-kicker">02 · CREATE</span><h3>Make ideas happen</h3><p>Draft content, shape plans, brainstorm projects, and refine your writing with AI.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85" alt="Creative writing workspace with a notebook" loading="lazy" decoding="async"></div><span class="feature-kicker">02 · CREATE</span><h3>Make ideas happen</h3><p>Draft content, shape plans, brainstorm projects, and refine your writing with AI.</p></article>
         <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85" alt="Close-up of an electronic circuit board" loading="lazy" decoding="async"></div><span class="feature-kicker">03 · BUILD</span><h3>Code with confidence</h3><p>Work through programming concepts, debug errors, and develop step-by-step solutions.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1400&q=85" alt="Studio microphone for voice conversations" loading="lazy" decoding="async"></div><span class="feature-kicker">04 · SPEAK</span><h3>Talk naturally</h3><p>Use voice input and listen to spoken replies for a more hands-free conversation.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=1400&q=85" alt="A vivid nebula and stars across deep space" loading="lazy" decoding="async"></div><span class="feature-kicker">05 · DISCOVER</span><h3>Explore the universe</h3><p>Unpack astronomy, science, technology and the questions that spark your curiosity.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=85" alt="People collaborating around a digital workspace" loading="lazy" decoding="async"></div><span class="feature-kicker">06 · ORGANIZE</span><h3>Turn thoughts into plans</h3><p>Break ambitious goals into clear steps, useful checklists and practical next actions.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=85" alt="Digital learning and collaboration" loading="lazy" decoding="async"></div><span class="feature-kicker">07 · LEARN</span><h3>Learn at your own pace</h3><p>Get guided explanations, examples, revision notes and practice questions on new topics.</p></article>
-        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1400&q=85" alt="Retro-futuristic electronic technology" loading="lazy" decoding="async"></div><span class="feature-kicker">08 · IMAGINE</span><h3>Think beyond the obvious</h3><p>Generate fresh directions, compare possibilities and develop original concepts.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1400&q=85" alt="Studio microphone for voice conversations" loading="lazy" decoding="async"></div><span class="feature-kicker">04 · SPEAK</span><h3>Talk naturally</h3><p>Use voice input and listen to spoken replies for a more hands-free conversation.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1400&q=85" alt="A vivid nebula and stars across deep space" loading="lazy" decoding="async"></div><span class="feature-kicker">05 · DISCOVER</span><h3>Explore the universe</h3><p>Unpack astronomy, science, technology and the questions that spark your curiosity.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=85" alt="People collaborating around a digital workspace" loading="lazy" decoding="async"></div><span class="feature-kicker">06 · ORGANIZE</span><h3>Turn thoughts into plans</h3><p>Break ambitious goals into clear steps, useful checklists and practical next actions.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1400&q=85" alt="Digital learning and collaboration" loading="lazy" decoding="async"></div><span class="feature-kicker">07 · LEARN</span><h3>Learn at your own pace</h3><p>Get guided explanations, examples, revision notes and practice questions on new topics.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85" alt="Retro-futuristic electronic technology" loading="lazy" decoding="async"></div><span class="feature-kicker">08 · IMAGINE</span><h3>Think beyond the obvious</h3><p>Generate fresh directions, compare possibilities and develop original concepts.</p></article>
       </div>
       <div class="zynx-showcase-footer">BUILT FOR CURIOSITY · POWERED BY IDEAS</div>
     </section>
