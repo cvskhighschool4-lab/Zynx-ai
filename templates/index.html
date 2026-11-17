@@ -1191,6 +1191,94 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
   }
 
 </style>
+
+<style id="zynx-zyricon-design">
+:root{--zy-bg:#07040b;--zy-panel:#100c17;--zy-panel2:#171020;--zy-purple:#694788;--zy-violet:#3b2568;--zy-rose:#98578d;--zy-pink:#c27595;--zy-pearl:#c4a5b8;--zy-blue:#313498;--zy-line:rgba(196,165,184,.16);--zy-muted:#a89aaa}
+body{background:var(--zy-bg)!important;color:#f8f1fa}
+.dream-bg{background:radial-gradient(ellipse at 15% 8%,rgba(152,87,141,.28),transparent 38%),radial-gradient(ellipse at 88% 78%,rgba(49,52,152,.3),transparent 42%),radial-gradient(ellipse at 55% 45%,rgba(105,71,136,.18),transparent 50%),linear-gradient(135deg,#08050d,#1a1022 52%,#090711)!important}
+.dream-bg:after{content:"";position:absolute;inset:0;opacity:.2;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(transparent,#000 20%,#000 85%,transparent)}
+#app{gap:0!important;padding:clamp(12px,2.3vw,34px)!important;max-width:1800px;margin:0 auto}
+.sidebar{width:252px!important;border-radius:22px 0 0 22px!important;border:1px solid rgba(196,165,184,.13)!important;border-right:0!important;background:linear-gradient(180deg,rgba(14,10,20,.97),rgba(10,8,15,.98))!important;box-shadow:0 30px 100px rgba(0,0,0,.48)!important;backdrop-filter:blur(30px) saturate(135%)!important}
+.sidebar:before{height:170px!important;background:radial-gradient(ellipse at 10% 0%,rgba(152,87,141,.2),transparent 72%)!important}
+.sidebar>div:first-child{min-height:66px!important;padding:17px 18px!important;border-color:var(--zy-line)!important}
+.sidebar>div:first-child:after{content:none!important}
+.sidebar .mark{filter:drop-shadow(0 0 12px rgba(194,117,149,.35))}
+.sidebar .font-semibold{font-size:15px;letter-spacing:.045em}
+#newChatBtn{min-height:42px!important;border-radius:10px!important;justify-content:flex-start!important;background:linear-gradient(105deg,rgba(152,87,141,.2),rgba(105,71,136,.13))!important;border:1px solid rgba(194,165,184,.18)!important;color:#f6eaf3!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);font-weight:500}
+#newChatBtn:hover{background:linear-gradient(105deg,rgba(152,87,141,.32),rgba(105,71,136,.22))!important}
+.zyricon-shortcut{margin-left:auto;padding:2px 6px;border:1px solid rgba(255,255,255,.1);border-radius:5px;color:#82768b;font-size:9px}
+.zyricon-side-label{padding:13px 18px 6px;color:#82758a;font-size:9px;font-weight:650;letter-spacing:.17em}
+.zyricon-workspace-label{padding-top:20px}
+.zyricon-side-nav{display:grid;gap:3px;padding:0 10px}
+.zyricon-side-nav .chip{display:flex;align-items:center;justify-content:flex-start;gap:11px;width:100%;min-height:34px;padding:7px 10px!important;border:1px solid transparent!important;border-radius:8px!important;background:transparent!important;color:#b6aabb!important;text-align:left;font-size:11px!important;box-shadow:none!important}
+.zyricon-side-nav .chip span{width:15px;text-align:center;color:#b58bb7;font-size:13px}
+.zyricon-side-nav .chip:hover,.zyricon-side-nav .zyricon-nav-active{background:linear-gradient(90deg,rgba(152,87,141,.2),rgba(105,71,136,.08))!important;border-color:rgba(194,165,184,.13)!important;color:#fff!important;transform:translateX(2px)}
+.zynx-chat-search{margin:3px 12px 12px!important;min-height:36px!important;border-radius:8px!important;background:rgba(255,255,255,.035)!important;border-color:rgba(196,165,184,.12)!important}
+.zynx-chat-search input{font-size:11px!important}
+#chatList{padding:4px 10px 14px!important}
+#chatList:empty:after{content:"No conversations yet";padding:8px 8px;font-size:10px;color:#746b7b}
+.chat-item{border-radius:8px!important;font-size:11px!important;color:#b8acbd!important;min-height:34px!important}
+.chat-item.active{background:rgba(152,87,141,.16)!important;border-color:rgba(194,165,184,.16)!important}
+.sidebar>div:last-child{margin-top:auto;border-color:var(--zy-line)!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.2))!important;padding:12px!important}
+#settingsBtn,#authBtn{font-size:11px!important;border-radius:8px!important}
+.chat-shell{position:relative;border-radius:0 22px 22px 0!important;border:1px solid rgba(196,165,184,.14)!important;background:linear-gradient(145deg,rgba(24,16,32,.94),rgba(12,9,19,.97))!important;box-shadow:0 30px 100px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.04)!important;overflow:hidden}
+.chat-shell:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 0%,rgba(105,71,136,.17),transparent 52%),radial-gradient(ellipse at 100% 100%,rgba(49,52,152,.1),transparent 44%)}
+.chat-shell>*{position:relative;z-index:1}
+.zyricon-topbar{height:62px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 22px;border-bottom:1px solid rgba(196,165,184,.12);background:rgba(9,7,14,.26)}
+.zyricon-top-left,.zyricon-top-actions{display:flex;align-items:center;gap:11px;min-width:0}
+.zyricon-model-pill{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(196,165,184,.14);border-radius:8px;background:rgba(0,0,0,.24);color:#d8c9d8;font-size:10px;white-space:nowrap}
+.zyricon-model-dot{width:6px;height:6px;border-radius:50%;background:#c27595;box-shadow:0 0 10px #c27595}
+.zyricon-chevron{color:#89758e;margin-left:3px}
+.zyricon-current-title{max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b5a8b8;font-size:10px;font-weight:500}
+.zyricon-user-badge{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9f91a5;font-size:10px}
+.zyricon-top-action{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid rgba(196,165,184,.14);border-radius:8px;background:rgba(0,0,0,.18);color:#c9b9cb;font-size:10px;transition:all .22s ease}
+.zyricon-top-action:hover{border-color:rgba(194,117,149,.42);background:rgba(152,87,141,.13);color:#fff;transform:translateY(-1px)}
+.zyricon-export{background:linear-gradient(110deg,rgba(105,71,136,.34),rgba(152,87,141,.2))}
+#toggleSidebar{width:32px;height:32px;border:1px solid rgba(196,165,184,.12);border-radius:8px;background:rgba(255,255,255,.025)}
+.messages{padding:0 24px 14px!important;scrollbar-color:rgba(152,87,141,.32) transparent}
+.zyricon-empty{height:100%;min-height:0;max-width:940px;margin:0 auto;padding:clamp(20px,4vh,46px) 20px 18px!important;justify-content:center;overflow-y:auto}
+.zyricon-orb-wrap{width:62px;height:62px;display:grid;place-items:center;margin-bottom:14px}
+.zyricon-orb{position:relative;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#f8d5ee 0,#c275b5 12%,#694788 39%,#313498 67%,#100b19 100%);box-shadow:0 0 20px rgba(194,117,149,.5),0 0 48px rgba(105,71,136,.35),inset -7px -8px 16px rgba(0,0,0,.55),inset 5px 4px 12px rgba(255,255,255,.35);animation:zyricon-float 5s ease-in-out infinite}
+.zyricon-orb:before{content:"";position:absolute;inset:-9px;border:1px solid rgba(194,165,184,.17);border-radius:50%;animation:zyricon-orbit 9s linear infinite}
+.zyricon-orb:after{content:"";position:absolute;inset:-15px;border:1px solid rgba(152,87,141,.13);border-radius:50%;transform:rotateX(68deg);animation:zyricon-orbit 13s linear infinite reverse}
+.zyricon-orb span{position:absolute;width:11px;height:7px;top:9px;left:10px;border-radius:50%;background:rgba(255,255,255,.72);filter:blur(4px)}
+.zyricon-orb i{position:absolute;inset:0;border-radius:50%;background:linear-gradient(145deg,transparent 38%,rgba(7,4,11,.65))}
+@keyframes zyricon-float{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-8px) rotate(7deg)}}
+@keyframes zyricon-orbit{to{transform:rotate(360deg)}}
+.zyricon-empty h2{margin:0!important;color:#f2e9f2!important;font-family:Inter,sans-serif!important;font-size:clamp(20px,2.3vw,27px)!important;font-weight:450!important;letter-spacing:-.035em!important;text-align:center;background:none!important;-webkit-text-fill-color:initial!important;text-shadow:0 5px 34px rgba(194,117,149,.12)}
+.zyricon-empty>p{margin:9px 0 19px!important;max-width:480px;color:#a798aa!important;font-size:11px!important;line-height:1.7}
+.zyricon-quick-prompts{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.zyricon-quick-prompts .chip{display:flex;align-items:center;gap:8px;padding:8px 12px!important;border:1px solid rgba(196,165,184,.17)!important;border-radius:8px!important;background:rgba(6,4,10,.45)!important;color:#d7c9d8!important;font-size:10px!important}
+.zyricon-quick-prompts .chip span{color:#c78cc3}.zyricon-quick-prompts .chip b{font-size:10px;color:#9e85a5;font-weight:500}
+.zyricon-quick-prompts .chip:hover{transform:translateY(-2px)!important;border-color:rgba(194,117,149,.42)!important;background:rgba(105,71,136,.2)!important}
+.zyricon-feature-grid{width:min(100%,820px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.zyricon-feature-card{position:relative;display:flex;min-height:142px;flex-direction:column;align-items:flex-start;gap:7px;padding:13px!important;border:1px solid rgba(196,165,184,.15)!important;border-radius:12px!important;background:linear-gradient(145deg,rgba(18,13,25,.88),rgba(8,7,13,.86))!important;color:#f4eaf4!important;text-align:left;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 12px 26px rgba(0,0,0,.12)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,background .28s,box-shadow .28s!important}
+.zyricon-feature-card:hover{transform:translateY(-4px)!important;border-color:rgba(194,117,149,.38)!important;background:linear-gradient(145deg,rgba(50,30,57,.9),rgba(15,10,22,.95))!important;box-shadow:0 16px 34px rgba(0,0,0,.25),0 0 22px rgba(152,87,141,.08)!important}
+.zyricon-feature-icon{width:25px;height:25px;display:grid;place-items:center;border:1px solid rgba(194,165,184,.2);border-radius:7px;background:rgba(152,87,141,.12);color:#d7a5cc;font-size:14px}
+.zyricon-feature-tag{margin-top:2px;color:#88768e;font-size:7px;font-weight:700;letter-spacing:.15em}
+.zyricon-feature-card strong{font-size:11px;font-weight:600;color:#eee2ef}
+.zyricon-feature-card small{color:#9b8ca0;font-size:9px;line-height:1.55;font-weight:400}
+.zyricon-feature-card i{margin-top:auto;color:#c38db8;font-size:9px;font-style:normal}
+.input-area{padding:12px 22px 16px!important;background:linear-gradient(0deg,rgba(5,4,9,.72),rgba(9,6,14,.3))!important;border-top:1px solid rgba(196,165,184,.1)}
+.zynx-composer-note{display:none!important}
+.zynx-mode-rail{max-width:820px!important;justify-content:flex-start!important;margin:0 auto 8px!important;padding:0 3px!important}
+.zynx-mode{padding:6px 10px!important;border-radius:7px!important;border-color:rgba(196,165,184,.13)!important;background:rgba(0,0,0,.18)!important;color:#a99aab!important;font-size:9px!important}
+.zynx-mode[aria-pressed=true]{border-color:rgba(194,117,149,.4)!important;background:rgba(152,87,141,.16)!important;color:#f2dced!important}
+.input-glass{max-width:820px!important;min-height:88px!important;align-items:flex-end!important;flex-wrap:wrap!important;padding:10px 12px 8px!important;border:1px solid rgba(196,165,184,.32)!important;border-radius:13px!important;background:linear-gradient(135deg,rgba(28,19,35,.96),rgba(12,9,17,.98))!important;box-shadow:0 16px 42px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.055)!important}
+.input-glass:focus-within{border-color:rgba(194,117,149,.65)!important;box-shadow:0 0 0 3px rgba(152,87,141,.12),0 18px 50px rgba(0,0,0,.36)!important}
+.input-glass textarea{flex-basis:100%;order:-1;min-height:42px!important;padding:6px 8px!important;font-size:13px!important;color:#f4edf5!important}
+.input-glass textarea::placeholder{color:#897b8e!important}
+#voiceBtn{width:34px!important;height:32px!important;border-radius:8px!important;background:rgba(255,255,255,.035)!important}
+.btn-send{width:34px!important;height:32px!important;border-radius:9px!important;background:linear-gradient(135deg,#98578d,#694788 65%,#313498)!important;border:1px solid rgba(220,175,210,.3)!important;box-shadow:0 4px 15px rgba(105,71,136,.3)!important}
+.input-area>p{font-size:9px!important;color:#766c7b!important}
+@media(max-width:1100px){.zyricon-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{width:220px!important}}
+@media(max-width:768px){
+#app{padding:0!important}.sidebar{width:min(285px,86vw)!important;border-radius:0 16px 16px 0!important;border:1px solid var(--zy-line)!important;background:rgba(11,8,15,.98)!important}
+.chat-shell{border-radius:0!important;border:0!important}.zyricon-topbar{height:58px;min-height:58px;padding:0 10px}.zyricon-top-left,.zyricon-top-actions{gap:6px}.zyricon-current-title,.zyricon-user-badge{display:none}.zyricon-model-pill{font-size:9px;padding:6px 8px}.zyricon-top-action{font-size:0;padding:8px}.zyricon-top-action svg{width:16px;height:16px}.messages{padding:0 10px 10px!important}.zyricon-empty{padding:22px 10px 14px!important}.zyricon-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.zyricon-feature-card{min-height:132px;padding:10px!important}.zyricon-quick-prompts{gap:6px;margin-bottom:15px}.zyricon-quick-prompts .chip{font-size:9px!important;padding:7px 9px!important}.input-area{padding:8px 10px calc(9px + env(safe-area-inset-bottom))!important}.zynx-mode-rail{overflow-x:auto;flex-wrap:nowrap!important}.zynx-mode{white-space:nowrap;flex:0 0 auto}.input-glass{min-height:78px!important;border-radius:11px!important}
+}
+@media(max-height:720px){.zyricon-empty{padding-top:12px!important;padding-bottom:8px!important}.zyricon-orb-wrap{transform:scale(.78);margin-bottom:3px}.zyricon-empty>p{margin:5px 0 10px!important}.zyricon-quick-prompts{margin-bottom:12px}.zyricon-feature-card{min-height:118px}}
+@media(prefers-reduced-motion:reduce){.zyricon-orb,.zyricon-orb:before,.zyricon-orb:after{animation:none!important}.zyricon-feature-card,.zyricon-quick-prompts .chip,.zyricon-top-action{transition:none!important}}
+</style>
 </head>
 <body>
 
@@ -1249,10 +1337,23 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
       <div class="p-3">
         <button id="newChatBtn" class="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition text-sm font-medium">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-          New chat
+          New chat <span class="zyricon-shortcut">⌘ K</span>
         </button>
       </div>
-      
+      <div class="zyricon-side-label">FEATURES</div>
+      <nav class="zyricon-side-nav" aria-label="Creative workspaces">
+        <button class="chip zyricon-nav-active" data-prompt="Let's have a general conversation. Help me with: "><span>◉</span> Chat</button>
+        <button class="chip" data-prompt="Help me explore and organize the useful information in this conversation: "><span>▤</span> Library</button>
+        <button class="chip" data-prompt="Help me plan a project from idea to milestones, tasks and deliverables: "><span>⌑</span> Projects</button>
+      </nav>
+      <div class="zyricon-side-label zyricon-workspace-label">WORKSPACES</div>
+      <nav class="zyricon-side-nav" aria-label="AI workspaces">
+        <button class="chip" data-prompt="Let's create a new project. Help me define its goal, scope and first milestone: "><span>＋</span> New project</button>
+        <button class="chip" data-prompt="Act as a visual creative director. Help me shape this image idea into a detailed prompt: "><span>✧</span> Image studio</button>
+        <button class="chip" data-prompt="Help me create a presentation with a slide-by-slide outline and visual direction about: "><span>▧</span> Presentation</button>
+        <button class="chip" data-prompt="Act as a software development assistant. Help me build or debug: "><span>⌘</span> Dev assistant</button>
+      </nav>
+      <div class="zyricon-side-label">RECENT CONVERSATIONS</div>
       <label class="zynx-chat-search" aria-label="Search conversations">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
         <input id="zynx-chat-filter" type="search" placeholder="Search conversations…" autocomplete="off">
@@ -1274,32 +1375,42 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
     <main class="chat-shell glass">
       <canvas class="fx" id="chatFx" aria-hidden="true"></canvas>
       <div class="sweep" aria-hidden="true"><i></i></div>
-      <header class="flex items-center justify-between px-4 py-3 border-b border-white/10" style="padding-top:max(.75rem, env(safe-area-inset-top))">
-        <div class="flex items-center gap-2 min-w-0">
-          <button class="btn-icon cascade" style="--i:0" id="toggleSidebar" aria-label="Toggle sidebar">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-          </button>
-          <div class="avatar" id="botAvatar" aria-hidden="true">
-            <span class="aura"></span><span class="ring r1"></span><span class="ring r2"></span>
-            <svg class="av-mark" viewBox="0 0 64 64"><use href="#zlogo"/></svg>
-            <span class="bars"><i style="--b:0"></i><i style="--b:1"></i><i style="--b:2"></i><i style="--b:3"></i><i style="--b:4"></i></span>
-            <span class="orbiters"><span class="o" style="--in:-5px;--d:1.7s"></span><span class="o" style="--in:-1px;--d:2.4s;--dir:reverse"></span><span class="o" style="--in:4px;--d:1.15s"></span></span>
-          </div>
-          <h1 class="text-sm font-medium text-slate-200 truncate cascade" style="--i:1" id="chatTitle">New chat</h1>
+      <header class="zyricon-topbar" style="padding-top:max(.75rem, env(safe-area-inset-top))">
+        <div class="zyricon-top-left">
+          <button class="btn-icon" id="toggleSidebar" aria-label="Toggle sidebar"><svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+          <div class="zyricon-model-pill"><span class="zyricon-model-dot"></span><span>Zynx Intelligence</span><span class="zyricon-chevron">⌄</span></div>
+          <h1 id="chatTitle" class="zyricon-current-title">New chat</h1>
         </div>
-        <div class="text-xs text-slate-400 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 truncate max-w-[40%] cascade" style="--i:2" id="userBadge">Guest</div>
+        <div class="zyricon-top-actions">
+          <span id="userBadge" class="zyricon-user-badge">Guest</span>
+          <button type="button" class="zyricon-top-action" id="zyriconConfig"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/></svg> Configuration</button>
+          <button type="button" class="zyricon-top-action zyricon-export" id="zyriconExport"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4"/><path d="M5 17v3h14v-3"/></svg> Export</button>
+        </div>
       </header>
 
       <div class="messages" id="messages" aria-live="polite">
-        <div class="empty" id="empty">
-          <div class="mark cascade" style="--s:84px;--i:3"><span class="orbit"></span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#zlogo"/></svg></div>
-          <h2 class="cascade" style="margin-top:1rem;--i:4">What would you like to explore?</h2>
-          <p class="bubble bot cascade greet-bubble" style="--i:5">I'm Zynx. Bring a question, an idea, or a challenge — we'll work through it.</p>
-          <div class="flex flex-wrap justify-center gap-2 mt-6 max-w-md">
-            <button class="chip cascade mag" style="--i:6" data-prompt="Tell me something fascinating I probably don't know.">Surprise me</button>
-            <button class="chip cascade mag" style="--i:7" data-prompt="Help me plan a calm, productive day.">Plan my day</button>
-            <button class="chip cascade mag" style="--i:8" data-prompt="Explain a complicated idea to me like I'm curious but new to it.">Explain something</button>
-            <button class="chip cascade mag" style="--i:9" data-prompt="Who created you?">Who made you?</button>
+        <div class="empty zyricon-empty" id="empty">
+          <div class="zyricon-orb-wrap"><div class="zyricon-orb"><span></span><i></i></div></div>
+          <h2>Ready to create something new?</h2>
+          <p>Ask anything, explore an idea, or choose a workspace to begin.</p>
+          <div class="zyricon-quick-prompts">
+            <button class="chip" data-prompt="Help me generate a detailed, original image concept and a polished prompt for it."><span>✦</span> Create image <b>↗</b></button>
+            <button class="chip" data-prompt="Help me brainstorm an original idea. Give me several strong directions and develop the best one."><span>✧</span> Brainstorm <b>✳</b></button>
+            <button class="chip" data-prompt="Help me create a practical step-by-step plan for this goal: "><span>▤</span> Make a plan <b>↗</b></button>
+          </div>
+          <div class="zyricon-feature-grid">
+            <button class="chip zyricon-feature-card" data-prompt="Act as my creative studio assistant. Help me develop an original visual concept, style direction, composition and image-generation prompt.">
+              <span class="zyricon-feature-icon">✧</span><span class="zyricon-feature-tag">CREATIVE STUDIO</span><strong>Image concepts</strong><small>Shape a visual idea into a detailed creative brief.</small><i>Explore studio ↗</i>
+            </button>
+            <button class="chip zyricon-feature-card" data-prompt="Help me build a polished presentation. First ask for the topic if I have not provided it, then create a slide-by-slide structure with concise content and visual direction.">
+              <span class="zyricon-feature-icon">▧</span><span class="zyricon-feature-tag">PRESENTATION</span><strong>AI presentation</strong><small>Turn a topic into a clear, engaging slide plan.</small><i>Make slides ↗</i>
+            </button>
+            <button class="chip zyricon-feature-card" data-prompt="Act as my development assistant. Help me plan, write, debug and explain code. Ask for missing requirements and provide runnable solutions.">
+              <span class="zyricon-feature-icon">⌘</span><span class="zyricon-feature-tag">DEVELOPER TOOLS</span><strong>Dev assistant</strong><small>Plan features, solve bugs and build with code.</small><i>Generate code ↗</i>
+            </button>
+            <button class="chip zyricon-feature-card" data-prompt="Help me research this topic carefully. Organize the answer into key findings, context, uncertainties and useful next steps: ">
+              <span class="zyricon-feature-icon">⌕</span><span class="zyricon-feature-tag">KNOWLEDGE</span><strong>Research desk</strong><small>Explore a subject and organize what matters.</small><i>Start research ↗</i>
+            </button>
           </div>
         </div>
         <div class="thread" id="thread"></div>
@@ -2340,6 +2451,27 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
   select.addEventListener('change',()=>{preference=select.value;try{localStorage.setItem(KEY,preference);}catch{}apply();});
   window.ZYNX_LANGUAGE={get:()=>preference==='auto'?'auto':preference,set:(v)=>{if(['auto',...supported].includes(v)){preference=v;select.value=v;try{localStorage.setItem(KEY,v);}catch{}apply();}}};
   apply();
+})();
+</script>
+
+
+<script id="zynx-zyricon-actions">
+(()=> {
+ const config=document.getElementById('zyriconConfig');
+ const exportBtn=document.getElementById('zyriconExport');
+ config?.addEventListener('click',()=>document.getElementById('settingsBtn')?.click());
+ exportBtn?.addEventListener('click',()=>{
+   const thread=document.getElementById('thread');
+   const title=document.getElementById('chatTitle')?.textContent?.trim()||'Zynx conversation';
+   const body=thread?.innerText?.trim();
+   if(!body){const toast=document.querySelector('.toast');if(toast){toast.textContent='Start a conversation before exporting.';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2400);}return;}
+   const content=title+'\n'+'='.repeat(Math.min(title.length,48))+'\n\n'+body+'\n';
+   const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+   const url=URL.createObjectURL(blob),a=document.createElement('a');
+   a.href=url;a.download=(title.replace(/[^a-z0-9-_ ]/gi,'').trim().replace(/\s+/g,'-')||'zynx-chat')+'.txt';
+   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+   const toast=document.querySelector('.toast');if(toast){toast.textContent='Conversation exported.';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2400);}
+ });
 })();
 </script>
 
