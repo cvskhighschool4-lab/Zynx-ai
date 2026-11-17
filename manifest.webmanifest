@@ -1,0 +1,23 @@
+{
+  "name": "Zynx AI",
+  "short_name": "Zynx AI",
+  "description": "A focused AI workspace for questions, ideas and ambitious projects.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#080611",
+  "theme_color": "#080611",
+  "icons": [
+    {
+      "src": "/zynx-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
