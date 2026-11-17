@@ -976,7 +976,7 @@ def stream_message(chat_id):
 
     def generate():
         def event(payload):
-            return "data: " + json.dumps(payload, ensure_ascii=False) + "\\n\\n"
+            return "data: " + json.dumps(payload, ensure_ascii=False) + "\n\n"
 
         full_reply = []
         try:
