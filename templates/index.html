@@ -1129,6 +1129,19 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
       </button>
     </div>
     <div class="flex-1 overflow-y-auto p-5 space-y-6">
+      <section class="space-y-3" id="zynxLanguageSection">
+        <div><p class="text-sm font-semibold text-slate-100">Language & region</p><p class="text-xs text-slate-400 mt-1">Choose the language for Zynx's interface and AI replies.</p></div>
+        <label class="block text-xs text-slate-400" for="zynxLanguageSelect">App and response language</label>
+        <select id="zynxLanguageSelect" class="w-full rounded-xl border border-white/10 bg-slate-900/80 text-slate-100 px-3 py-3 text-sm">
+          <option value="auto">Automatic detection</option>
+          <option value="en">English</option><option value="kn">ಕನ್ನಡ · Kannada</option><option value="hi">हिन्दी · Hindi</option>
+          <option value="te">తెలుగు · Telugu</option><option value="ta">தமிழ் · Tamil</option><option value="ml">മലയാളം · Malayalam</option>
+          <option value="mr">मराठी · Marathi</option><option value="bn">বাংলা · Bengali</option><option value="gu">ગુજરાતી · Gujarati</option>
+          <option value="pa">ਪੰਜਾਬੀ · Punjabi</option><option value="ur">اردو · Urdu</option><option value="fr">Français · French</option>
+          <option value="es">Español · Spanish</option><option value="ar">العربية · Arabic</option>
+        </select>
+        <p class="text-xs text-slate-500" id="zynxLanguageHint">Automatic mode follows the language you write in. Your choice is saved on this device.</p>
+      </section>
       <section class="space-y-3">
         <div><p class="text-sm font-semibold text-slate-100">Voice</p><p class="text-xs text-slate-400 mt-1">Speak to Zynx and hear replies aloud.</p></div>
         <label class="flex items-center justify-between gap-3 text-sm text-slate-300" for="voiceReplies">
@@ -1515,7 +1528,7 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
     const typing = showTyping();
     try {
       if (!S.chatId) { S.chatId = (await api('/api/chats', { method: 'POST', body: { title: 'New Chat' } })).id; }
-      const d = await api(`/api/chats/${S.chatId}/messages`, { method: 'POST', body: { content: text } });
+      const d = await api(`/api/chats/${S.chatId}/messages`, { method: 'POST', body: { content: text, language: (window.ZYNX_LANGUAGE && window.ZYNX_LANGUAGE.get()) || 'auto' } });
       typing.remove();
       S.messages.push(d.user_message, d.assistant_message);
       el.title.textContent = d.chat_title || 'Chat';
@@ -2069,5 +2082,57 @@ html[data-zynx-motion="cinematic"] .auth-card{box-shadow:0 35px 120px rgba(0,0,0
   });
 })();
 </script>
-\n</body>
+\n
+<script id="zynx-multilingual-runtime">
+(()=> {
+  const KEY='zynx_language_preference';
+  const languages={
+    en:{settings:'Settings',language:'Language & region',voice:'Voice',voiceDesc:'Speak to Zynx and hear replies aloud.',speak:'Speak assistant replies',personalization:'Personalization · Choose your atmosphere',motion:'Motion & startup',hint:'Automatic mode follows the language you write in. Your choice is saved on this device.',placeholder:'Message Zynx…',close:'Close settings',send:'Send message'},
+    kn:{settings:'ಸೆಟ್ಟಿಂಗ್‌ಗಳು',language:'ಭಾಷೆ ಮತ್ತು ಪ್ರದೇಶ',voice:'ಧ್ವನಿ',voiceDesc:'Zynx ಜೊತೆ ಮಾತನಾಡಿ ಮತ್ತು ಉತ್ತರಗಳನ್ನು ಕೇಳಿ.',speak:'ಸಹಾಯಕನ ಉತ್ತರಗಳನ್ನು ಧ್ವನಿಯಲ್ಲಿ ಹೇಳಿ',personalization:'ವೈಯಕ್ತೀಕರಣ · ನಿಮ್ಮ ವಾತಾವರಣವನ್ನು ಆರಿಸಿ',motion:'ಚಲನೆ ಮತ್ತು ಆರಂಭ',hint:'ಸ್ವಯಂಚಾಲಿತ ಮೋಡ್ ನೀವು ಬರೆಯುವ ಭಾಷೆಯನ್ನು ಅನುಸರಿಸುತ್ತದೆ. ನಿಮ್ಮ ಆಯ್ಕೆ ಈ ಸಾಧನದಲ್ಲಿ ಉಳಿಸಲಾಗುತ್ತದೆ.',placeholder:'Zynx ಗೆ ಸಂದೇಶ ಬರೆಯಿರಿ…',close:'ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮುಚ್ಚಿ',send:'ಸಂದೇಶ ಕಳುಹಿಸಿ'},
+    hi:{settings:'सेटिंग्स',language:'भाषा और क्षेत्र',voice:'आवाज़',voiceDesc:'Zynx से बात करें और जवाब सुनें।',speak:'सहायक के जवाब बोलकर सुनाएँ',personalization:'वैयक्तिकरण · अपना माहौल चुनें',motion:'एनिमेशन और शुरुआत',hint:'ऑटो मोड आपके लिखने की भाषा का उपयोग करता है। आपकी पसंद इस डिवाइस पर सेव होती है।',placeholder:'Zynx को संदेश लिखें…',close:'सेटिंग्स बंद करें',send:'संदेश भेजें'},
+    te:{settings:'సెట్టింగ్‌లు',language:'భాష మరియు ప్రాంతం',voice:'వాయిస్',voiceDesc:'Zynxతో మాట్లాడి సమాధానాలు వినండి.',speak:'సహాయకుడి సమాధానాలను వినిపించు',personalization:'వ్యక్తిగతీకరణ · మీ వాతావరణాన్ని ఎంచుకోండి',motion:'యానిమేషన్ మరియు ప్రారంభం',hint:'ఆటో మోడ్ మీరు టైప్ చేసే భాషను అనుసరిస్తుంది. మీ ఎంపిక ఈ పరికరంలో సేవ్ అవుతుంది.',placeholder:'Zynxకు సందేశం రాయండి…',close:'సెట్టింగ్‌లను మూసివేయి',send:'సందేశం పంపు'},
+    ta:{settings:'அமைப்புகள்',language:'மொழி மற்றும் பகுதி',voice:'குரல்',voiceDesc:'Zynx உடன் பேசி பதில்களைக் கேளுங்கள்.',speak:'உதவியாளரின் பதில்களைப் பேசச் செய்',personalization:'தனிப்பயனாக்கம் · தோற்றத்தைத் தேர்ந்தெடுக்கவும்',motion:'இயக்கம் மற்றும் தொடக்கம்',hint:'தானியங்கி முறை நீங்கள் எழுதும் மொழியைப் பின்பற்றும். உங்கள் தேர்வு இந்தச் சாதனத்தில் சேமிக்கப்படும்.',placeholder:'Zynx-க்கு செய்தி அனுப்புங்கள்…',close:'அமைப்புகளை மூடு',send:'செய்தி அனுப்பு'},
+    ml:{settings:'ക്രമീകരണങ്ങൾ',language:'ഭാഷയും പ്രദേശവും',voice:'ശബ്ദം',voiceDesc:'Zynx-നോട് സംസാരിച്ച് മറുപടികൾ കേൾക്കൂ.',speak:'അസിസ്റ്റന്റിന്റെ മറുപടികൾ ശബ്ദമായി കേൾക്കുക',personalization:'വ്യക്തിഗതമാക്കൽ · നിങ്ങളുടെ രൂപം തിരഞ്ഞെടുക്കുക',motion:'ചലനവും തുടക്കവും',hint:'ഓട്ടോ മോഡ് നിങ്ങൾ എഴുതുന്ന ഭാഷ പിന്തുടരും. നിങ്ങളുടെ തിരഞ്ഞെടുപ്പ് ഈ ഉപകരണത്തിൽ സൂക്ഷിക്കും.',placeholder:'Zynx-ന് സന്ദേശം അയയ്ക്കുക…',close:'ക്രമീകരണങ്ങൾ അടയ്ക്കുക',send:'സന്ദേശം അയയ്ക്കുക'},
+    mr:{settings:'सेटिंग्ज',language:'भाषा आणि प्रदेश',voice:'आवाज',voiceDesc:'Zynx शी बोला आणि उत्तरे ऐका.',speak:'सहाय्यकाची उत्तरे आवाजात ऐका',personalization:'वैयक्तिकरण · तुमचा लूक निवडा',motion:'अ‍ॅनिमेशन आणि सुरुवात',hint:'ऑटो मोड तुम्ही लिहित असलेली भाषा वापरतो. तुमची निवड या डिव्हाइसवर जतन केली जाते.',placeholder:'Zynx ला संदेश लिहा…',close:'सेटिंग्ज बंद करा',send:'संदेश पाठवा'},
+    bn:{settings:'সেটিংস',language:'ভাষা ও অঞ্চল',voice:'কণ্ঠস্বর',voiceDesc:'Zynx-এর সঙ্গে কথা বলুন এবং উত্তর শুনুন।',speak:'সহকারীর উত্তর শোনান',personalization:'ব্যক্তিগতকরণ · আপনার থিম বেছে নিন',motion:'অ্যানিমেশন ও শুরু',hint:'স্বয়ংক্রিয় মোড আপনার লেখার ভাষা অনুসরণ করে। আপনার পছন্দ এই ডিভাইসে সংরক্ষিত হবে।',placeholder:'Zynx-কে বার্তা লিখুন…',close:'সেটিংস বন্ধ করুন',send:'বার্তা পাঠান'},
+    gu:{settings:'સેટિંગ્સ',language:'ભાષા અને પ્રદેશ',voice:'અવાજ',voiceDesc:'Zynx સાથે વાત કરો અને જવાબો સાંભળો.',speak:'સહાયકના જવાબો અવાજમાં સાંભળો',personalization:'વ્યક્તિગતકરણ · તમારી થીમ પસંદ કરો',motion:'એનિમેશન અને શરૂઆત',hint:'ઓટો મોડ તમે લખો છો તે ભાષાને અનુસરે છે. તમારી પસંદગી આ ઉપકરણમાં સાચવાશે.',placeholder:'Zynx ને સંદેશ લખો…',close:'સેટિંગ્સ બંધ કરો',send:'સંદેશ મોકલો'},
+    pa:{settings:'ਸੈਟਿੰਗਾਂ',language:'ਭਾਸ਼ਾ ਅਤੇ ਖੇਤਰ',voice:'ਆਵਾਜ਼',voiceDesc:'Zynx ਨਾਲ ਗੱਲ ਕਰੋ ਅਤੇ ਜਵਾਬ ਸੁਣੋ।',speak:'ਸਹਾਇਕ ਦੇ ਜਵਾਬ ਬੋਲ ਕੇ ਸੁਣਾਓ',personalization:'ਨਿੱਜੀਕਰਨ · ਆਪਣੀ ਥੀਮ ਚੁਣੋ',motion:'ਐਨੀਮੇਸ਼ਨ ਅਤੇ ਸ਼ੁਰੂਆਤ',hint:'ਆਟੋ ਮੋਡ ਤੁਹਾਡੇ ਲਿਖਣ ਦੀ ਭਾਸ਼ਾ ਵਰਤਦਾ ਹੈ। ਤੁਹਾਡੀ ਚੋਣ ਇਸ ਡਿਵਾਈਸ ਉੱਤੇ ਸੰਭਾਲੀ ਜਾਵੇਗੀ।',placeholder:'Zynx ਨੂੰ ਸੁਨੇਹਾ ਲਿਖੋ…',close:'ਸੈਟਿੰਗਾਂ ਬੰਦ ਕਰੋ',send:'ਸੁਨੇਹਾ ਭੇਜੋ'},
+    ur:{settings:'ترتیبات',language:'زبان اور علاقہ',voice:'آواز',voiceDesc:'Zynx سے بات کریں اور جوابات سنیں۔',speak:'اسسٹنٹ کے جوابات سنائیں',personalization:'ذاتی نوعیت · اپنا انداز منتخب کریں',motion:'حرکت اور آغاز',hint:'خودکار موڈ آپ کے لکھنے کی زبان اپناتا ہے۔ آپ کی پسند اس ڈیوائس پر محفوظ ہوگی۔',placeholder:'Zynx کو پیغام لکھیں…',close:'ترتیبات بند کریں',send:'پیغام بھیجیں'},
+    fr:{settings:'Paramètres',language:'Langue et région',voice:'Voix',voiceDesc:'Parlez à Zynx et écoutez ses réponses.',speak:'Lire les réponses de l’assistant',personalization:'Personnalisation · Choisissez votre ambiance',motion:'Animations et démarrage',hint:'Le mode automatique suit la langue que vous utilisez. Votre choix est enregistré sur cet appareil.',placeholder:'Écrire à Zynx…',close:'Fermer les paramètres',send:'Envoyer le message'},
+    es:{settings:'Configuración',language:'Idioma y región',voice:'Voz',voiceDesc:'Habla con Zynx y escucha sus respuestas.',speak:'Leer las respuestas del asistente',personalization:'Personalización · Elige tu ambiente',motion:'Movimiento e inicio',hint:'El modo automático sigue el idioma en el que escribes. Tu elección se guarda en este dispositivo.',placeholder:'Escribe a Zynx…',close:'Cerrar configuración',send:'Enviar mensaje'},
+    ar:{settings:'الإعدادات',language:'اللغة والمنطقة',voice:'الصوت',voiceDesc:'تحدث إلى Zynx واستمع إلى الردود.',speak:'قراءة ردود المساعد بصوت عالٍ',personalization:'التخصيص · اختر المظهر',motion:'الحركة وبدء التشغيل',hint:'يتبع الوضع التلقائي اللغة التي تكتب بها. يُحفظ اختيارك على هذا الجهاز.',placeholder:'اكتب رسالة إلى Zynx…',close:'إغلاق الإعدادات',send:'إرسال الرسالة'}
+  };
+  const localeNames={en:'English',kn:'Kannada',hi:'Hindi',te:'Telugu',ta:'Tamil',ml:'Malayalam',mr:'Marathi',bn:'Bengali',gu:'Gujarati',pa:'Punjabi',ur:'Urdu',fr:'French',es:'Spanish',ar:'Arabic'};
+  const select=document.getElementById('zynxLanguageSelect');
+  if(!select)return;
+  const supported=Object.keys(languages);
+  const detect=()=>{const code=(navigator.languages?.[0]||navigator.language||'en').split('-')[0].toLowerCase();return supported.includes(code)?code:'en';};
+  let preference='auto';try{preference=localStorage.getItem(KEY)||'auto';}catch{}
+  if(!['auto',...supported].includes(preference))preference='auto';
+  const current=()=>preference==='auto'?detect():preference;
+  const apply=()=>{
+    const lang=current(), t=languages[lang]||languages.en, rtl=lang==='ar'||lang==='ur';
+    document.documentElement.lang=lang;document.documentElement.dir=rtl?'rtl':'ltr';
+    const settings=document.querySelector('#settings h2');if(settings)settings.textContent=t.settings;
+    const langHead=document.querySelector('#zynxLanguageSection > div > p:first-child');if(langHead)langHead.textContent=t.language;
+    const hint=document.getElementById('zynxLanguageHint');if(hint)hint.textContent=t.hint;
+    const sections=document.querySelectorAll('#settings > div.flex-1 > section');
+    if(sections[1]){const p=sections[1].querySelector('div > p:first-child');if(p)p.textContent=t.voice;const d=sections[1].querySelector('div > p:nth-child(2)');if(d)d.textContent=t.voiceDesc;const label=sections[1].querySelector('label span');if(label)label.textContent=t.speak;}
+    const themeHead=document.querySelector('#premiumThemes')?.previousElementSibling?.querySelector('p:first-child');if(themeHead)themeHead.textContent=t.personalization;
+    const motionHead=document.querySelector('#zynxMotionChoices')?.previousElementSibling?.querySelector('p:first-child');if(motionHead)motionHead.textContent=t.motion;
+    const input=document.getElementById('input');if(input)input.placeholder=t.placeholder;
+    const close=document.getElementById('closeSettings');if(close)close.setAttribute('aria-label',t.close);
+    const send=document.getElementById('sendBtn');if(send)send.setAttribute('aria-label',t.send);
+    document.getElementById('zynxLanguageSection')?.setAttribute('lang',lang);
+    document.getElementById('zynxLanguageSection')?.setAttribute('dir',rtl?'rtl':'ltr');
+    document.querySelectorAll('#settings select').forEach(s=>{s.style.textAlign=rtl?'right':'left';});
+  };
+  select.value=preference;
+  select.addEventListener('change',()=>{preference=select.value;try{localStorage.setItem(KEY,preference);}catch{}apply();});
+  window.ZYNX_LANGUAGE={get:()=>preference==='auto'?'auto':preference,set:(v)=>{if(['auto',...supported].includes(v)){preference=v;select.value=v;try{localStorage.setItem(KEY,v);}catch{}apply();}}};
+  apply();
+})();
+</script>
+
+</body>
 </html>
