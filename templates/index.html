@@ -2199,7 +2199,15 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         <label class="dream-control">Appearance<select id="dreamMode"><option value="dark">Dream dark</option><option value="light">Cloud light</option></select></label>
         <label class="dream-toggle"><span>Slow cloud movement</span><input id="dreamClouds" type="checkbox" checked></label>
         <label class="dream-toggle"><span>Floating particles</span><input id="dreamParticles" type="checkbox"></label>
-        <p class="text-xs text-slate-500">Visual preferences save automatically on this device.</p>
+        <div class="space-y-2 pt-2 border-t border-white/10">
+          <label class="block text-xs text-slate-300" for="zynxPersonalTone">Assistant tone</label>
+          <select id="zynxPersonalTone" class="w-full rounded-xl border border-white/10 px-3 py-2.5 text-sm">
+            <option value="natural">Natural and clear</option><option value="friendly">Friendly and encouraging</option><option value="professional">Professional and direct</option><option value="simple">Simple explanations</option>
+          </select>
+          <label class="block text-xs text-slate-300" for="zynxPersonalInstructions">Personal instructions</label>
+          <textarea id="zynxPersonalInstructions" rows="3" maxlength="500" placeholder="Example: Use short paragraphs and explain technical terms." class="w-full rounded-xl border border-white/10 px-3 py-2.5 text-sm resize-y"></textarea>
+          <p class="text-xs text-slate-500">Saved on this device and applied to new prompts.</p>
+        </div>
       </section>
       <section class="zynx-motion-section">
         <div><p class="text-sm font-semibold">Motion & startup</p><p class="text-xs text-slate-400 mt-1">Choose how Zynx transitions and welcomes you.</p></div>
@@ -4714,6 +4722,13 @@ pre?.addEventListener('click',e=>{
 });
 try{depth=localStorage.getItem('zynx_prompt_depth')||depth;format=localStorage.getItem('zynx_prompt_format')||format}catch{}
 paintPromptPreferences();
+try{
+ const tone=q1('#zynxPersonalTone'),instructions=q1('#zynxPersonalInstructions');
+ if(tone)tone.value=localStorage.getItem('zynx_personal_tone')||'natural';
+ if(instructions)instructions.value=localStorage.getItem('zynx_personal_instructions')||'';
+ tone?.addEventListener('change',()=>localStorage.setItem('zynx_personal_tone',tone.value));
+ instructions?.addEventListener('change',()=>localStorage.setItem('zynx_personal_instructions',instructions.value));
+}catch{}
 function paintHud(){hud.innerHTML=saved.chips.map((c,i)=>'<span class="zw-chip">'+esc(c)+' <button data-chip-remove="'+i+'" aria-label="Remove context chip">×</button></span>').join('')+(saved.pins.length?'<span class="zw-chip">📌 '+saved.pins.length+' pinned replies</span>':'');}
 paintHud();
 hud.addEventListener('click',e=>{const b=e.target.closest('[data-chip-remove]');if(b){saved.chips.splice(Number(b.dataset.chipRemove),1);persist();paintHud()}});
@@ -4787,6 +4802,10 @@ if(!input.value.trim()||input.dataset.zwPrepared==='1')return;
 const prefs=[];
 if(depth!=='Balanced')prefs.push('Response depth: '+depth);
 if(format!=='Auto')prefs.push('Preferred format: '+format);
+const tone=q1('#zynxPersonalTone')?.value||'natural';
+const personal=q1('#zynxPersonalInstructions')?.value?.trim()||'';
+if(tone!=='natural')prefs.push('Preferred assistant tone: '+tone);
+if(personal)prefs.push('Personal instructions: '+personal);
 if(prefs.length)input.value+='\n\n[Please follow these preferences: '+prefs.join('; ')+']';
 input.dataset.zwPrepared='1';
 }
