@@ -2126,6 +2126,10 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
         Image Studio
       </button>
+      <button class="zynx-sidebar-link zynx-tool-link" id="videoStudioBtn" type="button" aria-label="Open Video Studio">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></svg>
+        Video Studio
+      </button>
       <a class="zynx-sidebar-link zynx-game-link" id="gameCornerBtn" href="/game-corner/" aria-label="Open Game Corner">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="12" rx="3"/><path d="M8 11v4m-2-2h4m6-1h.01M18 14h.01"/></svg>
         Game Corner
@@ -2439,6 +2443,10 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
         <article class="zynx-feature-card"><div class="zynx-feature-art"><span>≋</span><i>04</i></div><span class="feature-kicker">04 · SHAPE</span><h3>Response controls</h3><p>Choose quick, balanced or deep replies, plus a format that suits your task.</p></article>
         <article class="zynx-feature-card"><div class="zynx-feature-art"><span>◌</span><i>05</i></div><span class="feature-kicker">05 · PERSONALIZE</span><h3>Your own atmosphere</h3><p>Switch between Dreamspace and other interface themes, then tune the glass and accent.</p></article>
         <article class="zynx-feature-card"><div class="zynx-feature-art"><span>⇩</span><i>06</i></div><span class="feature-kicker">06 · KEEP</span><h3>Export conversations</h3><p>Save a copy of your conversation when you need it outside Zynx.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>▧</span><i>07</i></div><span class="feature-kicker">07 · IMAGINE</span><h3>AI photo generation</h3><p>Turn a text prompt into original artwork and save the generated image.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>▶</span><i>08</i></div><span class="feature-kicker">08 · ANIMATE</span><h3>AI video generation</h3><p>Describe a scene and create a short AI-generated video clip.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>✓</span><i>09</i></div><span class="feature-kicker">09 · PRACTISE</span><h3>Interactive Quiz Studio</h3><p>Build a multiple-choice quiz, answer it on screen and review your score.</p></article>
+        <article class="zynx-feature-card"><div class="zynx-feature-art"><span>⌕</span><i>10</i></div><span class="feature-kicker">10 · EXPLORE</span><h3>Source-based research</h3><p>Explore answers with linked sources when web research is available.</p></article>
       </div>
       <div class="zynx-showcase-footer">BUILT FOR CURIOSITY · POWERED BY IDEAS</div>
     </section>
@@ -5048,10 +5056,23 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
       <header class="zynx-modal-head"><div><span class="zynx-eyebrow">IMAGINE · GENERATE</span><h2 id="zynxImageTitle">Image Studio</h2><p>Turn a written idea into an original image.</p></div><button class="zynx-modal-close" data-close-modal="zynxImageStudio" aria-label="Close">×</button></header>
       <form id="zynxImageForm" class="zynx-image-form">
         <label>Describe your image<textarea id="zynxImagePrompt" maxlength="1200" required rows="4" placeholder="A cinematic illustration of a floating library above soft lavender clouds at sunrise…"></textarea></label>
-        <button class="zynx-primary-btn" id="zynxImageGenerate" type="submit"><span>✦</span> Generate image</button>
-        <p class="zynx-modal-note" id="zynxImageStatus">Requires an OpenAI image API key configured securely on the server. Image requests may incur charges.</p>
+        <button class="zynx-primary-btn" id="zynxImageGenerate" type="submit"><span>✦</span> Generate photo</button>
+        <p class="zynx-modal-note" id="zynxImageStatus">Powered by Pollinations · Your API key stays on the server. Provider usage limits may apply.</p>
       </form>
       <div id="zynxImageOutput" class="zynx-image-output" hidden><img id="zynxGeneratedImage" alt="AI generated image"><div class="zynx-image-actions"><a id="zynxImageDownload" class="zynx-secondary-btn" download="zynx-image.png">Download image</a><button id="zynxImageNew" class="zynx-secondary-btn" type="button">Create another</button></div></div>
+    </div>
+  </section>
+  <section class="zynx-modal" id="zynxVideoStudio" aria-hidden="true" aria-labelledby="zynxVideoTitle">
+    <div class="zynx-modal-backdrop" data-close-modal="zynxVideoStudio"></div>
+    <div class="zynx-modal-panel zynx-video-panel">
+      <header class="zynx-modal-head"><div><span class="zynx-eyebrow">DESCRIBE · ANIMATE · CREATE</span><h2 id="zynxVideoTitle">Video Studio</h2><p>Create a short video from a scene description.</p></div><button class="zynx-modal-close" data-close-modal="zynxVideoStudio" aria-label="Close">×</button></header>
+      <form id="zynxVideoForm" class="zynx-image-form">
+        <label>Describe your video<textarea id="zynxVideoPrompt" maxlength="1000" required rows="4" placeholder="A tiny astronaut explores a glowing garden on a distant planet, cinematic camera movement…"></textarea></label>
+        <label>Clip length<select id="zynxVideoDuration"><option value="4" selected>4 seconds</option><option value="6">6 seconds</option><option value="8">8 seconds</option></select></label>
+        <button class="zynx-primary-btn" id="zynxVideoGenerate" type="submit"><span>✦</span> Generate video</button>
+        <p class="zynx-modal-note" id="zynxVideoStatus" aria-live="polite">Powered by Pollinations · Video generation can take a few minutes and may use your API budget.</p>
+      </form>
+      <div id="zynxVideoOutput" class="zynx-image-output" hidden><video id="zynxGeneratedVideo" controls playsinline preload="metadata"></video><div class="zynx-image-actions"><a id="zynxVideoDownload" class="zynx-secondary-btn" download="zynx-video.mp4">Download video</a><button id="zynxVideoNew" class="zynx-secondary-btn" type="button">Create another</button></div></div>
     </div>
   </section>
   <section class="zynx-modal" id="zynxSignoutConfirm" aria-hidden="true" aria-labelledby="zynxSignoutTitle">
@@ -5148,6 +5169,7 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') document.querySelectorAll('.zynx-modal.open').forEach(node => closeModal(node.id)); });
   document.getElementById('quizStudioBtn')?.addEventListener('click', () => openModal('zynxQuizStudio'));
   document.getElementById('imageStudioBtn')?.addEventListener('click', () => openModal('zynxImageStudio'));
+  document.getElementById('videoStudioBtn')?.addEventListener('click', () => openModal('zynxVideoStudio'));
   window.openSignoutConfirm = () => openModal('zynxSignoutConfirm');
   document.getElementById('zynxConfirmSignout')?.addEventListener('click', async () => {
     const button = document.getElementById('zynxConfirmSignout'); button.disabled = true; button.textContent = 'Logging out…';
@@ -5223,25 +5245,130 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
   imageForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const prompt=document.getElementById('zynxImagePrompt').value.trim(); if(!prompt)return;
-    imageButton.disabled=true; imageButton.textContent='Generating image…';
+    imageButton.disabled=true; imageButton.textContent='Generating photo…';
     const status=document.getElementById('zynxImageStatus'); status.textContent='Creating your image. This may take a little while…';
     document.getElementById('zynxImageOutput').hidden=true;
     try {
       const response=await fetch('/api/images/generate',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':localStorage.getItem('zynx_token')||''},body:JSON.stringify({prompt})});
       const data=await response.json(); if(!response.ok) throw new Error(data.error||'Image generation failed.');
-      const url='data:image/png;base64,'+data.image_data;
+      const url='data:'+(data.mime_type||'image/png')+';base64,'+data.image_data;
       document.getElementById('zynxGeneratedImage').src=url;
       document.getElementById('zynxImageDownload').href=url;
       document.getElementById('zynxImageOutput').hidden=false;
       status.textContent='Image created successfully.';
     } catch(error) { status.textContent=error.message||'Image generation is not configured yet.'; }
-    finally { imageButton.disabled=false; imageButton.innerHTML='<span>✦</span> Generate image'; }
+    finally { imageButton.disabled=false; imageButton.innerHTML='<span>✦</span> Generate photo'; }
   });
   document.getElementById('zynxImageNew')?.addEventListener('click', () => { document.getElementById('zynxImageOutput').hidden=true; document.getElementById('zynxImagePrompt').focus(); });
   // A small bridge lets the existing sign-out routine be invoked by the confirmation dialog.
   document.getElementById('zynxConfirmSignout')?.addEventListener('click', async () => {});
+  // Video generation uses Pollinations async jobs; the API key stays server-side.
+  const videoForm=document.getElementById('zynxVideoForm');
+  const videoButton=document.getElementById('zynxVideoGenerate');
+  const videoStatus=document.getElementById('zynxVideoStatus');
+  let activeVideoUrl=null;
+  videoForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const prompt=document.getElementById('zynxVideoPrompt').value.trim();
+    if(!prompt)return;
+    videoButton.disabled=true; videoButton.textContent='Starting video…';
+    videoStatus.textContent='Sending your prompt to Pollinations…';
+    document.getElementById('zynxVideoOutput').hidden=true;
+    if(activeVideoUrl){URL.revokeObjectURL(activeVideoUrl);activeVideoUrl=null;}
+    try {
+      const response=await fetch('/api/video/generate',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':localStorage.getItem('zynx_token')||''},body:JSON.stringify({prompt,duration:Number(document.getElementById('zynxVideoDuration').value)})});
+      const type=response.headers.get('content-type')||'';
+      if(!response.ok){const err=type.includes('json')?await response.json():{};throw new Error(err.error||'Video generation could not start.');}
+      if(type.startsWith('video/')){
+        const blob=await response.blob(); activeVideoUrl=URL.createObjectURL(blob); showVideo(activeVideoUrl); return;
+      }
+      const job=await response.json();
+      if(!job.job_id)throw new Error('The video service did not return a job id.');
+      let complete=false;
+      for(let attempt=0;attempt<100;attempt++){
+        await new Promise(resolve=>setTimeout(resolve,5000));
+        videoStatus.textContent='Rendering your video… '+Math.min(99,Math.round((attempt+1)/100*100))+'%';
+        const statusResponse=await fetch('/api/video/status/'+encodeURIComponent(job.job_id),{headers:{'X-Session-Token':localStorage.getItem('zynx_token')||''}});
+        const statusData=await statusResponse.json().catch(()=>({}));
+        if(!statusResponse.ok)throw new Error(statusData.error||'Could not check video progress.');
+        const state=String(statusData.status||'processing').toLowerCase();
+        if(['failed','error','cancelled'].includes(state))throw new Error(statusData.error||'The video provider could not complete this clip.');
+        if(['succeeded','completed','complete','ready'].includes(state)){complete=true;break;}
+      }
+      if(!complete)throw new Error('This video is taking longer than expected. Try again in a little while.');
+      videoStatus.textContent='Preparing your video…';
+      const result=await fetch('/api/video/result/'+encodeURIComponent(job.job_id),{headers:{'X-Session-Token':localStorage.getItem('zynx_token')||''}});
+      if(!result.ok){const err=await result.json().catch(()=>({}));throw new Error(err.error||'Could not download the generated video.');}
+      activeVideoUrl=URL.createObjectURL(await result.blob()); showVideo(activeVideoUrl);
+    } catch(error) { videoStatus.textContent=error.message||'Video generation failed. Please try again.'; }
+    finally { videoButton.disabled=false; videoButton.innerHTML='<span>✦</span> Generate video'; }
+  });
+  function showVideo(url){
+    const player=document.getElementById('zynxGeneratedVideo');
+    player.src=url;
+    document.getElementById('zynxVideoDownload').href=url;
+    document.getElementById('zynxVideoOutput').hidden=false;
+    videoStatus.textContent='Your video is ready.';
+  }
+  document.getElementById('zynxVideoNew')?.addEventListener('click',()=>{
+    document.getElementById('zynxVideoOutput').hidden=true;
+    const player=document.getElementById('zynxGeneratedVideo'); player.pause(); player.removeAttribute('src'); player.load();
+    if(activeVideoUrl){URL.revokeObjectURL(activeVideoUrl);activeVideoUrl=null;}
+    document.getElementById('zynxVideoPrompt').focus();
+  });
   window.addEventListener('zynx-signout-request', () => openModal('zynxSignoutConfirm'));
 })();
 </script>
+<style id="zynx-black-glass-depth">
+  #app #sidebar.zynx-clean-sidebar{
+    background:linear-gradient(160deg,rgba(5,6,9,.91),rgba(12,13,17,.78) 58%,rgba(7,8,11,.9))!important;
+    border:1px solid rgba(255,255,255,.105)!important;
+    border-right-color:rgba(255,255,255,.15)!important;
+    box-shadow:18px 0 54px rgba(0,0,0,.38),inset 1px 0 0 rgba(255,255,255,.035),inset 0 1px 0 rgba(255,255,255,.065)!important;
+    -webkit-backdrop-filter:blur(32px) saturate(145%)!important;
+    backdrop-filter:blur(32px) saturate(145%)!important;
+  }
+  #app #sidebar .zynx-sidebar-brand{border-bottom:1px solid rgba(255,255,255,.075)!important}
+  #app #sidebar .zynx-sidebar-link{color:#c9cbd2!important;border:1px solid transparent!important;transition:background .22s,border-color .22s,transform .22s,color .22s!important}
+  #app #sidebar .zynx-sidebar-link:hover{background:rgba(255,255,255,.075)!important;border-color:rgba(255,255,255,.095)!important;color:#fff!important;transform:translateX(2px)!important}
+  #app #sidebar .zynx-new-chat{background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.055))!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 22px rgba(0,0,0,.2)!important}
+  #app #sidebar .zynx-history-heading{color:#777b86!important}
+  #app #sidebar .zynx-chat-search{background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.09)!important}
+  #app #sidebar .zynx-sidebar-footer{background:linear-gradient(0deg,rgba(0,0,0,.26),transparent)!important;border-top-color:rgba(255,255,255,.09)!important}
+  #welcome .zynx-feature-showcase{
+    position:relative!important;isolation:isolate!important;overflow:hidden!important;
+    width:min(100%,1040px)!important;max-width:1040px!important;margin:82px auto 0!important;
+    padding:34px!important;border:1px solid rgba(255,255,255,.105)!important;border-radius:25px!important;
+    background:radial-gradient(ellipse at 8% 0%,rgba(111,91,173,.18),transparent 36%),radial-gradient(ellipse at 100% 95%,rgba(67,112,154,.13),transparent 40%),linear-gradient(145deg,rgba(22,23,29,.92),rgba(10,11,15,.96))!important;
+    box-shadow:0 32px 90px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.075)!important;
+  }
+  #welcome .zynx-feature-showcase:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.035),transparent 32%,transparent 70%,rgba(255,255,255,.025))}
+  #welcome .zynx-showcase-heading{margin-bottom:28px!important}
+  #welcome .zynx-showcase-heading .feature-kicker{display:inline-flex!important;align-items:center;gap:8px!important;padding:6px 10px!important;border:1px solid rgba(196,181,253,.18)!important;border-radius:99px!important;background:rgba(167,139,250,.075)!important;color:#c4b5fd!important}
+  #welcome .zynx-showcase-heading h2{font-size:clamp(28px,4vw,39px)!important;letter-spacing:-1.5px!important}
+  #welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+  #welcome .zynx-working-features .zynx-feature-card{
+    position:relative!important;display:block!important;min-height:190px!important;overflow:hidden!important;
+    padding:0 0 17px!important;border:1px solid rgba(255,255,255,.095)!important;border-radius:17px!important;
+    background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018))!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 12px 28px rgba(0,0,0,.16)!important;
+    transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,box-shadow .28s!important;
+  }
+  #welcome .zynx-working-features .zynx-feature-card:hover{transform:translateY(-5px)!important;border-color:rgba(196,181,253,.28)!important;box-shadow:0 20px 42px rgba(0,0,0,.3),0 0 28px rgba(139,92,246,.07),inset 0 1px 0 rgba(255,255,255,.08)!important}
+  #welcome .zynx-working-features .zynx-feature-art{position:relative!important;height:96px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;padding:17px!important;overflow:hidden!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.075)!important;border-radius:0!important;background:radial-gradient(circle at 78% 22%,rgba(167,139,250,.23),transparent 35%),linear-gradient(120deg,rgba(91,89,135,.24),rgba(38,54,76,.17))!important}
+  #welcome .zynx-working-features .zynx-feature-art:before{content:"";position:absolute;width:120px;height:120px;right:16%;top:-76px;border:1px solid rgba(255,255,255,.13);border-radius:50%;box-shadow:0 0 0 16px rgba(255,255,255,.018),0 0 0 34px rgba(255,255,255,.014)}
+  #welcome .zynx-working-features .zynx-feature-art span{position:relative;z-index:1;font-size:34px!important;color:#e4dcff!important;text-shadow:0 0 24px rgba(167,139,250,.4)}
+  #welcome .zynx-working-features .zynx-feature-art i{position:relative;z-index:1;font-size:10px!important;color:#a1a1aa!important;font-style:normal!important;letter-spacing:.12em}
+  #welcome .zynx-working-features .feature-kicker,#welcome .zynx-working-features h3,#welcome .zynx-working-features p{margin-left:17px!important;margin-right:17px!important}
+  #welcome .zynx-working-features .feature-kicker{display:block!important;margin-top:15px!important;color:#aaa1c8!important;font-size:9px!important;letter-spacing:.13em!important}
+  #welcome .zynx-working-features h3{margin-top:6px!important;margin-bottom:6px!important;color:#f4f4f5!important;font-size:16px!important}
+  #welcome .zynx-working-features p{margin-top:0!important;color:#a7a8b2!important;font-size:12px!important;line-height:1.65!important}
+  #welcome .zynx-showcase-footer{margin-top:24px!important;padding-top:17px!important;border-top:1px solid rgba(255,255,255,.075)!important;color:#777b86!important;letter-spacing:.16em!important}
+  .zynx-video-panel video{display:block;width:100%;max-height:440px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:#050608}
+  .zynx-video-panel select{width:100%;padding:12px 13px;border:1px solid rgba(255,255,255,.13);border-radius:11px;background:rgba(5,7,14,.36);color:#f5f5fa;font:inherit;font-size:13px}
+  .zynx-video-panel select option{background:#111215;color:#f5f5fa}
+  @media(max-width:700px){#welcome .zynx-feature-showcase{padding:19px!important;border-radius:19px!important}#welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:1fr!important}#welcome .zynx-working-features .zynx-feature-card{min-height:0!important}#app #sidebar.zynx-clean-sidebar{background:rgba(4,5,8,.93)!important}}
+  @media(prefers-reduced-motion:reduce){#welcome .zynx-working-features .zynx-feature-card{transition:none!important}}
+</style>
 </body>
 </html>
