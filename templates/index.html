@@ -1475,6 +1475,106 @@ html,body{font-size:14px!important}
 .streaming-live::after{content:"";display:inline-block;width:7px;height:1em;margin-left:4px;vertical-align:-.12em;border-radius:2px;background:#b9a2ff;box-shadow:0 0 12px rgba(155,120,237,.75);animation:zynx-stream-caret .85s steps(2,end) infinite}
 @keyframes zynx-stream-caret{50%{opacity:0}}
 </style>
+
+<style id="zynx-minimal-neutral">
+/* ZYNX MINIMAL EDITION — neutral editorial interface */
+:root{
+ --bg:#0b0c0e!important;--bg2:#101114!important;--surface:rgba(22,24,29,.78)!important;
+ --glass:rgba(22,24,29,.78)!important;--line:rgba(255,255,255,.09)!important;
+ --accent:#e5e7eb!important;--accent-soft:#f4f4f5!important;
+ --text:#f4f4f5!important;--muted:#a1a1aa!important;
+ --dream-bg:#0b0c0e!important;--dream-text:#f4f4f5!important;
+ --dream-muted:#a1a1aa!important;--dream-line:rgba(255,255,255,.09)!important;
+}
+html,body{background:#0b0c0e!important;color:#f4f4f5!important;font-family:Inter,ui-sans-serif,system-ui,sans-serif!important}
+body:before,body:after,.dream-bg,.dream-motes,.cloud,.particles,.fx,.space-layer,#stars,
+#startup,#bootCore,#dream-transition,.w-greet,.hero,.mark .orbit,.orb,.orb-wrap,
+#chatFx,#zynx-live-cosmos-chat:before,#zynx-live-cosmos-chat:after{
+ display:none!important;visibility:hidden!important;animation:none!important;opacity:0!important
+}
+#startup{pointer-events:none!important}
+#welcome{
+ position:fixed!important;inset:0!important;z-index:90!important;
+ display:block!important;overflow-y:auto!important;overflow-x:hidden!important;
+ padding:0 24px 64px!important;opacity:1!important;visibility:visible!important;
+ background:#0b0c0e!important;color:#f4f4f5!important;
+}
+#welcome:before,#welcome:after{display:none!important}
+#welcome .auth-card{
+ display:block!important;position:relative!important;inset:auto!important;
+ width:min(100%,420px)!important;max-width:420px!important;
+ margin:clamp(72px,14vh,150px) auto 0!important;
+ border:1px solid rgba(255,255,255,.11)!important;border-radius:18px!important;
+ background:#111215!important;box-shadow:0 24px 80px rgba(0,0,0,.28)!important;
+ overflow:hidden!important;transform:none!important;filter:none!important;
+}
+#welcome .auth-card:before,#welcome .auth-card:after{display:none!important}
+#welcome .auth-inner{padding:34px 32px 28px!important}
+#welcome .card-brand{margin-bottom:28px!important}
+#welcome .card-brand .mark{display:none!important}
+#welcome .wordmark{font-size:28px!important;letter-spacing:-1.3px!important;font-weight:650!important;color:#fafafa!important}
+#welcome .auth-title{font-size:23px!important;letter-spacing:-.65px!important;color:#f4f4f5!important}
+#welcome .auth-tag,#welcome .text-slate-400,#welcome .text-slate-500{color:#a1a1aa!important}
+#welcome .seg{background:#090a0c!important;border:1px solid #292a2e!important;border-radius:10px!important}
+#welcome .seg-ind{background:#292a2e!important;box-shadow:none!important;border-radius:7px!important}
+#welcome .seg button{color:#a1a1aa!important}
+#welcome .seg button.on{color:#fafafa!important}
+#welcome .field{background:#0b0c0e!important;border:1px solid #303136!important;color:#f4f4f5!important;border-radius:9px!important;box-shadow:none!important}
+#welcome .field:focus{border-color:#a1a1aa!important;box-shadow:0 0 0 2px rgba(255,255,255,.08)!important}
+#welcome .fgroup label{color:#d4d4d8!important}
+#welcome .primary{background:#f4f4f5!important;color:#111!important;border:1px solid #f4f4f5!important;border-radius:9px!important;box-shadow:none!important;font-weight:650!important}
+#welcome .primary:hover{background:#d4d4d8!important;transform:translateY(-1px)!important}
+#welcome .ghost{background:transparent!important;border:1px solid #35363b!important;color:#e4e4e7!important;border-radius:9px!important}
+#welcome .divider{color:#71717a!important}
+#welcome .divider:before,#welcome .divider:after{background:#303136!important}
+#welcome .zynx-feature-showcase{
+ display:block!important;position:relative!important;order:initial!important;
+ width:min(100%,900px)!important;max-width:900px!important;margin:100px auto 0!important;
+ padding:38px 0 0!important;border-top:1px solid #292a2e!important;
+ background:transparent!important;
+}
+#welcome .zynx-showcase-heading{text-align:left!important;margin:0 0 24px!important}
+#welcome .zynx-showcase-heading .feature-kicker{color:#a1a1aa!important;letter-spacing:.12em!important}
+#welcome .zynx-showcase-heading h2{font-size:clamp(25px,4vw,34px)!important;color:#f4f4f5!important;letter-spacing:-1px!important}
+#welcome .zynx-showcase-heading h2 span{color:#a1a1aa!important}
+#welcome .zynx-showcase-heading p{color:#a1a1aa!important}
+#welcome .zynx-feature-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:0 42px!important}
+#welcome .zynx-feature-card{
+ display:grid!important;grid-template-columns:38px 1fr!important;column-gap:12px!important;
+ align-content:start!important;min-height:0!important;padding:20px 0!important;
+ border:0!important;border-top:1px solid #25262a!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;transform:none!important;
+}
+#welcome .zynx-feature-art{display:none!important}
+#welcome .zynx-feature-card .feature-kicker{grid-column:1!important;grid-row:1/span 2!important;color:#71717a!important;font-size:10px!important}
+#welcome .zynx-feature-card h3{grid-column:2!important;grid-row:1!important;margin:0 0 6px!important;font-size:15px!important;color:#f4f4f5!important;font-weight:600!important}
+#welcome .zynx-feature-card p{grid-column:2!important;grid-row:2!important;margin:0!important;font-size:13px!important;line-height:1.65!important;color:#a1a1aa!important}
+#welcome .zynx-showcase-footer{color:#71717a!important}
+.dream-personalization,.premium-theme-grid,.bankai-grid,.premium-theme,.bankai-choice{display:none!important}
+#settingsPanel .dream-personalization,#settingsPanel [aria-label*="atmosphere" i],
+#settingsPanel [aria-label*="theme" i]{display:none!important}
+#app{background:#0b0c0e!important;color:#f4f4f5!important}
+#app .glass,.sidebar,.chat-shell,.settings-panel,.zw-workbench{
+ background:rgba(18,19,22,.96)!important;border-color:rgba(255,255,255,.09)!important;
+ box-shadow:none!important;backdrop-filter:blur(16px)!important;
+}
+#app button{box-shadow:none!important}
+#app .primary,#app #sendBtn{background:#f4f4f5!important;color:#111!important;border-color:#f4f4f5!important}
+#app .row.assistant .bubble,.assistant .bubble{background:#141518!important;border:1px solid #292a2e!important;color:#e4e4e7!important}
+#app .row.user .bubble,.user .bubble{background:#202125!important;border:1px solid #303136!important;color:#f4f4f5!important}
+#app input,#app textarea,#app select{background:#101114!important;color:#f4f4f5!important;border-color:#303136!important}
+#app :focus-visible{outline-color:#a1a1aa!important}
+@media(max-width:650px){
+ #welcome{padding:0 16px 42px!important}
+ #welcome .auth-card{margin:56px auto 0!important}
+ #welcome .auth-inner{padding:28px 22px 24px!important}
+ #welcome .zynx-feature-showcase{margin-top:68px!important}
+ #welcome .zynx-feature-grid{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 <body>
 
@@ -1743,7 +1843,6 @@ html,body{font-size:14px!important}
         <p class="hero-sub">A focused AI workspace for learning, building, thinking, and making things happen.</p>
 
 <div class="credit">A smarter space for curious minds</div>
-        <div class="credit">Founded with vision by <strong>Amogh</strong></div>
       </div>
     </div>
 
