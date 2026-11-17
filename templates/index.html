@@ -1622,7 +1622,7 @@ html,body{font-size:14px!important}
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
-        <p class="text-center text-[11px] text-slate-500 mt-2">Zynx can make mistakes. Founded by Amogh.</p>
+        <p class="text-center text-[11px] text-slate-500 mt-2">Zynx can make mistakes. Created by Sushanth Naik.</p>
       </div>
     </main>
   </div>
@@ -2459,6 +2459,18 @@ html,body{font-size:14px!important}
       if (buffer.trim()) handleEvent(buffer.trim());
     } catch (error) {
       try { await reader.cancel(); } catch {}
+      if (controller.signal.aborted && assistantBubble) {
+        assistantBubble.classList.remove('streaming-live');
+        assistantBubble.innerHTML = renderMarkdown(rendered);
+        window.__zynxStreamController = null;
+        return {
+          user_message: { role: 'user', content },
+          assistant_message: { role: 'assistant', content: rendered },
+          chat_title: document.getElementById('chatTitle')?.textContent || 'Chat',
+          partial: true
+        };
+      }
+      window.__zynxStreamController = null;
       throw error;
     }
     if (!finalData) throw new Error('The stream ended before Zynx finished its reply.');
@@ -2467,6 +2479,7 @@ html,body{font-size:14px!important}
       assistantBubble.innerHTML = renderMarkdown(finalData.assistant_message.content);
     }
     toBottom();
+    window.__zynxStreamController = null;
     return finalData;
   }
 
@@ -3984,7 +3997,7 @@ input::placeholder,textarea::placeholder,.field::placeholder{color:#9385aa!impor
 #app{gap:10px!important;padding:10px!important;background:transparent}
 #app .sidebar{width:260px!important;min-width:260px!important;flex-basis:260px;transition:width .36s var(--zw-ease),min-width .36s var(--zw-ease),flex-basis .36s var(--zw-ease),opacity .25s!important}
 #app .sidebar.rail-collapsed{width:58px!important;min-width:58px!important;flex-basis:58px!important;margin-left:0!important;opacity:1!important;pointer-events:auto!important}
-.sidebar.rail-collapsed>:not(.zw-rail-top):not(.zw-rail-controls){display:none!important}
+.sidebar.rail-collapsed>:not(.zw-rail-top):not(.zw-rail-controls){display:none!important}.sidebar.rail-collapsed .zw-rail-controls{padding:8px 5px}.sidebar.rail-collapsed .zw-rail-controls button{justify-content:center;padding:10px 4px}.sidebar.rail-collapsed .zw-rail-controls button span:not(.zw-glyph),.sidebar.rail-collapsed .zw-folders{display:none!important}
 .zw-rail-top{display:flex;align-items:center;justify-content:center;min-height:64px;border-bottom:1px solid var(--zw-line)}
 .zw-rail-controls{display:flex;flex-direction:column;gap:7px;padding:10px}
 .zw-rail-controls button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid transparent;border-radius:11px;background:rgba(255,255,255,.035);color:#d8d7d2;text-align:left;font-size:12px;cursor:pointer;transition:all .22s var(--zw-ease)}
@@ -4012,6 +4025,7 @@ input::placeholder,textarea::placeholder,.field::placeholder{color:#9385aa!impor
 .zw-preflight button.active,.zw-mini.active{color:#f3d7a4;border-color:rgba(215,164,75,.38);background:rgba(215,164,75,.10)}
 .zw-workbench{width:0;min-width:0;flex:0 0 0;opacity:0;overflow:hidden;border-radius:19px;background:rgba(18,19,22,.9);border:1px solid transparent;display:flex;flex-direction:column;transition:width .38s var(--zw-ease),flex-basis .38s var(--zw-ease),opacity .25s,border-color .25s}
 .zw-workbench.open{width:min(43vw,620px);flex-basis:min(43vw,620px);min-width:320px;opacity:1;border-color:var(--zw-line)}
+.zw-resize-handle{position:absolute;z-index:4;left:0;top:0;bottom:0;width:6px;cursor:col-resize;background:transparent}.zw-resize-handle:hover{background:rgba(215,164,75,.28)}
 .zw-workbench-head{padding:16px 16px 10px;border-bottom:1px solid var(--zw-line)}
 .zw-workbench-title{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:650;color:#f1eee7}
 .zw-tabs{display:flex;gap:5px;margin-top:14px}
@@ -4094,6 +4108,11 @@ const theme=document.createElement('button');theme.className='dream-top-action';
 const workbench=document.createElement('aside');workbench.className='zw-workbench';workbench.setAttribute('aria-label','Live workbench');workbench.innerHTML=
 '<div class="zw-workbench-head"><div class="zw-workbench-title"><span>Studio workbench</span><button class="zw-mini" data-wb-close>Close ×</button></div><div class="zw-tabs"><button data-tab="preview" class="active">Live preview</button><button data-tab="scratch">Pinboard</button><button data-tab="context">Context</button></div></div><div class="zw-panel-body" id="zw-panel-body"></div>';
 app.appendChild(workbench);
+const resizeHandle=document.createElement('div');resizeHandle.className='zw-resize-handle';resizeHandle.title='Drag to resize workbench';workbench.prepend(resizeHandle);
+let resizeStart=0,resizeWidth=0;
+resizeHandle.addEventListener('pointerdown',e=>{resizeStart=e.clientX;resizeWidth=workbench.getBoundingClientRect().width;resizeHandle.setPointerCapture(e.pointerId)});
+resizeHandle.addEventListener('pointermove',e=>{if(!resizeHandle.hasPointerCapture(e.pointerId))return;const w=Math.max(320,Math.min(innerWidth*.62,resizeWidth+(resizeStart-e.clientX)));workbench.style.width=w+'px';workbench.style.flexBasis=w+'px'});
+resizeHandle.addEventListener('pointerup',e=>{if(resizeHandle.hasPointerCapture(e.pointerId))resizeHandle.releasePointerCapture(e.pointerId)});
 const body=q1('#zw-panel-body',workbench);
 function openWorkbench(tab){workbench.classList.add('open');if(tab)activeTab=tab;paintWorkbench()}
 function toggleWorkbench(){workbench.classList.toggle('open');if(workbench.classList.contains('open'))paintWorkbench()}
@@ -4183,9 +4202,20 @@ thread.addEventListener('dragstart',e=>{const b=e.target.closest('.bubble.bot');
 thread.addEventListener('dblclick',e=>{const b=e.target.closest('.bubble.bot');if(b){const sel=getSelection();if(sel&&!sel.isCollapsed){const t=document.createElement('span');t.textContent='Pinned excerpt';}}});
 /* Mock interactive structured blocks in Studio: parameter trade-off */
 const mock=document.createElement('div');mock.style.cssText='margin-top:14px;padding:13px;border:1px solid var(--zw-line);border-radius:12px;background:rgba(255,255,255,.025)';
-mock.innerHTML='<b style="font-size:11px">Interactive trade-off calculator</b><p style="font-size:10px;color:#999">Adjust the example parameter to see the estimate update.</p><label style="font-size:10px">Complexity <strong id="zw-complexity-value">50</strong></label><input id="zw-complexity" type="range" min="0" max="100" value="50" style="width:100%;accent-color:#d7a44b"><div id="zw-complexity-result" style="font-size:11px;color:#d8bd8c;margin-top:6px">Balanced profile · 50/100</div>';
+mock.innerHTML='<details open style="margin-bottom:13px"><summary style="cursor:pointer;font-size:11px">Step-by-step breakdown</summary><ol style="font-size:10px;color:#aaa;line-height:1.8;padding-left:18px"><li>Define the goal</li><li>Compare constraints</li><li>Choose a practical direction</li></ol></details><b style="font-size:11px">Interactive trade-off calculator</b><p style="font-size:10px;color:#999">Adjust the example parameter to see the estimate update.</p><label style="font-size:10px">Complexity <strong id="zw-complexity-value">50</strong></label><input id="zw-complexity" type="range" min="0" max="100" value="50" style="width:100%;accent-color:#d7a44b"><div id="zw-complexity-result" style="font-size:11px;color:#d8bd8c;margin-top:6px">Balanced profile · 50/100</div>';
 if(activeTab==='preview'){} 
 workbench.addEventListener('change',e=>{if(e.target.id==='zw-complexity'){const v=Number(e.target.value);q1('#zw-complexity-value').textContent=v;q1('#zw-complexity-result').textContent=(v<35?'Lean profile':v<70?'Balanced profile':'High-complexity profile')+' · '+v+'/100'}});
+/* Pre-flight preferences are attached to the outgoing prompt. */
+function addPromptPreferences(){
+if(!input.value.trim()||input.dataset.zwPrepared==='1')return;
+const prefs=[];
+if(depth!=='Balanced')prefs.push('Response depth: '+depth);
+if(format!=='Auto')prefs.push('Preferred format: '+format);
+if(prefs.length)input.value+='\n\n[Please follow these preferences: '+prefs.join('; ')+']';
+input.dataset.zwPrepared='1';
+}
+q1('#sendBtn')?.addEventListener('click',()=>{addPromptPreferences();setTimeout(()=>{input.dataset.zwPrepared='';},0)},true);
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey)addPromptPreferences()},true);
 /* Ensure the calculator is visible after preview is rendered */
 const oldPaint=paintWorkbench;
 const observer=new MutationObserver(()=>{if(activeTab==='preview'&&q1('#zw-live-preview')&&!q1('#zw-complexity'))q1('#zw-live-preview').after(mock)});
