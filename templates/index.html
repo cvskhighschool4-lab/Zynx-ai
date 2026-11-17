@@ -1845,6 +1845,94 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
  #sidebar{width:min(286px,88vw)!important;min-width:min(286px,88vw)!important}
 }
 </style>
+<style id="zynx-equal-feature-layout">
+/* Equal feature tiles, anchored to the left of the login panel. */
+#welcome{
+ display:grid!important;
+ grid-template-columns:minmax(0,1.18fr) minmax(330px,.82fr)!important;
+ grid-template-rows:auto!important;
+ align-items:start!important;
+ justify-content:stretch!important;
+ gap:clamp(24px,3.5vw,54px)!important;
+ min-height:100vh!important;height:auto!important;max-height:none!important;
+ overflow-x:hidden!important;overflow-y:auto!important;
+ padding:clamp(26px,4vw,58px)!important;
+}
+#welcome .zynx-feature-showcase{
+ grid-column:1!important;grid-row:1!important;
+ display:block!important;align-self:start!important;
+ width:100%!important;max-width:none!important;
+ margin:0!important;padding:0!important;
+}
+#welcome .auth-card{
+ grid-column:2!important;grid-row:1!important;
+ position:sticky!important;top:32px!important;
+ align-self:start!important;
+ width:100%!important;max-width:440px!important;
+ margin:22px auto 0!important;
+}
+#welcome .zynx-showcase-heading{margin:0 0 22px!important}
+#welcome .zynx-showcase-heading h2{
+ font-size:clamp(30px,3.4vw,43px)!important;
+ line-height:1.08!important;letter-spacing:-.05em!important;
+}
+#welcome .zynx-showcase-heading p{max-width:480px!important}
+#welcome .zynx-feature-grid{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-auto-rows:auto!important;
+ align-items:stretch!important;
+ gap:14px!important;
+}
+#welcome .zynx-feature-card,
+#welcome .zynx-feature-card:nth-child(n){
+ grid-column:auto!important;grid-row:auto!important;
+ display:flex!important;flex-direction:column!important;
+ width:100%!important;height:100%!important;min-width:0!important;
+ min-height:260px!important;margin:0!important;padding:0 0 16px!important;
+ border-radius:14px!important;overflow:hidden!important;
+}
+#welcome .zynx-feature-art{
+ display:block!important;position:relative!important;
+ flex:0 0 138px!important;width:100%!important;height:138px!important;
+ min-height:138px!important;overflow:hidden!important;
+}
+#welcome .zynx-feature-art img{
+ display:block!important;width:100%!important;height:100%!important;
+ min-height:138px!important;object-fit:cover!important;
+}
+#welcome .zynx-feature-card .feature-kicker{margin:13px 15px 5px!important}
+#welcome .zynx-feature-card h3{margin:0 15px 6px!important}
+#welcome .zynx-feature-card p{margin:0 15px!important;line-height:1.55!important}
+#welcome .zynx-showcase-footer{margin-top:20px!important}
+@media(max-width:900px){
+ #welcome{
+  display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;gap:36px!important;
+  min-height:100vh!important;height:auto!important;
+  overflow-y:auto!important;padding:26px 18px 52px!important;
+ }
+ #welcome .auth-card{
+  position:relative!important;top:auto!important;
+  order:0!important;width:min(100%,440px)!important;
+  margin:0 auto!important;
+ }
+ #welcome .zynx-feature-showcase{
+  order:1!important;width:min(100%,760px)!important;margin:0 auto!important;
+ }
+ #welcome .zynx-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #welcome .zynx-feature-card,#welcome .zynx-feature-card:nth-child(n){
+  grid-column:auto!important;grid-row:auto!important;min-height:250px!important;
+ }
+}
+@media(max-width:540px){
+ #welcome .zynx-feature-grid{grid-template-columns:1fr!important;gap:12px!important}
+ #welcome .zynx-feature-card,#welcome .zynx-feature-card:nth-child(n){min-height:0!important}
+ #welcome .zynx-feature-art,#welcome .zynx-feature-art img{
+  flex-basis:160px!important;height:160px!important;min-height:160px!important;
+ }
+}
+</style>
 </head>
 <body>
 
