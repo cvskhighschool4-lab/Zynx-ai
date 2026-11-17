@@ -1424,6 +1424,28 @@ html,body{font-size:14px!important}
 
 </style>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet" />
+
+<style id="zynx-research-and-feature-imagery">
+/* Activity summaries are transparent progress indicators, not private chain-of-thought. */
+.zynx-activity{display:flex;align-items:center;gap:10px;min-width:210px;color:#dce7ff;font-size:12px;letter-spacing:.01em}
+.zynx-activity-orb{width:9px;height:9px;flex:none;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#c084fc);box-shadow:0 0 14px #8b5cf6;animation:zynx-orb-pulse 1.3s ease-in-out infinite}
+.zynx-activity-copy{display:flex;flex-direction:column;gap:3px}
+.zynx-activity-copy strong{font-size:11px;font-weight:600;color:#f4f1ff}
+.zynx-activity-copy small{font-size:10px;line-height:1.5;color:#aebbd4}
+@keyframes zynx-orb-pulse{50%{opacity:.45;transform:scale(.72);box-shadow:0 0 5px #8b5cf6}}
+.zynx-feature-card{position:relative!important;overflow:hidden!important;padding:0 0 15px!important;min-height:210px!important;background:linear-gradient(180deg,#111a2c 0%,#0a0b18 100%)!important}
+.zynx-feature-art{position:relative!important;display:block!important;width:100%!important;height:104px!important;overflow:hidden!important;border-bottom:1px solid rgba(174,190,255,.15)!important;background:#080b19!important}
+.zynx-feature-art img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;opacity:.78!important;filter:saturate(.82) contrast(1.08)!important;transition:transform .65s cubic-bezier(.2,.7,.2,1),opacity .35s!important}
+.zynx-feature-card:hover .zynx-feature-art img{transform:scale(1.07)!important;opacity:1!important}
+.zynx-feature-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,8,20,.08),rgba(25,19,54,.18)),linear-gradient(0deg,rgba(8,7,20,.7),transparent 65%);pointer-events:none}
+.zynx-feature-card .feature-kicker,.zynx-feature-card h3,.zynx-feature-card p{position:relative;margin-left:15px!important;margin-right:15px!important}
+.zynx-feature-card .feature-kicker{display:block;margin-top:13px!important;color:#a5b8ed!important}
+.zynx-feature-card h3{margin-top:6px!important;margin-bottom:5px!important;color:#f5f4ff!important}
+.zynx-feature-card p{margin-top:0!important;color:#b9c4dc!important}
+@media(max-width:900px){.zynx-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){.zynx-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.zynx-feature-card{min-height:200px!important}.zynx-feature-art{height:82px!important}}
+@media(prefers-reduced-motion:reduce){.zynx-activity-orb{animation:none!important}.zynx-feature-art img{transition:none!important}}
+</style>
 </head>
 <body>
 
@@ -1690,10 +1712,10 @@ html,body{font-size:14px!important}
         <h2 class="headline"><span class="w" style="--i:0">Your</span> <span class="w" style="--i:1">ideas.</span> <span class="w" style="--i:2">Your</span> <span class="w" style="--i:3">momentum.</span></h2>
         <p class="hero-sub">A focused AI workspace for learning, building, thinking, and making things happen.</p>
 <div class="zynx-feature-grid" aria-label="Explore Zynx AI features">
-<article class="zynx-feature-card"><div class="zynx-feature-art" aria-hidden="true"><svg viewBox="0 0 120 72" fill="none"><path d="M60 9c-15 0-27 11-27 25 0 9 5 16 13 20v7h28v-7c8-4 13-11 13-20C87 20 75 9 60 9Z" stroke="currentColor" stroke-width="1.5"/><path d="M48 61h24M51 67h18M60 1v5M22 17l6 4M98 17l-6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="m50 34 7 7 14-16" stroke="#e9d5ff" stroke-width="2.5" stroke-linecap="round"/></svg></div><span class="feature-kicker">01 · THINK</span><h3>Understand anything</h3><p>Explore ideas, ask follow-up questions, and turn complex topics into clear explanations.</p></article>
-<article class="zynx-feature-card"><div class="zynx-feature-art" aria-hidden="true"><svg viewBox="0 0 120 72" fill="none"><rect x="25" y="12" width="54" height="47" rx="8" stroke="currentColor" stroke-width="1.5"/><path d="M36 25h31M36 33h23M36 41h27M36 49h15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m87 12 2.8 8.2L98 23l-8.2 2.8L87 34l-2.8-8.2L76 23l8.2-2.8L87 12Z" fill="#d8b4fe"/></svg></div><span class="feature-kicker">02 · CREATE</span><h3>Make ideas happen</h3><p>Draft content, shape plans, brainstorm projects, and refine your writing with AI.</p></article>
-<article class="zynx-feature-card"><div class="zynx-feature-art" aria-hidden="true"><svg viewBox="0 0 120 72" fill="none"><rect x="22" y="12" width="76" height="48" rx="8" stroke="currentColor" stroke-width="1.5"/><path d="M22 23h76m-55 11-8 7 8 7m26-14 8 7-8 7m-11-13-11 20" stroke="#d8b4fe" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feature-kicker">03 · BUILD</span><h3>Code with confidence</h3><p>Work through programming concepts, debug errors, and develop step-by-step solutions.</p></article>
-<article class="zynx-feature-card"><div class="zynx-feature-art" aria-hidden="true"><svg viewBox="0 0 120 72" fill="none"><rect x="51" y="9" width="18" height="34" rx="9" stroke="currentColor" stroke-width="1.6"/><path d="M42 33v3a18 18 0 0 0 36 0v-3M60 54v9M50 63h20M30 30v10M37 23v24M83 23v24M90 30v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feature-kicker">04 · SPEAK</span><h3>Talk naturally</h3><p>Use voice input and listen to spoken replies for a more hands-free conversation.</p></article>
+<article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=82" alt="Planet Earth and a digital network from space" loading="lazy" decoding="async"></div><span class="feature-kicker">01 · THINK</span><h3>Understand anything</h3><p>Explore ideas, ask follow-up questions, and turn complex topics into clear explanations.</p></article>
+<article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1455390582262-044c5084fd33?auto=format&fit=crop&w=900&q=82" alt="Creative writing workspace with a notebook" loading="lazy" decoding="async"></div><span class="feature-kicker">02 · CREATE</span><h3>Make ideas happen</h3><p>Draft content, shape plans, brainstorm projects, and refine your writing with AI.</p></article>
+<article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=82" alt="Close-up of an electronic circuit board" loading="lazy" decoding="async"></div><span class="feature-kicker">03 · BUILD</span><h3>Code with confidence</h3><p>Work through programming concepts, debug errors, and develop step-by-step solutions.</p></article>
+<article class="zynx-feature-card"><div class="zynx-feature-art"><img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=82" alt="Studio microphone for voice conversations" loading="lazy" decoding="async"></div><span class="feature-kicker">04 · SPEAK</span><h3>Talk naturally</h3><p>Use voice input and listen to spoken replies for a more hands-free conversation.</p></article>
 </div>
 <div class="credit">A smarter space for curious minds</div>
         <div class="credit">Founded with vision by <strong>Amogh</strong></div>
@@ -1968,7 +1990,7 @@ html,body{font-size:14px!important}
   }
   function showTyping() {
     const r = document.createElement('div'); r.className = 'row';
-    r.innerHTML = '<div class="bubble bot"><div class="typing" aria-label="Zynx is typing"><span></span><span></span><span></span></div></div>';
+    r.innerHTML = '<div class="bubble bot"><div class="zynx-activity" role="status" aria-live="polite"><span class="zynx-activity-orb"></span><span class="zynx-activity-copy"><strong>Zynx is working</strong><small>Reviewing your request · checking relevant information · preparing a reply</small></span></div></div>';
     el.thread.appendChild(r); toBottom(); return r;
   }
   function resize() {
