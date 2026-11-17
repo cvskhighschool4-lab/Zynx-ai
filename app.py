@@ -862,14 +862,14 @@ def generate_quiz():
         return jsonify({"error": "Quiz generation is temporarily unavailable. Check the server logs."}), 503
 
 
+_POLLINATIONS_VIDEO_JOBS = {}
+
 @app.route("/api/images/generate", methods=["POST"])
 @require_session
 def generate_image():
-    api_key = os.environ.get("OPENAI_API_KEY")
+    api_key = os.environ.get("POLLINATIONS_API_KEY", "").strip()
     if not api_key:
-        return jsonify({
-            "error": "Image generation is not configured yet. Add OPENAI_API_KEY to the Zynx-ai Render service environment variables."
-        }), 503
+        return jsonify({"error": "Add POLLINATIONS_API_KEY to the Zynx-ai Render environment variables."}), 503
     wait = limiter.check(f"image:{g.owner_id}", 2, 600)
     if wait:
         return too_many(wait, f"Image generation is limited. Please wait {wait}s.")
@@ -878,38 +878,155 @@ def generate_image():
     if not prompt or len(prompt) > 1200:
         return jsonify({"error": "Describe the image in 1-1200 characters."}), 400
 
-    payload = json.dumps({
-        "model": os.environ.get("OPENAI_IMAGE_MODEL", "gpt-image-2.5-flare"),
-        "prompt": prompt,
-        "size": "1024x1024",
-        "quality": "medium",
-        "moderation": "auto",
-        "n": 1,
-    }).encode("utf-8")
+    model = os.environ.get("POLLINATIONS_IMAGE_MODEL", "black-forest-labs/flux.1-schnell").strip()
+    query = urllib.parse.urlencode({"model": model, "width": 1024, "height": 1024, "nologo": "true"})
+    url = "https://gen.pollinations.ai/image/" + urllib.parse.quote(prompt, safe="") + "?" + query
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {api_key}", "Accept": "image/*"})
+    try:
+        with urllib.request.urlopen(req, timeout=180) as response:
+            mime_type = response.headers.get_content_type() or "image/png"
+            image_bytes = response.read(16 * 1024 * 1024 + 1)
+        if len(image_bytes) > 16 * 1024 * 1024:
+            return jsonify({"error": "The generated image was too large. Try a simpler prompt."}), 502
+        if not mime_type.startswith("image/") or not image_bytes:
+            raise ValueError("Pollinations did not return an image.")
+        image_data = __import__("base64").b64encode(image_bytes).decode("ascii")
+        return jsonify({"image_data": image_data, "mime_type": mime_type})
+    except urllib.error.HTTPError as error:
+        detail = error.read().decode("utf-8", errors="replace")[:350]
+        log.error("Pollinations image API returned HTTP %s: %s", error.code, detail)
+        if error.code == 401:
+            return jsonify({"error": "Pollinations rejected the API key. Check POLLINATIONS_API_KEY in Render."}), 503
+        if error.code == 402:
+            return jsonify({"error": "The Pollinations key has no remaining budget. Check its balance or budget."}), 402
+        if error.code == 429:
+            return jsonify({"error": "Pollinations is rate-limiting requests. Please wait and try again."}), 429
+        return jsonify({"error": "Pollinations could not complete the image request. Check the Render logs."}), 502
+    except Exception:
+        log.exception("Pollinations image generation failed")
+        return jsonify({"error": "Image generation failed. Please try again."}), 503
+
+
+@app.route("/api/video/generate", methods=["POST"])
+@require_session
+def generate_video():
+    api_key = os.environ.get("POLLINATIONS_API_KEY", "").strip()
+    if not api_key:
+        return jsonify({"error": "Add POLLINATIONS_API_KEY to the Zynx-ai Render environment variables."}), 503
+    wait = limiter.check(f"video:{g.owner_id}", 1, 900)
+    if wait:
+        return too_many(wait, f"Video generation is limited. Please wait {wait}s.")
+    data = request.get_json(silent=True) or {}
+    prompt = str(data.get("prompt") or "").strip()
+    if not prompt or len(prompt) > 1000:
+        return jsonify({"error": "Describe the video in 1-1000 characters."}), 400
+    try:
+        duration = max(4, min(8, int(data.get("duration", 4))))
+    except (TypeError, ValueError):
+        duration = 4
+    model = os.environ.get("POLLINATIONS_VIDEO_MODEL", "google/veo-3.1-fast").strip()
+    query = urllib.parse.urlencode({"model": model, "duration": duration})
+    url = "https://gen.pollinations.ai/video/" + urllib.parse.quote(prompt, safe="") + "?" + query
     req = urllib.request.Request(
-        "https://api.openai.com/v1/images/generations",
-        data=payload,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        method="POST",
+        url,
+        headers={"Authorization": f"Bearer {api_key}", "Accept": "application/json, video/mp4", "Prefer": "respond-async"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=55) as response:
+            body = response.read(2 * 1024 * 1024 + 1)
+            content_type = response.headers.get_content_type() or ""
+            if content_type.startswith("video/"):
+                return Response(body, mimetype=content_type, headers={"Content-Disposition": 'inline; filename="zynx-video.mp4"'})
+            result = json.loads(body.decode("utf-8")) if body else {}
+            job_id = str(result.get("id") or result.get("job_id") or "")
+            if not job_id:
+                raise ValueError("Pollinations did not return a video job id.")
+            _POLLINATIONS_VIDEO_JOBS[(str(g.owner_id), job_id)] = time.time()
+            return jsonify({"job_id": job_id, "status": result.get("status", "pending"), "model": model}), 202
+    except urllib.error.HTTPError as error:
+        detail = error.read().decode("utf-8", errors="replace")[:350]
+        log.error("Pollinations video API returned HTTP %s: %s", error.code, detail)
+        if error.code == 401:
+            return jsonify({"error": "Pollinations rejected the API key. Check POLLINATIONS_API_KEY in Render."}), 503
+        if error.code == 402:
+            return jsonify({"error": "The Pollinations key has no remaining budget. Check its balance or budget."}), 402
+        if error.code == 429:
+            return jsonify({"error": "Pollinations is rate-limiting requests. Please wait and try again."}), 429
+        return jsonify({"error": "Pollinations could not start the video request. Check the Render logs."}), 502
+    except Exception:
+        log.exception("Pollinations video generation failed")
+        return jsonify({"error": "Video generation could not be started. Please try again."}), 503
+
+
+@app.route("/api/video/status/<job_id>", methods=["GET"])
+@require_session
+def poll_video_status(job_id):
+    api_key = os.environ.get("POLLINATIONS_API_KEY", "").strip()
+    owner_job = (str(g.owner_id), job_id)
+    created = _POLLINATIONS_VIDEO_JOBS.get(owner_job)
+    if not api_key or not created or time.time() - created > 86400:
+        _POLLINATIONS_VIDEO_JOBS.pop(owner_job, None)
+        return jsonify({"error": "Video job not found or expired. Start a new generation."}), 404
+    req = urllib.request.Request(
+        "https://gen.pollinations.ai/v1/jobs/" + urllib.parse.quote(job_id, safe=""),
+        headers={"Authorization": f"Bearer {api_key}", "Accept": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=25) as response:
+            result = json.loads(response.read().decode("utf-8"))
+        return jsonify({
+            "job_id": job_id,
+            "status": str(result.get("status") or "processing").lower(),
+            "progress": result.get("progress"),
+            "error": result.get("error"),
+        })
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            return jsonify({"error": "Video job not found or expired."}), 404
+        if error.code == 402:
+            return jsonify({"error": "The Pollinations key has no remaining budget."}), 402
+        log.error("Pollinations video status returned HTTP %s", error.code)
+        return jsonify({"error": "Could not check video progress."}), 502
+    except Exception:
+        log.exception("Pollinations video status check failed")
+        return jsonify({"error": "Could not check video progress. Try again."}), 503
+
+
+@app.route("/api/video/result/<job_id>", methods=["GET"])
+@require_session
+def fetch_video_result(job_id):
+    api_key = os.environ.get("POLLINATIONS_API_KEY", "").strip()
+    owner_job = (str(g.owner_id), job_id)
+    created = _POLLINATIONS_VIDEO_JOBS.get(owner_job)
+    if not api_key or not created or time.time() - created > 86400:
+        return jsonify({"error": "Video job not found or expired."}), 404
+    req = urllib.request.Request(
+        "https://gen.pollinations.ai/v1/jobs/" + urllib.parse.quote(job_id, safe="") + "/result",
+        headers={"Authorization": f"Bearer {api_key}", "Accept": "video/mp4"},
     )
     try:
         with urllib.request.urlopen(req, timeout=120) as response:
-            result = json.loads(response.read().decode("utf-8"))
-        image_data = (result.get("data") or [{}])[0].get("b64_json")
-        if not image_data:
-            raise ValueError("Image provider returned no image data.")
-        return jsonify({"image_data": image_data, "revised_prompt": (result.get("data") or [{}])[0].get("revised_prompt", "")})
+            video_bytes = response.read(64 * 1024 * 1024 + 1)
+            content_type = response.headers.get_content_type() or "video/mp4"
+        if len(video_bytes) > 64 * 1024 * 1024:
+            return jsonify({"error": "The generated video is too large to deliver."}), 502
+        if not video_bytes:
+            return jsonify({"error": "The video provider returned an empty file."}), 502
+        _POLLINATIONS_VIDEO_JOBS.pop(owner_job, None)
+        return Response(video_bytes, mimetype=content_type, headers={
+            "Content-Disposition": 'inline; filename="zynx-video.mp4"',
+            "Cache-Control": "private, no-store",
+        })
     except urllib.error.HTTPError as error:
-        detail = error.read().decode("utf-8", errors="replace")[:500]
-        log.error("OpenAI image API returned HTTP %s: %s", error.code, detail)
-        if error.code == 401:
-            return jsonify({"error": "The image API key was rejected. Check OPENAI_API_KEY in Render."}), 503
-        if error.code == 429:
-            return jsonify({"error": "The image provider is busy or its usage limit was reached. Check billing and usage."}), 429
-        return jsonify({"error": "The image provider could not complete this request. Check the Render logs."}), 502
+        if error.code == 409:
+            return jsonify({"error": "The video is still processing. Try again shortly."}), 409
+        if error.code == 404:
+            return jsonify({"error": "Video result expired. Generate a new video."}), 404
+        log.error("Pollinations video result returned HTTP %s", error.code)
+        return jsonify({"error": "Could not retrieve the generated video."}), 502
     except Exception:
-        log.exception("Image generation failed")
-        return jsonify({"error": "Image generation failed. Please try again."}), 503
+        log.exception("Pollinations video result retrieval failed")
+        return jsonify({"error": "Could not retrieve the generated video."}), 503
 
 
 @app.route("/api/chats/<chat_id>/messages", methods=["POST"])
