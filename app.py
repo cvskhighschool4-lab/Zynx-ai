@@ -60,7 +60,7 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 # Groq Free-plan chat models only (env var accepted only if on this list).
 FREE_GROQ_MODELS = ("openai/gpt-oss-120b", "openai/gpt-oss-20b")
-_requested_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b").strip()
+_requested_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-20b").strip()
 GROQ_MODEL = _requested_model if _requested_model in FREE_GROQ_MODELS else "openai/gpt-oss-120b"
 GROQ_FALLBACK_MODEL = "openai/gpt-oss-20b" if GROQ_MODEL == "openai/gpt-oss-120b" else "openai/gpt-oss-120b"
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
@@ -129,9 +129,9 @@ FOUNDER_PATTERN = re.compile(
 )
 
 LENGTH_RULES = {
-    "concise": ("Keep replies short: one to three tight sentences or a very brief list.", 600),
-    "balanced": ("Keep replies moderately sized: clear and complete without rambling.", 1400),
-    "detailed": ("Give thorough, well-structured replies with depth and examples where useful.", 2400),
+    "concise": ("Keep replies short: one to three tight sentences or a very brief list.", 350),
+    "balanced": ("Keep replies concise and complete. Lead with the answer; avoid unnecessary preamble.", 850),
+    "detailed": ("Give a thorough, well-structured reply with useful depth and examples.", 1600),
 }
 STYLE_RULES = {
     "warm": "Style: warm, friendly and encouraging, like a close friend.",
@@ -692,14 +692,13 @@ class _DDGResultsParser(HTMLParser):
 
 
 def should_research(query):
-    """Search factual/current questions, not ordinary creative-writing tasks."""
+    """Only search when the user clearly asks for current or web-backed information."""
     q = query.strip().lower()
-    if re.match(r"^(write|draft|rewrite|translate|summarize|brainstorm|roleplay)\b", q):
-        return bool(re.search(r"\b(source|cite|research|latest|current|today|news|verify)\b", q))
     return bool(re.search(
-        r"\b(what|who|when|where|why|how|which|compare|explain|define|latest|current|today|"
-        r"news|source|sources|cite|citation|research|price|release|version|statistics|data|"
-        r"fact|facts|according to|recent|this year|2026)\b", q
+        r"\b(search the web|search online|look up online|find online|browse|web search|"
+        r"latest|current|today|right now|this week|this month|news|source|sources|"
+        r"cite|citation|research|verify|fact.?check|price|stock price|exchange rate|"
+        r"release date|new version|statistics|2026)\b", q
     ))
 
 
@@ -828,7 +827,7 @@ def send_message(chat_id):
             model=model_id,
             messages=prompt_messages,
             temperature=temperature,
-            max_completion_tokens=max_tokens + 800,
+            max_completion_tokens=max_tokens,
             top_p=0.9,
             extra_body={"reasoning_effort": "low"},
         )
