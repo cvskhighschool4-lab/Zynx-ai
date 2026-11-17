@@ -1997,7 +1997,14 @@ body{background-image:radial-gradient(ellipse at 52% 5%,rgba(255,255,255,.045),t
 #settingsQuickBtn{display:none!important}
 .zw-hud{display:none!important}
 .input-area{gap:0!important}
-</style>\n</head>
+</style>\n<style id="zynx-sidebar-settings-refresh">
+.zw-rail-controls [data-zact="settings"]{color:var(--text)!important;background:rgba(255,255,255,.055)!important;border:1px solid var(--line)!important}
+.zw-rail-controls [data-zact="settings"]:hover{background:rgba(255,255,255,.09)!important;border-color:var(--line)!important}
+.zw-rail-controls [data-zact="settings"] .zw-glyph{font-size:15px;opacity:.85}
+.zw-rail-controls button{min-height:40px;border-radius:9px!important;transition:background .18s ease,color .18s ease}
+.zw-rail-controls button:hover{transform:none!important}
+</style>
+</head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -4667,7 +4674,7 @@ const rail=document.createElement('div');rail.className='zw-rail-top';rail.inner
 sidebar.insertBefore(rail,sidebar.firstChild);
 const railControls=document.createElement('nav');railControls.className='zw-rail-controls';railControls.innerHTML=
 '<button data-zact="new">'+icon('+')+'<span>New conversation</span></button>'+
-'<button data-zact="palette">'+icon('⌕')+'<span>Search everything <kbd>⌘ K</kbd></span></button>'+
+'<button data-zact="settings">'+icon('⚙')+'<span>Settings</span></button>'+
 '<button data-zact="scratch">'+icon('▦')+'<span>Scratchpad pinboard</span></button>'+
 '<button data-zact="templates">'+icon('✧')+'<span>Prompt library</span></button>'+
 '<button data-zact="tree">'+icon('⑂')+'<span>Conversation map</span></button>'+
@@ -4675,7 +4682,7 @@ const railControls=document.createElement('nav');railControls.className='zw-rail
 sidebar.insertBefore(railControls,rail.nextSibling);
 function paintFolders(){const box=q1('.zw-folder-list',railControls);box.innerHTML=saved.folders.map((f,i)=>'<div class="zw-folder" draggable="true" data-folder="'+i+'">▰ '+esc(f)+'<small>↕</small></div>').join('')}
 paintFolders();
-railControls.addEventListener('click',e=>{const b=e.target.closest('[data-zact]');if(!b)return;const a=b.dataset.zact;if(a==='new')q1('#newChatBtn')?.click();if(a==='palette')openPalette();if(a==='scratch')openWorkbench('scratch');if(a==='templates')openPalette(true);if(a==='tree')openTree();if(a==='folder'){const n=prompt('Name this workspace folder');if(n?.trim()){saved.folders.push(n.trim());persist();paintFolders()}}});
+railControls.addEventListener('click',e=>{const b=e.target.closest('[data-zact]');if(!b)return;const a=b.dataset.zact;if(a==='new')q1('#newChatBtn')?.click();if(a==='settings')q1('#settingsBtn')?.click();if(a==='scratch')openWorkbench('scratch');if(a==='templates')openPalette(true);if(a==='tree')openTree();if(a==='folder'){const n=prompt('Name this workspace folder');if(n?.trim()){saved.folders.push(n.trim());persist();paintFolders()}}});
 let dragFolder=null;railControls.addEventListener('dragstart',e=>{dragFolder=e.target.closest('[data-folder]')?.dataset.folder});railControls.addEventListener('dragover',e=>{if(e.target.closest('[data-folder]'))e.preventDefault()});railControls.addEventListener('drop',e=>{const target=e.target.closest('[data-folder]');if(!target||dragFolder===null)return;e.preventDefault();const from=Number(dragFolder),to=Number(target.dataset.folder);const item=saved.folders.splice(from,1)[0];saved.folders.splice(to,0,item);persist();paintFolders();dragFolder=null});
 /* Main topbar controls */
 const topActions=q1('.dream-top-actions');if(topActions){const wb=document.createElement('button');wb.className='dream-top-action';wb.textContent='Workbench  ⌘ .';wb.addEventListener('click',()=>toggleWorkbench());topActions.prepend(wb);
@@ -4786,7 +4793,7 @@ setTheme(saved.theme);
 q1('#toggleSidebar')?.addEventListener('dblclick',()=>sidebar.classList.toggle('rail-collapsed'));
 document.addEventListener('keydown',e=>{
 const mac=/Mac|iPhone|iPad/.test(navigator.platform),mod=mac?e.metaKey:e.ctrlKey;
-if(mod&&e.key.toLowerCase()==='k'){e.preventDefault();openPalette()}
+/* Search-everything shortcut removed; Settings now occupies this sidebar slot. */
 if(mod&&e.key==='.' ){e.preventDefault();toggleWorkbench()}
 if(mod&&e.shiftKey&&e.key.toLowerCase()==='o'){e.preventDefault();q1('#newChatBtn')?.click()}
 if(e.key==='Escape'){palette.classList.remove('show');slash.classList.remove('show');tree.classList.remove('show');selection.classList.remove('show');if(workbench.classList.contains('open'))workbench.classList.remove('open');if(window.__zynxStreamController){window.__zynxStreamController.abort();toast('Generation stopped · partial response preserved')}}
