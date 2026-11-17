@@ -2423,7 +2423,7 @@ html,body{font-size:14px!important}
 
   /* ---------- Persistent chat particles ---------- */
   (function chatParticles() {
-    const cv = $('#chatFx'); if (!cv) return; return;
+    const cv = $('#chatFx'); if (!cv) return;
     const ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let w = 0, h = 0, raf = 0, lastPaint = 0; const ps = [];
@@ -3788,5 +3788,36 @@ input::placeholder,textarea::placeholder,.field::placeholder{color:#9385aa!impor
   });
 })();
 </script>
+
+<style id="zynx-live-cosmos-chat">
+/* A layered deep-space scene, confined to the chat workspace */
+#app .chat-shell{position:relative!important;isolation:isolate!important;overflow:hidden!important;background:#080611!important}
+#app .chat-shell::before{
+ content:"";position:absolute;inset:-12%;z-index:0;pointer-events:none;
+ background:
+  radial-gradient(ellipse 36% 29% at 13% 20%,rgba(48,104,214,.20),transparent 72%),
+  radial-gradient(ellipse 32% 34% at 86% 34%,rgba(128,66,205,.19),transparent 74%),
+  radial-gradient(ellipse 38% 27% at 54% 100%,rgba(45,78,172,.16),transparent 72%),
+  radial-gradient(ellipse 70% 70% at 50% 48%,rgba(14,12,34,.30),transparent 76%);
+ animation:zynx-nebula-breathe 19s ease-in-out infinite alternate;
+}
+#app .chat-shell>#chatFx{
+ display:block!important;visibility:visible!important;opacity:1!important;
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ z-index:1!important;pointer-events:none!important;mix-blend-mode:screen;
+}
+#app .chat-shell>.sweep{z-index:2!important;pointer-events:none!important}
+#app .chat-shell>.dream-topbar,
+#app .chat-shell>.messages,
+#app .chat-shell>.input-area{position:relative!important;z-index:3!important}
+#app .chat-shell .dream-topbar{background:rgba(10,8,23,.48)!important}
+#app .chat-shell .messages{background:transparent!important}
+#app .chat-shell .input-area{background:linear-gradient(0deg,rgba(7,6,18,.78),rgba(7,6,18,.20))!important}
+#app .chat-shell .bubble.bot{background:rgba(19,16,39,.80)!important;border-color:rgba(154,173,255,.20)!important}
+#app .chat-shell .bubble.user{background:linear-gradient(125deg,rgba(52,83,166,.82),rgba(102,62,157,.82))!important}
+@keyframes zynx-nebula-breathe{from{transform:translate3d(-1%,0,0) scale(1)}to{transform:translate3d(1.2%,-.7%,0) scale(1.06)}}
+@media(max-width:800px){#app .chat-shell::before{opacity:.82}#app .chat-shell>#chatFx{opacity:.82!important}}
+@media(prefers-reduced-motion:reduce){#app .chat-shell::before{animation:none!important}}
+</style>
 </body>
 </html>
