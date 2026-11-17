@@ -1470,6 +1470,11 @@ html,body{font-size:14px!important}
 #zynx-install-app{border-color:rgba(150,170,255,.25);background:linear-gradient(110deg,rgba(44,126,248,.16),rgba(139,92,246,.18));}
 #zynx-install-app:hover{border-color:rgba(177,190,255,.6);background:linear-gradient(110deg,rgba(44,126,248,.28),rgba(139,92,246,.28))}
 </style>
+<style id="zynx-live-streaming-style">
+.streaming-live{white-space:pre-wrap;overflow-wrap:anywhere;min-height:1.5em}
+.streaming-live::after{content:"";display:inline-block;width:7px;height:1em;margin-left:4px;vertical-align:-.12em;border-radius:2px;background:#b9a2ff;box-shadow:0 0 12px rgba(155,120,237,.75);animation:zynx-stream-caret .85s steps(2,end) infinite}
+@keyframes zynx-stream-caret{50%{opacity:0}}
+</style>
 </head>
 <body>
 
@@ -2073,15 +2078,13 @@ html,body{font-size:14px!important}
     const typing = showTyping();
     try {
       if (!S.chatId) { S.chatId = (await api('/api/chats', { method: 'POST', body: { title: 'New Chat' } })).id; }
-      const d = await api(`/api/chats/${S.chatId}/messages`, { method: 'POST', body: { content: text, language: (window.ZYNX_LANGUAGE && window.ZYNX_LANGUAGE.get()) || 'auto' } });
-      typing.remove();
+      const d = await streamReply(S.chatId, text, typing);
       S.messages.push(d.user_message, d.assistant_message);
       el.title.textContent = d.chat_title || 'Chat';
       loadChats();
-      await streamRow(d.assistant_message.content);
       if (S.voiceReplies) speakReply(d.assistant_message.content);
     } catch (e) {
-      typing.remove(); userRow.remove();
+      typing.remove();
       if (e.status === 404) S.chatId = null;
       if (!S.messages.length) el.empty.style.display = 'flex';
       addRow('assistant', e.message || 'Something went wrong. Mind trying again?', true);
@@ -2369,25 +2372,82 @@ html,body{font-size:14px!important}
       }
     });
   }
-  function streamRow(text) {
-    return new Promise((resolve) => {
-      el.empty.style.display = 'none';
-      const row = makeRow('assistant', text); el.thread.appendChild(row);
-      if (reduceMotion) { toBottom(); return resolve(); }
-      setBotState('streaming');
-      const units = []; prepUnits(row.firstChild, units);
-      const step = Math.max(2, Math.min(10, 560 / Math.max(units.length, 1)));
-      let i = 0, last = null, lastScroll = 0; const t0 = performance.now();
-      const tick = (now) => {
-        const target = Math.min(units.length, Math.floor((now - t0) / step) + 1);
-        while (i < target) { if (last) last.classList.remove('cursor'); last = units[i++]; last.classList.add('on', 'cursor'); }
-        if (now - lastScroll > 140) { lastScroll = now; el.messages.scrollTo({ top: el.messages.scrollHeight, behavior: 'smooth' }); }
-        if (i < units.length) return requestAnimationFrame(tick);
-        if (last) { last.classList.replace('cursor', 'cursor-out'); setTimeout(() => last.classList.remove('cursor-out'), 500); }
-        toBottom(); resolve();
-      };
-      requestAnimationFrame(tick);
-    });
+  async function streamReply(chatId, content, typingRow) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (S.token) headers['X-Session-Token'] = S.token;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 120000);
+    let response;
+    try {
+      response = await fetch(`/api/chats/${chatId}/messages/stream`, {
+        method: 'POST', headers,
+        body: JSON.stringify({ content, language: (window.ZYNX_LANGUAGE && window.ZYNX_LANGUAGE.get()) || 'auto' }),
+        signal: controller.signal
+      });
+    } catch (error) {
+      throw new Error(error?.name === 'AbortError'
+        ? 'Zynx took too long to reply. Please try again.'
+        : "Can't reach Zynx. Check your connection and try again.");
+    } finally {
+      clearTimeout(timeoutId);
+    }
+    if (!response.ok) {
+      const problem = await response.json().catch(() => ({}));
+      throw Object.assign(new Error(problem.error || 'The request could not be completed.'), { status: response.status });
+    }
+    if (!response.body) throw new Error('Live streaming is not supported by this browser.');
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '', finalData = null, assistantRow = null, assistantBubble = null, rendered = '';
+    const handleEvent = (line) => {
+      if (!line.startsWith('data:')) return;
+      let event;
+      try { event = JSON.parse(line.slice(5).trim()); } catch { return; }
+      if (event.type === 'delta') {
+        if (!assistantRow) {
+          typingRow?.remove();
+          assistantRow = document.createElement('div');
+          assistantRow.className = 'row';
+          assistantBubble = document.createElement('div');
+          assistantBubble.className = 'bubble bot streaming-live';
+          assistantBubble.setAttribute('aria-live', 'polite');
+          assistantRow.appendChild(assistantBubble);
+          el.thread.appendChild(assistantRow);
+          setBotState('streaming');
+        }
+        rendered += event.text || '';
+        assistantBubble.textContent = rendered;
+        el.messages.scrollTop = el.messages.scrollHeight;
+      } else if (event.type === 'done') {
+        finalData = event;
+      } else if (event.type === 'error') {
+        throw new Error(event.error || 'The reply was interrupted.');
+      }
+    };
+
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split(/\\r?\\n/);
+        buffer = lines.pop() || '';
+        for (const line of lines) handleEvent(line);
+      }
+      buffer += decoder.decode();
+      if (buffer.trim()) handleEvent(buffer.trim());
+    } catch (error) {
+      try { await reader.cancel(); } catch {}
+      throw error;
+    }
+    if (!finalData) throw new Error('The stream ended before Zynx finished its reply.');
+    if (assistantBubble) {
+      assistantBubble.classList.remove('streaming-live');
+      assistantBubble.innerHTML = renderMarkdown(finalData.assistant_message.content);
+    }
+    toBottom();
+    return finalData;
   }
 
   /* ---------- Magnetic / springy press ---------- */
