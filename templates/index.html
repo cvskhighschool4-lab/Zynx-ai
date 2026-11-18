@@ -5465,6 +5465,53 @@ html:not([data-zynx-skin]) .glass:not(.input-glass):not(.sidebar){-webkit-backdr
   }
 </style>
 
+
+<style id="zynx-signature-polish">
+/* Refined visual hierarchy: less haze, clearer surfaces, calmer motion. */
+:root{--z-ink:#f4f5fb;--z-muted:#a7adbd;--z-line:rgba(220,226,245,.13);--z-ease:cubic-bezier(.22,.75,.24,1)}
+.chat-shell{background:linear-gradient(145deg,rgba(14,18,31,.52),rgba(9,12,22,.42))!important;border-color:rgba(226,232,255,.12)!important}
+.messages{scroll-behavior:smooth;scroll-padding-block:24px}
+.thread{max-width:800px!important}
+.row{animation:zynx-message-arrive .32s var(--z-ease) both}
+@keyframes zynx-message-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.bubble.bot{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.035))!important;border-color:rgba(226,232,255,.105)!important;color:#e8eaf2!important;line-height:1.78!important;padding:1rem 1.15rem!important}
+.bubble.user{background:linear-gradient(135deg,rgba(112,91,190,.34),rgba(71,83,148,.25))!important;border-color:rgba(186,174,255,.22)!important}
+.input-glass{background:linear-gradient(145deg,rgba(18,23,39,.84),rgba(12,16,29,.76))!important;border:1px solid rgba(225,230,248,.17)!important;box-shadow:0 18px 48px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.08)!important}
+.input-glass:focus-within{border-color:rgba(183,164,255,.48)!important;box-shadow:0 0 0 3px rgba(139,116,232,.12),0 20px 54px rgba(0,0,0,.28)!important}
+.input-glass textarea{min-height:28px}
+.btn-send{background:linear-gradient(135deg,#8b78e8,#666edb)!important;box-shadow:0 5px 18px rgba(102,96,213,.25)!important}
+.sidebar,.zynx-clean-sidebar{background:linear-gradient(155deg,rgba(9,12,20,.76),rgba(15,19,31,.61))!important;border-color:rgba(226,232,255,.15)!important;backdrop-filter:blur(36px) saturate(165%)!important;-webkit-backdrop-filter:blur(36px) saturate(165%)!important}
+.zynx-sidebar-link,.chat-item,.chip,.btn-icon,.btn-send,.zynx-feature-card{transition-duration:.24s!important;transition-timing-function:var(--z-ease)!important}
+#app .sidebar{transition:transform .34s var(--z-ease),opacity .28s ease,margin .34s var(--z-ease)!important}
+.settings{transition:transform .34s var(--z-ease),visibility .34s!important}
+.modal-bg{transition:opacity .24s ease,visibility .24s ease!important}
+.modal{transition:transform .24s var(--z-ease)!important}
+/* Feature imagery: show the actual photography already attached to each feature. */
+#welcome .zynx-working-features .zynx-feature-art{height:142px!important;position:relative!important;overflow:hidden!important;background:#10131d!important;border-radius:12px!important}
+#welcome .zynx-working-features .zynx-feature-art img{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;opacity:.88!important;filter:saturate(.92) contrast(1.04)!important;transform:scale(1.001);transition:transform .72s var(--z-ease),opacity .35s ease!important}
+#welcome .zynx-working-features .zynx-feature-card:hover .zynx-feature-art img{transform:scale(1.055)!important;opacity:1!important}
+#welcome .zynx-working-features .zynx-feature-art:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(7,9,16,.72),rgba(7,9,16,.04) 75%)!important}
+#welcome .zynx-working-features .zynx-feature-art span,#welcome .zynx-working-features .zynx-feature-art i{z-index:2!important}
+#welcome .zynx-working-features .zynx-feature-card{transform:translateZ(0);transition:transform .34s var(--z-ease),border-color .3s ease,box-shadow .3s ease!important}
+#welcome .zynx-working-features .zynx-feature-card:hover{transform:translateY(-4px)!important}
+/* Keep the sign-in surface anchored. No entrance/exit slide or card shake. */
+#welcome .auth-card{animation:none!important;transform:none!important;transition:opacity .32s ease,filter .32s ease!important}
+#welcome .auth-card.enter{animation:none!important}
+#welcome.leaving .auth-card{opacity:0!important;transform:none!important;filter:blur(3px)!important}
+#welcome .auth-card.shake{animation:none!important}
+#welcome .auth-card .stag{animation:none!important;opacity:1!important;transform:none!important}
+#welcome .hero{transition:opacity .35s ease,filter .35s ease!important}
+#welcome.leaving .hero{transform:none!important;filter:blur(3px)!important}
+#welcome .zynx-feature-showcase{scroll-margin-top:20px}
+#welcome{scroll-behavior:smooth;overscroll-behavior:contain}
+@media(max-width:700px){#welcome .zynx-working-features .zynx-feature-art{height:154px!important}}
+@media(prefers-reduced-motion:reduce){
+ .row{animation:none!important}
+ .messages{scroll-behavior:auto!important}
+ #welcome .zynx-working-features .zynx-feature-art img{transition:none!important}
+ #welcome .zynx-working-features .zynx-feature-card{transition:none!important}
+}
+</style>
 </body>
 </html>
 
