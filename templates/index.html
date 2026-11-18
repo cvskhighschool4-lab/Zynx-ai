@@ -2426,7 +2426,7 @@ h1,h2,h3,h4,h5,h6,.dream-current-title,.dream-model-pill,.zynx-sidebar-brand,.zy
 </style>
 
 <style id="zynx-minimal-interface">
-/* Minimal mode: keep the conversation, history, settings, voice and Game Corner. */
+/* Focused workspace: keep chat, saved history, image creation and personalization. */
 #sidebar .zynx-tool-link,
 #sidebar #personalizationBtn,
 #sidebar #zynx-chat-filter,
@@ -2526,6 +2526,92 @@ h1,h2,h3,h4,h5,h6,.dream-current-title,.dream-model-pill,.zynx-sidebar-brand,.zy
  #welcome .zynx-feature-card p{font-size:10px!important}
 }
 @media(max-width:380px){#welcome .zynx-feature-grid.zynx-working-features{grid-template-columns:1fr!important}}
+</style>
+
+
+<style id="zynx-five-complete-themes">
+/* Five complete interface skins: surfaces, navigation, typography, controls and message styling. */
+#sidebar .zynx-tool-link{display:flex!important}
+#sidebar #imageStudioBtn{display:flex!important}
+#sidebar #quizStudioBtn,#sidebar #videoStudioBtn{display:none!important}
+#sidebar #personalizationBtn{display:flex!important}
+#sidebar #zynx-chat-filter{display:flex!important}
+#sidebar .zynx-history-list{display:block!important;min-height:90px!important;overflow:auto!important}
+#settings .zynx-theme-section,#settings #zynx-personal-theme-controls,#settings #zynxLanguageSection,#settings section:has(#voiceReplies){display:block!important}
+#settings .zynx-theme-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+#settings .zynx-theme-card{display:grid!important;min-width:0!important}
+#settings #zynx-personal-theme-controls{margin-top:22px!important;padding-top:18px!important;border-top:1px solid rgba(128,128,128,.22)!important}
+#settings .zynx-theme-section{margin-top:18px!important}
+#settings .flex-1.overflow-y-auto{gap:22px!important}
+#settings #zynxLanguageSection~*{display:block}
+#settings .dream-personalization,#settings .zynx-motion-section,#settings .dream-visual-controls,#settings .dream-effects-controls,#settings .dream-motion-controls{display:none!important}
+#settings .zynx-theme-card{border-radius:14px!important;overflow:hidden!important;transition:transform .2s,border-color .2s,box-shadow .2s!important}
+#settings .zynx-theme-card[aria-pressed="true"]{border-color:var(--premium-accent,#8c83d8)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--premium-accent,#8c83d8) 30%,transparent)!important}
+#app .sidebar,#app .chat-shell,#app .input-glass,#app .bubble,#app .btn-send,#app .chat-item{transition:background .25s,border-color .25s,color .25s,box-shadow .25s,border-radius .25s!important}
+#app .zynx-sidebar-link{border-radius:11px!important}
+#app .chat-item.active{border-radius:10px!important}
+#app .input-glass{border-radius:16px!important}
+#app .bubble.bot{border-radius:15px 15px 15px 5px!important}
+#app .bubble.user{border-radius:15px 15px 5px 15px!important}
+#app .btn-send{background:var(--premium-accent,#8175d8)!important;color:#fff!important}
+#app .chat-item.active{background:color-mix(in srgb,var(--premium-accent,#8175d8) 18%,transparent)!important;border-color:color-mix(in srgb,var(--premium-accent,#8175d8) 34%,transparent)!important}
+#app .zynx-sidebar-link:hover{background:color-mix(in srgb,var(--premium-accent,#8175d8) 14%,transparent)!important}
+#app .dream-model-dot{background:var(--premium-accent,#8175d8)!important;box-shadow:0 0 12px var(--premium-accent,#8175d8)!important}
+#app .bubble.bot a{color:var(--premium-accent,#8175d8)!important}
+html[data-zynx-skin="default"]{--premium-accent:#8d7be0}
+html[data-zynx-skin="default"] body{background:#eeeaff!important}
+html[data-zynx-skin="default"] .dream-bg{background:linear-gradient(145deg,#f1efff,#e8e4fb 55%,#f8f7ff)!important}
+html[data-zynx-skin="default"] #app .sidebar{background:#08090c!important;color:#f4f4f5!important}
+html[data-zynx-skin="default"] #app .chat-shell{background:#101116!important;border:1px solid #d6d0ee!important}
+html[data-zynx-skin="default"] #app .bubble.bot{background:#1c1d24!important;color:#f4f4f5!important;border-color:#343541!important}
+html[data-zynx-skin="default"] #app .bubble.user{background:#e6e0fb!important;color:#211b35!important;border-color:#c9bdf2!important}
+html[data-zynx-skin="default"] #app .input-glass{background:#85858d!important;border:1px solid #a5a5ad!important}
+html[data-zynx-skin="default"] #app .input-glass textarea{color:#101116!important}
+html[data-zynx-skin="default"] #app .input-glass textarea::placeholder{color:#34343b!important}
+html[data-zynx-skin="aurora"]{--premium-accent:#35c7b0;--premium-glow:rgba(53,199,176,.25)}
+html[data-zynx-skin="aurora"] body{background:#e4f5f2!important}
+html[data-zynx-skin="aurora"] .dream-bg{background:linear-gradient(135deg,#e5f8f4,#dceff3 55%,#f1fbf9)!important}
+html[data-zynx-skin="aurora"] #app .sidebar{background:linear-gradient(165deg,#092c30,#123e43)!important}
+html[data-zynx-skin="aurora"] #app .chat-shell{background:#effaf8!important;border:1px solid #b9e4dc!important}
+html[data-zynx-skin="aurora"] #app .bubble.bot{background:#fff!important;color:#183538!important;border:1px solid #cce9e3!important}
+html[data-zynx-skin="aurora"] #app .bubble.user{background:#c7f1e8!important;color:#103b36!important;border:1px solid #9bdfd2!important}
+html[data-zynx-skin="aurora"] #app .input-glass{background:#d5eee9!important;border:1px solid #9bd9ce!important}
+html[data-zynx-skin="aurora"] #app .input-glass textarea{color:#123b38!important}
+html[data-zynx-skin="aurora"] #app .zynx-sidebar-link,html[data-zynx-skin="aurora"] #app .chat-item{color:#e4fffa!important}
+html[data-zynx-skin="aurora"] #app .dream-current-title{color:#163d3a!important}
+html[data-zynx-skin="obsidian"]{--premium-accent:#d5ad70;--premium-glow:rgba(213,173,112,.24)}
+html[data-zynx-skin="obsidian"] body{background:#171411!important}
+html[data-zynx-skin="obsidian"] .dream-bg{background:linear-gradient(140deg,#171411,#2a211a 55%,#161310)!important}
+html[data-zynx-skin="obsidian"] #app .sidebar{background:linear-gradient(165deg,#171512,#28221b)!important;border:1px solid #594832!important}
+html[data-zynx-skin="obsidian"] #app .chat-shell{background:#201c18!important;border:1px solid #5a4b39!important}
+html[data-zynx-skin="obsidian"] #app .bubble.bot{background:#2d2822!important;color:#f4eadc!important;border-color:#514536!important}
+html[data-zynx-skin="obsidian"] #app .bubble.user{background:#59442c!important;color:#fff1d9!important;border-color:#8b6c43!important}
+html[data-zynx-skin="obsidian"] #app .input-glass{background:#393128!important;border:1px solid #776247!important}
+html[data-zynx-skin="obsidian"] #app .input-glass textarea{color:#fff0dc!important}
+html[data-zynx-skin="obsidian"] #app .zynx-sidebar-link,html[data-zynx-skin="obsidian"] #app .chat-item{color:#f2e4cf!important}
+html[data-zynx-skin="emerald"]{--premium-accent:#54a878;--premium-glow:rgba(84,168,120,.23)}
+html[data-zynx-skin="emerald"] body{background:#e8f2eb!important}
+html[data-zynx-skin="emerald"] .dream-bg{background:linear-gradient(145deg,#eaf4ec,#dcebe0 55%,#f5faf6)!important}
+html[data-zynx-skin="emerald"] #app .sidebar{background:linear-gradient(160deg,#102b20,#1b4030)!important}
+html[data-zynx-skin="emerald"] #app .chat-shell{background:#f5faf6!important;border:1px solid #c3ddca!important}
+html[data-zynx-skin="emerald"] #app .bubble.bot{background:#fff!important;color:#1d3929!important;border-color:#d0e4d5!important}
+html[data-zynx-skin="emerald"] #app .bubble.user{background:#cde9d4!important;color:#163c26!important;border-color:#a7d7b5!important}
+html[data-zynx-skin="emerald"] #app .input-glass{background:#dceee1!important;border:1px solid #b2d7bc!important}
+html[data-zynx-skin="emerald"] #app .input-glass textarea{color:#163c26!important}
+html[data-zynx-skin="emerald"] #app .zynx-sidebar-link,html[data-zynx-skin="emerald"] #app .chat-item{color:#e5f7eb!important}
+html[data-zynx-skin="sapphire"]{--premium-accent:#5799e6;--premium-glow:rgba(87,153,230,.24)}
+html[data-zynx-skin="sapphire"] body{background:#eaf1fb!important}
+html[data-zynx-skin="sapphire"] .dream-bg{background:linear-gradient(145deg,#edf4ff,#dfeafb 55%,#f8faff)!important}
+html[data-zynx-skin="sapphire"] #app .sidebar{background:linear-gradient(160deg,#0d1e39,#19365e)!important}
+html[data-zynx-skin="sapphire"] #app .chat-shell{background:#f3f7ff!important;border:1px solid #c4d5ee!important}
+html[data-zynx-skin="sapphire"] #app .bubble.bot{background:#fff!important;color:#1b2e4b!important;border-color:#d1def0!important}
+html[data-zynx-skin="sapphire"] #app .bubble.user{background:#d6e6ff!important;color:#17365f!important;border-color:#b4d0f6!important}
+html[data-zynx-skin="sapphire"] #app .input-glass{background:#dce9fb!important;border:1px solid #b7ceee!important}
+html[data-zynx-skin="sapphire"] #app .input-glass textarea{color:#17365f!important}
+html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sapphire"] #app .chat-item{color:#e9f2ff!important}
+#settings .zynx-theme-card .zynx-theme-preview{height:56px!important;border-radius:9px!important}
+#settings .zynx-theme-card small{font-size:10px!important}
+@media(max-width:700px){#settings .zynx-theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#settings .zynx-theme-card{padding:8px!important}}
 </style>
 
 </head>
@@ -2742,26 +2828,11 @@ h1,h2,h3,h4,h5,h6,.dream-current-title,.dream-model-pill,.zynx-sidebar-brand,.zy
           <button type="button" class="zynx-theme-card" data-premium-theme="obsidian" aria-pressed="false" style="--theme-a:#d6b77b;--theme-b:#6d5541">
             <span class="zynx-theme-preview zynx-theme-obsidian"><i></i><i></i><i></i></span><b>Obsidian</b><small>Warm graphite</small><span class="zynx-theme-selected">✓</span>
           </button>
-          <button type="button" class="zynx-theme-card" data-premium-theme="rose" aria-pressed="false" style="--theme-a:#f0a9c5;--theme-b:#7956b3">
-            <span class="zynx-theme-preview zynx-theme-rose"><i></i><i></i><i></i></span><b>Rose</b><small>Muted rose and plum</small><span class="zynx-theme-selected">✓</span>
-          </button>
           <button type="button" class="zynx-theme-card" data-premium-theme="emerald" aria-pressed="false" style="--theme-a:#9bd49b;--theme-b:#397e55">
             <span class="zynx-theme-preview zynx-theme-emerald"><i></i><i></i><i></i></span><b>Emerald</b><small>Deep green</small><span class="zynx-theme-selected">✓</span>
           </button>
           <button type="button" class="zynx-theme-card" data-premium-theme="sapphire" aria-pressed="false" style="--theme-a:#91c9ff;--theme-b:#3476c6">
             <span class="zynx-theme-preview zynx-theme-sapphire"><i></i><i></i><i></i></span><b>Sapphire</b><small>Midnight blue</small><span class="zynx-theme-selected">✓</span>
-          </button>
-          <button type="button" class="zynx-theme-card" data-premium-theme="copper" aria-pressed="false" style="--theme-a:#f0b17c;--theme-b:#bd693f">
-            <span class="zynx-theme-preview zynx-theme-copper"><i></i><i></i><i></i></span><b>Copper</b><small>Soft copper glow</small><span class="zynx-theme-selected">✓</span>
-          </button>
-          <button type="button" class="zynx-theme-card" data-premium-theme="daylight" aria-pressed="false" style="--theme-a:#f0d5a1;--theme-b:#9cbdd8">
-            <span class="zynx-theme-preview zynx-theme-daylight"><i></i><i></i><i></i></span><b>Cloudlight</b><small>Soft morning sky</small><span class="zynx-theme-selected">✓</span>
-          </button>
-          <button type="button" class="zynx-theme-card" data-premium-theme="midnight" aria-pressed="false" style="--theme-a:#8798ff;--theme-b:#414b91">
-            <span class="zynx-theme-preview zynx-theme-midnight"><i></i><i></i><i></i></span><b>Midnight</b><small>Deep blue night</small><span class="zynx-theme-selected">✓</span>
-          </button>
-          <button type="button" class="zynx-theme-card" data-premium-theme="graphite" aria-pressed="false" style="--theme-a:#c1c5ce;--theme-b:#555c68">
-            <span class="zynx-theme-preview zynx-theme-graphite"><i></i><i></i><i></i></span><b>Graphite</b><small>Minimal charcoal</small><span class="zynx-theme-selected">✓</span>
           </button>
 
         </div>
@@ -2993,7 +3064,7 @@ h1,h2,h3,h4,h5,h6,.dream-current-title,.dream-model-pill,.zynx-sidebar-brand,.zy
   applyBankaiTheme('default', false);
   /* Premium colour atmospheres */
   const PREMIUM_THEME_KEY = 'zynx_premium_atmosphere';
-  const PREMIUM_THEMES = new Set(['default','aurora','obsidian','rose','emerald','sapphire','copper','daylight','midnight','graphite']);
+  const PREMIUM_THEMES = new Set(['default','aurora','obsidian','emerald','sapphire']);
   function applyPremiumTheme(name, persist = true) {
     const theme = PREMIUM_THEMES.has(name) ? name : 'default';
     if (theme === 'default') delete document.documentElement.dataset.zynxSkin;
