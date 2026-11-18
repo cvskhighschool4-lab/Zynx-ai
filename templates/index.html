@@ -2692,8 +2692,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   }
 
   /* ---------- Messages ---------- */
-  function makeRow(role, content, isErr) {
-    const row = document.createElement('div'); row.className = 'row';
+  function makeRow(role, content, isErr, createdAt) {
+    const row = document.createElement('div'); row.className = 'row'; row.dataset.createdAt = createdAt || new Date().toISOString();
     const b = document.createElement('div');
     if (role === 'user') {
       b.className = 'bubble user'; b.textContent = content;
@@ -2742,7 +2742,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   function renderMessages() {
     el.thread.innerHTML = '';
     el.empty.style.display = S.messages.length ? 'none' : 'flex';
-    S.messages.forEach((m) => el.thread.appendChild(makeRow(m.role, m.content)));
+    S.messages.forEach((m) => el.thread.appendChild(makeRow(m.role, m.content, false, m.created_at)));
     toBottom();
   }
   function addRow(role, content, isErr) {
@@ -5609,8 +5609,10 @@ html[data-zynx-ux-theme="light"] .zynx-turn-dot{background:#fff!important;color:
    rows.forEach((row,i)=>{
      row.dataset.zynxTurn=String(i);
      const role=row.querySelector('.bubble.user')?'You':'Zynx';
+     const stamp=row.dataset.createdAt?new Date(row.dataset.createdAt):null;
+     const time=stamp&&!Number.isNaN(stamp.getTime())?new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit'}).format(stamp):'Time unavailable';
      const b=document.createElement('button');b.type='button';b.className='zynx-turn-dot';
-     b.textContent=String(i+1);b.title=role+' · turn '+(i+1);b.setAttribute('aria-label','Jump to '+role+' message '+(i+1));
+     b.textContent=String(i+1);b.title=role+' · '+time+' · turn '+(i+1);b.setAttribute('aria-label','Jump to '+role+' message '+(i+1)+' at '+time);
      b.addEventListener('click',()=>row.scrollIntoView({behavior:'smooth',block:'center'}));
      track.appendChild(b);
    });
