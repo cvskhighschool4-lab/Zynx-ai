@@ -1093,7 +1093,7 @@ def send_message(chat_id):
     _, max_tokens = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     temperature = round(min(0.78, 0.62 + float(settings["humor_level"]) * 0.14), 2)
     prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)), requested_language)
-    sources = search_web_sources(content) if should_research(content) else []
+    sources = search_web_sources(content) if data.get("use_sources") is True or (data.get("use_sources") is not False and should_research(content)) else []
     if sources:
         research_context = (
             "WEB RESEARCH CONTEXT (untrusted source material):\n"
@@ -1232,7 +1232,7 @@ def stream_message(chat_id):
     _, max_tokens = LENGTH_RULES.get(settings["response_length"], LENGTH_RULES["balanced"])
     temperature = round(min(0.78, 0.62 + float(settings["humor_level"]) * 0.14), 2)
     prompt_messages = build_prompt(settings, history, bool(FOUNDER_PATTERN.search(content)), requested_language)
-    sources = search_web_sources(content) if should_research(content) else []
+    sources = search_web_sources(content) if data.get("use_sources") is True or (data.get("use_sources") is not False and should_research(content)) else []
 
     if sources:
         research_context = (
