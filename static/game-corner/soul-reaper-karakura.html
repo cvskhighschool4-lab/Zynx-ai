@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Soul Reaper: Karakura — Realistic Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f1f3f4; --ink:#0b0b0c; --acc:#e8590c;
+  --panel:rgba(241,243,244,.94);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;height:100%;overflow:hidden;background:#000;color:var(--ink);font-family:"Shippori Mincho B1",Georgia,serif}
+#c,#c canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.p{background:var(--panel);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink)}
+#hud{position:absolute;left:12px;top:12px;width:min(300px,64vw);padding:8px 10px;font-size:13px;z-index:2}
+.bar{height:12px;border:2px solid var(--ink);margin:4px 0;background:#fff}.bar i{display:block;height:100%;width:100%;background:var(--ink);transition:width .15s}
+#rp i{background:var(--acc)}
+#bp i{background:#7b2cbf}
+#fp i{background:#22c55e}
+#realm{position:absolute;right:12px;top:12px;padding:8px 12px;font-size:13px;text-align:right;max-width:48vw;z-index:2}
+#obj{position:absolute;left:50%;transform:translateX(-50%);top:12px;padding:6px 12px;font-size:13px;display:none;z-index:2}
+#boss{position:absolute;left:50%;transform:translateX(-50%);top:58px;width:min(420px,70vw);display:none;padding:6px 10px;font-size:13px;z-index:2}
+#prompt{position:absolute;left:50%;transform:translateX(-50%);bottom:140px;padding:6px 14px;font-size:15px;display:none;z-index:3}
+#dlg{position:absolute;left:50%;transform:translateX(-50%);bottom:18px;width:min(560px,92vw);padding:10px 14px;font-size:16px;line-height:1.4;display:none;z-index:4}
+#dlg b{display:block;font-size:13px;margin-bottom:2px}
+#msg{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:clamp(22px,5vw,44px);font-weight:800;color:#fff;-webkit-text-stroke:2px #000;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s;z-index:5}
+#start{position:absolute;inset:0;background:#f1f3f4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;z-index:5;overflow-y:auto}
+#start h1{font-size:clamp(26px,6.5vw,56px);font-weight:800;margin:0 0 6px;letter-spacing:-.02em}
+#start p{max-width:680px;line-height:1.5;margin:4px 0;font-size:14px}
+#start button#go{margin-top:14px;font:800 20px "Shippori Mincho B1",Georgia,serif;padding:12px 32px;background:var(--ink);color:#fff;border:3px solid var(--ink);cursor:pointer}
+#start button#go:focus-visible{outline:4px solid var(--acc);outline-offset:3px}
+#cs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0;max-width:980px}
+.cb{width:170px;padding:10px;background:#fff;border:3px solid var(--ink);cursor:pointer;font:500 12px "Shippori Mincho B1",Georgia,serif;text-align:left;color:var(--ink);transition:transform .12s}
+.cb:hover{transform:translateY(-2px)}
+.cb.on{background:var(--ink);color:#fff;box-shadow:4px 4px 0 var(--acc)}
+.cb b{display:block;font-size:16px}
+.cb i{display:block;height:8px;margin-bottom:6px;border-radius:2px}
+#zf{flex-basis:100%;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+#zf input{font:500 14px "Shippori Mincho B1",Georgia,serif;padding:7px 10px;border:2px solid var(--ink);width:240px;max-width:90vw;background:#fff;color:var(--ink)}
+#map{position:absolute;inset:0;background:rgba(8,8,10,.78);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:6;gap:12px}
+#map svg{width:min(94vw,820px);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);cursor:pointer;background:#f1f3f4}
+#map button{font:800 14px "Shippori Mincho B1",Georgia,serif;padding:8px 14px;margin:0 3px;background:#f1f3f4;border:3px solid var(--ink);cursor:pointer;color:var(--ink)}
+#map button:hover{background:var(--ink);color:#fff}
+#fl{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .85s;z-index:7}
+#vg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.4));z-index:1}
+#weather{position:absolute;left:12px;bottom:12px;padding:6px 10px;font-size:12px;display:none;z-index:2}
+#keys{font-size:12px;opacity:.85;margin-top:8px;max-width:640px}
+#power{position:absolute;right:12px;bottom:12px;padding:6px 10px;font-size:12px;display:none;z-index:2}
+</style>
+</head>
+<body>
+<div id="c"></div>
+<div id="hud" class="p">
+  <div id="lv"></div>
+  <div class="bar" id="hp"><i></i></div>
+  <div class="bar" id="rp"><i></i></div>
+  <div class="bar" id="bp" style="display:none"><i></i></div>
+  <div class="bar" id="fp" style="display:none"><i></i></div>
+  <div id="st" style="font-size:12px"></div>
+</div>
+<div id="realm" class="p"></div>
+<div id="obj" class="p"></div>
+<div id="boss" class="p">Menos Grande<div class="bar" id="bb"><i></i></div></div>
+<div id="prompt" class="p"></div>
+<div id="dlg" class="p"></div>
+<div id="msg"></div>
+<div id="weather" class="p"></div>
+<div id="power" class="p"></div>
+<div id="start">
+  <h1>Soul Reaper: Karakura</h1>
+  <p>Realistic Edition · World of the Living · Soul Society · Hueco Mundo<br>
+  Explore Karakura Town (school, Urahara Shop, friends’ houses), meet the full Gotei 13, unlock true Bankai, Quincy bow &amp; Fullbring.</p>
+  <div id="cs"></div>
+  <p id="keys"><b>Move</b> WASD · <b>Interact</b> E · <b>Soul Reaper</b> F · <b>Attack</b> J<br>
+  <b>Shunpo</b> Shift · <b>Konsō</b> K · <b>Shikai</b> R · <b>Bankai</b> B · <b>Getsuga / Cero / Arrow</b> L<br>
+  <b>Fullbring</b> G · <b>View</b> V · <b>World Map</b> M</p>
+  <button id="go">Begin</button>
+</div>
+<div id="map"></div>
+<div id="fl"></div>
+<div id="vg"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+const T = THREE, $ = id => document.getElementById(id);
+
+/* ========== DATA ========== */
+const DATA = {
+  realms: {
+    clinic: { id:"clinic", name:"Kurosaki Clinic", world:"Living" },
+    town:   { id:"town",   name:"Karakura Town",  world:"Living" },
+    seireitei:{id:"seireitei",name:"Seireitei", world:"Soul Society"},
+    hueco:  { id:"hueco",  name:"Hueco Mundo",   world:"Hueco Mundo"}
+  }
+};
+
+const ROSTER = [
+  { id:"kaito", n:"Kaito",  t:"Power",   d:"+35% damage · explosive Bankai", hair:0xd9541e, style:0, human:0x34495e, legs:0x2c3e50, col:0xff7a1a, nm:"Homura",    cmd:"Burn bright, Homura!",    bankai:"Bankai · Homura Enbu!", full:"Fullbring · Blazing Core" },
+  { id:"sora",  n:"Sora",   t:"Speed",   d:"Faster Shunpo · gale Bankai",   hair:0x7ad0e0, style:1, human:0x2e6b5c, legs:0x224455, col:0x35e0c8, nm:"Kazahaya",  cmd:"Ride the gale, Kazahaya!", bankai:"Bankai · Kazahaya Senpū!", full:"Fullbring · Wind Step" },
+  { id:"rei",   n:"Rei",    t:"Kido",    d:"+45 Reiatsu · absolute zero Bankai", hair:0x5b4bb5, style:2, human:0x4a3b78, legs:0x2a2250, col:0x8a7dff, nm:"Yukikage",  cmd:"Freeze the dusk, Yukikage!", bankai:"Bankai · Yukikage Hyōjin!", full:"Fullbring · Frost Seal" },
+  { id:"mika",  n:"Mika",   t:"Support", d:"Konsō heals · radiant Bankai", hair:0xf0c040, style:2, human:0x8a5a3a, legs:0x4a3020, col:0xffd23f, nm:"Akatsuki",  cmd:"Rise, Akatsuki!",          bankai:"Bankai · Akatsuki Tenkō!", full:"Fullbring · Dawn Shield" },
+  { id:"ren",   n:"Ren",    t:"Balance", d:"Ichigo-style · dual Bankai",   hair:0xe8590c, style:0, human:0x2b3a55, legs:0x1a2535, col:0xe8590c, nm:"Zangetsu",  cmd:"Cut down, Zangetsu!",      bankai:"Bankai · Tensa Zangetsu!", full:"Fullbring · Cross of Scaffold" }
+];
+
+/* ========== STATE ========== */
+const S = {
+  hp:100, maxhp:100, rp:100, maxrp:100, xp:0, lvl:1, atk:12,
+  shin:false, shikai:false, bankai:false, fullbring:false,
+  realm:"clinic", purified:0,
+  bossAlive:false, bossDead:false,
+  amb:0, talk:{}, dead:false, bankaiMeter:0, fullMeter:0
+};
+try {
+  const v = JSON.parse(localStorage.getItem("sr_p1r") || "null");
+  if (v && typeof v === "object") {
+    S.lvl = Number(v.lvl) || 1;
+    S.xp = Number(v.xp) || 0;
+    S.atk = Number(v.atk) || 12;
+    S.maxhp = Number(v.maxhp) || 100;
+    S.hp = S.maxhp;
+    S.amb = Number(v.amb) || 0;
+    S.talk = v.talk && typeof v.talk === "object" ? v.talk : {};
+  }
+} catch(e){}
+function save() {
+  try {
+    localStorage.setItem("sr_p1r", JSON.stringify({
+      lvl:S.lvl, xp:S.xp, atk:S.atk, maxhp:S.maxhp, amb:S.amb, talk:S.talk
+    }));
+  } catch(e){}
+}
+
+/* ========== AUDIO ========== */
+let AC;
+function sfx(k) {
+  if (!AC) return;
+  const t = AC.currentTime;
+  const d = {
+    slash:["sawtooth",500,90,.14,.12],
+    shun:["square",180,1400,.12,.08],
+    chime:["sine",880,1320,.5,.2],
+    get:["sawtooth",160,50,.6,.2],
+    hit:["square",140,40,.12,.15],
+    konso:["sine",500,1500,.8,.2],
+    boom:["sawtooth",90,30,.7,.25],
+    up:["triangle",400,900,.4,.2],
+    bankai:["sawtooth",80,30,1.1,.35],
+    rain:["sine",200,80,.08,.04],
+    bow:["triangle",600,1200,.25,.15],
+    full:["sawtooth",120,40,.9,.3]
+  }[k];
+  if (!d) return;
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = d[0];
+  o.frequency.setValueAtTime(d[1], t);
+  o.frequency.exponentialRampToValueAtTime(d[2], t + d[3]);
+  g.gain.setValueAtTime(d[4], t);
+  g.gain.exponentialRampToValueAtTime(.001, t + d[3] + .05);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t + d[3] + .06);
+}
+
+/* ========== RENDERER ========== */
+const scene = new T.Scene();
+const cam = new T.PerspectiveCamera(50, 1, .1, 320);
+const ren = new T.WebGLRenderer({ antialias:true, powerPreference:"high-performance" });
+ren.setPixelRatio(Math.min(devicePixelRatio, 2));
+ren.shadowMap.enabled = true;
+ren.shadowMap.type = T.PCFSoftShadowMap;
+$("c").appendChild(ren.domElement);
+
+function resize() {
+  ren.setSize(innerWidth, innerHeight);
+  cam.aspect = innerWidth / (innerHeight || 1);
+  cam.updateProjectionMatrix();
+}
+addEventListener("resize", resize);
+resize();
+
+/* Materials */
+const gt = new T.DataTexture(new Uint8Array([55,140,255]), 3, 1, T.LuminanceFormat);
+gt.minFilter = gt.magFilter = T.NearestFilter;
+gt.needsUpdate = true;
+
+function mat(c) { return new T.MeshToonMaterial({ color:c, gradientMap:gt }); }
+function phong(c, shininess = 60) { return new T.MeshPhongMaterial({ color:c, specular:0x444444, shininess }); }
+const olm = new T.MeshBasicMaterial({ color:0, side:T.BackSide });
+
+function mk(g, c, o = 1.06, usePhong = false) {
+  const m = new T.Mesh(g, usePhong ? phong(c) : mat(c));
+  if (o) {
+    const l = new T.Mesh(g, olm);
+    l.scale.setScalar(o);
+    m.add(l);
+  }
+  m.castShadow = true;
+  m.receiveShadow = true;
+  return m;
+}
+
+/* ========== IMPROVED CHARACTER MODEL ========== */
+function person2(skin, cloth, hair, s = 1, style = 0, legsCol, extras = {}) {
+  const g = new T.Group();
+  const m = (geo, c, x, y, z, p = false) => {
+    const o = mk(geo, c, 1.05, p);
+    o.position.set(x, y, z);
+    g.add(o);
+    return o;
+  };
+
+  // Torso
+  const torso = m(new T.CylinderGeometry(.28, .34, .68, 14), cloth, 0, 1.22, 0);
+  // Sash
+  const sash = m(new T.TorusGeometry(.32, .045, 8, 18), 0xe8e0cf, 0, 1.02, 0);
+  sash.rotation.x = Math.PI / 2;
+
+  // Head
+  m(new T.SphereGeometry(.27, 18, 16), skin, 0, 1.78, 0);
+  // Eyes
+  m(new T.SphereGeometry(.035, 8, 6), 0x111111, -.1, 1.82, .24);
+  m(new T.SphereGeometry(.035, 8, 6), 0x111111, .1, 1.82, .24);
+  // Mouth
+  m(new T.BoxGeometry(.08, .015, .02), 0x8b4513, 0, 1.68, .26);
+
+  // Hair
+  const cap = m(new T.SphereGeometry(.295, 16, 12, 0, Math.PI * 2, 0, Math.PI * .58), hair, 0, 1.8, -.01);
+  if (style === 0) { // spiky
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2;
+      const c = m(new T.ConeGeometry(.09, .44, 6), hair, Math.cos(a) * .18, 2.04, Math.sin(a) * .18);
+      c.rotation.set(Math.sin(a) * .55, 0, -Math.cos(a) * .55);
+    }
+  } else if (style === 1) { // long back
+    m(new T.CylinderGeometry(.22, .12, .75, 8), hair, 0, 1.48, -.24);
+  } else if (style === 2) { // twin tails
+    m(new T.BoxGeometry(.07, .38, .4), hair, -.26, 1.7, 0);
+    m(new T.BoxGeometry(.07, .38, .4), hair, .26, 1.7, 0);
+  } else if (style === 3) { // captain long / formal
+    m(new T.CylinderGeometry(.24, .14, .9, 10), hair, 0, 1.4, -.28);
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
+      m(new T.ConeGeometry(.06, .3, 5), hair, Math.cos(a)*.12, 2.0, Math.sin(a)*.12);
+    }
+  }
+
+  // Limbs
+  const legC = legsCol !== undefined ? legsCol : new T.Color(cloth).multiplyScalar(.68).getHex();
+  const limb = (x, y, len, r, c, hand) => {
+    const p = new T.Group();
+    p.position.set(x, y, 0);
+    const o = mk(new T.CylinderGeometry(r, r * .82, len, 8), c, 1.06);
+    o.position.y = -len / 2;
+    p.add(o);
+    const e = mk(hand ? new T.SphereGeometry(r * 1.15, 8, 6) : new T.BoxGeometry(.16, .07, .26), hand ? skin : 0x1a1a1a, 1.06);
+    e.position.set(0, hand ? -len : -len + .03, hand ? 0 : .04);
+    p.add(e);
+    g.add(p);
+    return p;
+  };
+
+  const L = {
+    la: limb(-.42, 1.48, .64, .09, cloth, true),
+    ra: limb(.42, 1.48, .64, .09, cloth, true),
+    ll: limb(-.15, .92, .92, .125, legC),
+    rl: limb(.15, .92, .92, .125, legC)
+  };
+
+  // Captain haori (white)
+  if (extras.haori) {
+    const haori = m(new T.BoxGeometry(.72, .55, .45), 0xf8f6f0, 0, 1.28, 0);
+    haori.scale.z = 1.1;
+  }
+  // Captain badge
+  if (extras.badge) {
+    m(new T.BoxGeometry(.12, .18, .03), 0x1a1a1a, .28, 1.35, .22);
+  }
+
+  g.scale.setScalar(s);
+  g.userData = { b: torso, limbs: L };
+  return g;
+}
+
+/* ========== LIGHTING ========== */
+const amb = new T.AmbientLight(0xffffff, .7);
+scene.add(amb);
+const sun = new T.DirectionalLight(0xffffff, .9);
+sun.position.set(18, 36, 16);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.bias = -.0004;
+Object.assign(sun.shadow.camera, { left:-60, right:60, top:60, bottom:-60, near:1, far:130 });
+scene.add(sun);
+const hemi = new T.HemisphereLight(0x87ceeb, 0x445533, .4);
+scene.add(hemi);
+
+/* ========== GROUPS ========== */
+const clinicG = new T.Group();
+const townG = new T.Group();
+const ssG = new T.Group();
+const hmG = new T.Group();
+const ZG = { town: townG, seireitei: ssG, hueco: hmG };
+scene.add(clinicG, townG, ssG, hmG);
+ssG.visible = hmG.visible = false;
+
+/* ========== SKY ========== */
+const sky = new T.Mesh(
+  new T.SphereGeometry(160, 28, 18),
+  new T.ShaderMaterial({
+    side: T.BackSide, fog: false, depthWrite: false,
+    uniforms: { a: { value: new T.Color() }, b: { value: new T.Color() } },
+    vertexShader: "varying float h; void main(){ h=normalize(position).y; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }",
+    fragmentShader: "uniform vec3 a,b; varying float h; void main(){ gl_FragColor=vec4(mix(b,a,clamp(h*1.35+.12,0.,1.)),1.); }"
+  })
+);
+scene.add(sky);
+
+/* ========== HELPERS ========== */
+function box(w, h, d, c, x, y, z, g, o = 1.03, phongMat = false) {
+  const m = mk(new T.BoxGeometry(w, h, d), c, o, phongMat);
+  m.position.set(x, y, z);
+  g.add(m);
+  return m;
+}
+function roof(r, h, c, x, y, z, g) {
+  const m = mk(new T.ConeGeometry(r, h, 4), c, 1.03);
+  m.rotation.y = Math.PI / 4;
+  m.position.set(x, y, z);
+  g.add(m);
+  return m;
+}
+function sign(text, x, y, z, g, scale = 1) {
+  const c = document.createElement("canvas");
+  c.width = 256; c.height = 64;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#f8f4e8";
+  ctx.fillRect(0,0,256,64);
+  ctx.strokeStyle = "#1a1a1a";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(4,4,248,56);
+  ctx.fillStyle = "#1a1a1a";
+  ctx.font = "bold 28px serif";
+  ctx.textAlign = "center";
+  ctx.fillText(text, 128, 42);
+  const tex = new T.CanvasTexture(c);
+  const m = new T.Mesh(new T.PlaneGeometry(2.2*scale, .55*scale), new T.MeshBasicMaterial({ map:tex, transparent:true }));
+  m.position.set(x, y, z);
+  g.add(m);
+  return m;
+}
+
+/* ========== CLINIC (Kurosaki House interior) ========== */
+box(18, .25, 18, 0xcfc9bd, 0, -.12, 0, clinicG, 0);
+box(18, 4.2, .35, 0xe9e6df, 0, 2.1, -9, clinicG);
+box(.35, 4.2, 18, 0xe9e6df, -9, 2.1, 0, clinicG);
+box(.35, 4.2, 18, 0xe9e6df, 9, 2.1, 0, clinicG);
+box(3.2, .9, 1.8, 0x8a6a45, -3.2, .45, -3.5, clinicG);
+box(2.2, .7, 3.6, 0xffffff, 5.5, .35, -6, clinicG);
+const cdoor = box(2.2, 3.2, .25, 0x6b3e1e, 0, 1.6, 8.85, clinicG);
+
+/* Family NPCs */
+const NM = { isshin:"Isshin", karin:"Karin", yuzu:"Yuzu" };
+const SP = {
+  isshin: [0xf0cfa8, 0xdcdcdc, 0x2a2a2a, 1.05, 0, 0x3a3a3a],
+  karin:  [0xf0cfa8, 0x333333, 0x222222, .88, 1, 0x222222],
+  yuzu:   [0xf0cfa8, 0xf2c94c, 0x8a5a2b, .88, 2, 0x5a3a1a]
+};
+const NPC = {};
+for (const k in SP) {
+  NPC[k] = person2(...SP[k]);
+  clinicG.add(NPC[k]);
+}
+NPC.isshin.position.set(-1.5, 0, -5.5);
+NPC.karin.position.set(3.2, 0, -2.2);
+NPC.yuzu.position.set(-4.2, 0, -1.8);
+
+/* Friends */
+const FRIENDS = {
+  chad:  { skin:0xc4a484, cloth:0x1a1a2e, hair:0x111111, style:0, scale:1.18, name:"Yasutora Sado", lines:["Need backup?","My Fullbring is ready.","Brazo Derecha de Gigante!"] },
+  orihime:{skin:0xf5d0b0, cloth:0xff9ec4, hair:0xe8c060, style:2, scale:.9,  name:"Orihime Inoue",  lines:["Be careful!","Santen Kesshun!","I can heal you."] },
+  uryu:  { skin:0xf0cfa8, cloth:0x2a2a4a, hair:0x1a1a1a, style:1, scale:1.0,  name:"Uryū Ishida",    lines:["Don't get careless.","I have a new arrow ready.","Licht Regen!"] },
+  rukia: { skin:0xf0cfa8, cloth:0x1a1a2e, hair:0x222244, style:2, scale:.85, name:"Rukia Kuchiki",  lines:["You still have a long way to go.","Remember your training.","I'll be watching."] }
+};
+const friendNPC = {};
+let fi = 0;
+for (const id in FRIENDS) {
+  const f = FRIENDS[id];
+  const p = person2(f.skin, f.cloth, f.hair, f.scale, f.style);
+  p.position.set(-6 + fi * 3.2, 0, 4.5);
+  p.userData.friendId = id;
+  clinicG.add(p);
+  friendNPC[id] = p;
+  fi++;
+}
+
+/* ========== TOWN — MUCH DENSER & ICONIC ========== */
+box(140, .25, 140, 0xb8d4a8, 0, -.12, 0, townG, 0); // grass
+// Main roads
+box(140, .08, 10, 0x3a3d42, 0, .04, 10, townG, 0);
+box(10, .08, 140, 0x3a3d42, 0, .04, 0, townG, 0);
+// Side streets
+box(140, .06, 5, 0x4a4d52, 0, .03, -25, townG, 0);
+box(5, .06, 80, 0x4a4d52, 28, .03, -10, townG, 0);
+box(5, .06, 80, 0x4a4d52, -32, .03, 15, townG, 0);
+
+let sd = 17;
+const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
+
+// Dense residential buildings
+for (let i = 0; i < 55; i++) {
+  const x = (rnd() - .5) * 120;
+  const z = (rnd() - .5) * 120;
+  if (Math.hypot(x, z) < 18 || Math.abs(z - 10) < 7 || Math.abs(x) < 6) continue;
+  const h = 3.2 + rnd() * 8;
+  const w = 4 + rnd() * 5.5;
+  const d = 3.8 + rnd() * 4.5;
+  const col = rnd() > .5 ? 0xf0f0f0 : (rnd() > .5 ? 0xd8cfc0 : 0xe8e0d0);
+  box(w, h, d, col, x, h / 2, z, townG);
+  // Windows
+  const rows = Math.floor(h / 2.1);
+  for (let r = 0; r < rows; r++) {
+    for (let side = -1; side <= 1; side += 2) {
+      box(w * .2, .65, .07, 0x88ccee, x + side * (w * .3), 1.1 + r * 2.0, z + d / 2 + .04, townG, 0);
+    }
+  }
+  // Roof
+  box(w * 1.08, .32, d * 1.08, 0x3a4555, x, h + .14, z, townG, 0);
+}
+
+/* ===== ICONIC LOCATIONS ===== */
+
+// 1. Kurosaki Clinic exterior (already present, enhanced)
+box(8, 5.2, 6, 0xffffff, 0, 2.6, -18, townG);
+const tdoor = box(1.9, 2.8, .25, 0xe8590c, 0, 1.4, -14.9, townG);
+sign("Kurosaki Clinic", 0, 5.5, -14.7, townG, 1.1);
+// Small clinic garden
+box(3, .4, 2, 0x5a9e5a, 4.5, .2, -16, townG, 0);
+
+// 2. Karakura High School
+const schoolX = 38, schoolZ = -32;
+box(22, 8, 14, 0xf5f0e6, schoolX, 4, schoolZ, townG);
+box(22.5, .4, 14.5, 0x4a5d73, schoolX, 8.2, schoolZ, townG);
+// School windows grid
+for (let r = 0; r < 3; r++) {
+  for (let c = 0; c < 6; c++) {
+    box(1.6, 1.3, .08, 0x88ccee, schoolX - 8 + c * 3.2, 1.8 + r * 2.2, schoolZ + 7.1, townG, 0);
+  }
+}
+// School gate
+box(.4, 3.2, .4, 0x2a2a2a, schoolX - 6, 1.6, schoolZ + 9, townG);
+box(.4, 3.2, .4, 0x2a2a2a, schoolX + 6, 1.6, schoolZ + 9, townG);
+box(12.5, .25, .3, 0x2a2a2a, schoolX, 3.1, schoolZ + 9, townG);
+sign("Karakura High School", schoolX, 9.0, schoolZ + 7.2, townG, 1.3);
+// Track field hint
+box(18, .08, 12, 0x6a9e5a, schoolX, .04, schoolZ + 18, townG, 0);
+
+// 3. Urahara Shōten
+const uraX = -42, uraZ = 22;
+box(9, 4.8, 7, 0xf8f0d8, uraX, 2.4, uraZ, townG);
+// Distinctive green roof
+box(10, .5, 8, 0x3a8a4a, uraX, 5.0, uraZ, townG);
+// Shop front
+box(4, 2.6, .2, 0x6b3e1e, uraX, 1.3, uraZ + 3.6, townG);
+sign("Urahara Shōten", uraX, 5.7, uraZ + 3.7, townG, 1.15);
+// Candy / goods crates
+box(1.2, .6, .8, 0xc45c26, uraX + 3.5, .3, uraZ + 2.8, townG);
+box(1.0, .5, .7, 0x8a6a3a, uraX - 3.2, .25, uraZ + 2.5, townG);
+
+// 4. Orihime's apartment-style house
+const oriX = -28, oriZ = -38;
+box(6, 5.5, 5.5, 0xf0e8d8, oriX, 2.75, oriZ, townG);
+box(6.3, .35, 5.8, 0x8a6a4a, oriX, 5.7, oriZ, townG);
+sign("Inoue", oriX, 6.2, oriZ + 2.9, townG, .9);
+// Flower box
+box(1.8, .3, .5, 0xe8a0b0, oriX + 1.5, .4, oriZ + 2.9, townG, 0);
+
+// 5. Chad's house
+const chadX = 22, chadZ = 38;
+box(7, 4.5, 6, 0xe8e0d0, chadX, 2.25, chadZ, townG);
+box(7.4, .4, 6.4, 0x4a4a4a, chadX, 4.7, chadZ, townG);
+sign("Sado", chadX, 5.3, chadZ + 3.1, townG, .9);
+
+// 6. Uryū's house
+const uryX = -18, uryZ = 42;
+box(6.5, 5, 5.5, 0xf5f5f5, uryX, 2.5, uryZ, townG);
+box(6.9, .35, 5.9, 0x2a2a4a, uryX, 5.2, uryZ, townG);
+sign("Ishida", uryX, 5.7, uryZ + 2.9, townG, .9);
+// Cross motif hint
+box(.15, .8, .08, 0x1a1a1a, uryX, 3.8, uryZ + 2.85, townG, 0);
+box(.6, .15, .08, 0x1a1a1a, uryX, 3.9, uryZ + 2.85, townG, 0);
+
+// Trees
+for (let i = 0; i < 70; i++) {
+  const x = (rnd() - .5) * 120;
+  const z = (rnd() - .5) * 120;
+  if (Math.abs(z - 10) < 6 || Math.hypot(x, z + 10) < 14) continue;
+  const trunk = mk(new T.CylinderGeometry(.16, .26, 1.9, 7), 0x5a3a1e);
+  trunk.position.set(x, .95, z);
+  const foliage = mk(new T.SphereGeometry(1.3 + rnd() * .6, 10, 8), 0x4a9e4a);
+  foliage.position.set(x, 2.7 + rnd() * .4, z);
+  townG.add(trunk, foliage);
+}
+
+// Street lamps
+for (let x = -50; x <= 50; x += 14) {
+  const pole = mk(new T.CylinderGeometry(.07, .09, 3.8, 6), 0x2a2a2a);
+  pole.position.set(x, 1.9, 5.5);
+  const lamp = new T.Mesh(new T.SphereGeometry(.26, 10, 8), new T.MeshBasicMaterial({ color:0xfff2b0 }));
+  lamp.position.set(x, 3.9, 5.5);
+  townG.add(pole, lamp);
+  const pl = new T.PointLight(0xffe8a0, .3, 11);
+  pl.position.set(x, 3.7, 5.5);
+  townG.add(pl);
+}
+
+/* Town people */
+const townPeople = [];
+function spawnTownie() {
+  const skins = [0xf0cfa8, 0xe8c4a0, 0xd4a574, 0xc4a484];
+  const clothes = [0x4a6fa5, 0x2d5a3d, 0x8b4513, 0x5a4a7a, 0xc0392b, 0x1a5276];
+  const hairs = [0x1a1a1a, 0x3d2314, 0x8b6914, 0x4a3728, 0x222222];
+  const p = person2(
+    skins[Math.floor(rnd() * skins.length)],
+    clothes[Math.floor(rnd() * clothes.length)],
+    hairs[Math.floor(rnd() * hairs.length)],
+    .85 + rnd() * .25,
+    Math.floor(rnd() * 3)
+  );
+  p.position.set((rnd() - .5) * 90, 0, (rnd() - .5) * 90);
+  p.userData = { ...p.userData, t: 2 + rnd() * 4, d: new T.Vector3(), speed: 1.1 + rnd() * 1.3 };
+  townG.add(p);
+  townPeople.push(p);
+}
+for (let i = 0; i < 16; i++) spawnTownie();
+
+/* ========== SEIREITEI — FULL GOTEI 13 ========== */
+box(140, .25, 140, 0xd8cdb4, 0, -.12, 0, ssG, 0);
+box(12, .08, 40, 0xb59f7a, 0, .04, 42, ssG, 0);
+
+// Walls
+[[0, -32, 65, 1.5], [-20, 28, 18, 1.5], [20, 28, 18, 1.5], [-32, 0, 1.5, 65], [32, 0, 1.5, 65]].forEach(w => {
+  box(w[2], 7, w[3], 0xf4f0e6, w[0], 3.5, w[1], ssG);
+  box(w[2] + .6, .7, w[3] + .6, 0x4a5d73, w[0], 7.2, w[1], ssG);
+});
+
+// Barracks
+for (let i = 0; i < 32; i++) {
+  const x = (rnd() - .5) * 55;
+  const z = (rnd() - .5) * 55;
+  if (Math.hypot(x, z) < 16) continue;
+  const w = 4.2 + rnd() * 3.5;
+  box(w, 3.6, w, 0xf4f0e6, x, 1.8, z, ssG);
+  roof(w * .82, 2.2, 0x4a5d73, x, 4.5, z, ssG);
+}
+
+// Central tower (Sōkyoku Hill style)
+for (let i = 0; i < 7; i++) {
+  const w = 12 - i * 1.4;
+  box(w, 2.6, w, 0xf4f0e6, 0, 1.3 + i * 2.9, 0, ssG);
+  roof(w * .88, 1.7, 0x4a5d73, 0, 3.3 + i * 2.9, 0, ssG);
+}
+
+// Outer Rukongai houses
+for (let i = 0; i < 55; i++) {
+  const x = (rnd() - .5) * 115;
+  const z = (rnd() - .5) * 115;
+  if (Math.max(Math.abs(x), Math.abs(z)) < 36 || (Math.abs(x) < 7 && z > 25)) continue;
+  box(3.0, 2.2, 3.0, 0x9c7a55, x, 1.1, z, ssG);
+  roof(2.3, 1.4, 0x6b5a3a, x, 2.7, z, ssG);
+}
+
+/* ===== GOTEI 13 CAPTAINS ===== */
+const CAPTAINS = [
+  { id:"yamamoto", n:"Genryūsai Yamamoto", div:"1st", hair:0xf0f0f0, cloth:0x1a1a1a, style:3, scale:1.15, col:0xff4400, lines:["The 1st Division stands ready.","Bankai · Zanka no Tachi is not for the unworthy.","Protect Soul Society."] },
+  { id:"soifon",   n:"Soi Fon",           div:"2nd", hair:0x222222, cloth:0x1a1a2e, style:2, scale:.82,  col:0x88aaff, lines:["Assassination is my specialty.","Suzumebachi never misses.","Report, immediately."] },
+  { id:"rojuro",   n:"Rōjūrō Otoribashi", div:"3rd", hair:0xf0d080, cloth:0x2a2a4a, style:1, scale:1.05, col:0xffcc44, lines:["Music is the true power.","Kinshara... play.","A beautiful melody."] },
+  { id:"unohana",  n:"Retsu Unohana",     div:"4th", hair:0x222222, cloth:0x1a1a2e, style:1, scale:.95,  col:0x44aaff, lines:["Healing is my duty... for now.","The 4th Division will treat your wounds.","Do not take lives lightly."] },
+  { id:"shinji",   n:"Shinji Hirako",     div:"5th", hair:0xf0e0a0, cloth:0x2a2a3a, style:1, scale:1.0,  col:0xffaa22, lines:["Things are upside down, huh?","Sakanade will confuse them.","Visoreds stick together."] },
+  { id:"byakuya",  n:"Byakuya Kuchiki",   div:"6th", hair:0x222222, cloth:0x1a1a2e, style:3, scale:1.05, col:0xcc44ff, lines:["Pride of the Kuchiki.","Senbonzakura Kageyoshi.","Do not disgrace the clan."] },
+  { id:"komamura", n:"Sajin Komamura",    div:"7th", hair:0x4a3a2a, cloth:0x2a2a2a, style:0, scale:1.25, col:0xaa7744, lines:["I will protect my friends.","Kokujō Tengen Myō'ō.","Loyalty above all."] },
+  { id:"kyoraku",  n:"Shunsui Kyōraku",   div:"8th", hair:0x222222, cloth:0x8a2a2a, style:1, scale:1.1,  col:0xff4466, lines:["Care for a drink?","Katen Kyōkotsu is not a game.","Let's keep this casual."] },
+  { id:"hitsugaya",n:"Tōshirō Hitsugaya", div:"10th",hair:0xe0f0ff, cloth:0x1a1a2e, style:0, scale:.88,  col:0x66ccff, lines:["Don't call me a kid.","Daiguren Hyōrinmaru!","Ice will freeze even Bankai."] },
+  { id:"kenpachi", n:"Kenpachi Zaraki",   div:"11th",hair:0x222222, cloth:0x1a1a1a, style:0, scale:1.2,  col:0xff2222, lines:["Who wants to die first?","I don't need Bankai to crush you.","More! Fight me!"] },
+  { id:"mayuri",   n:"Mayuri Kurotsuchi", div:"12th",hair:0x2a2a2a, cloth:0x3a2a4a, style:0, scale:.95,  col:0xaa44ff, lines:["Fascinating specimen.","Konjiki Ashisogi Jizō.","Science is absolute."] },
+  { id:"ukitake",  n:"Jūshirō Ukitake",   div:"13th",hair:0xf0f0f0, cloth:0x1a1a2e, style:1, scale:1.05, col:0x44aaff, lines:["Rukia is under my care.","Sōgyo no Kotowari.","Rest is also strength."] }
+];
+
+const captainNPC = {};
+CAPTAINS.forEach((c, i) => {
+  const angle = (i / CAPTAINS.length) * Math.PI * 2;
+  const r = 22 + (i % 3) * 4;
+  const p = person2(0xf0cfa8, c.cloth, c.hair, c.scale, c.style, undefined, { haori:true, badge:true });
+  p.position.set(Math.cos(angle) * r, 0, Math.sin(angle) * r - 5);
+  p.userData.captainId = c.id;
+  p.userData.lines = c.lines;
+  p.userData.name = c.n;
+  p.userData.div = c.div;
+  ssG.add(p);
+  captainNPC[c.id] = p;
+});
+
+/* ========== HUECO MUNDO ========== */
+box(140, .25, 140, 0xf3f1e8, 0, -.12, 0, hmG, 0);
+for (let i = 0; i < 80; i++) {
+  const x = (rnd() - .5) * 115;
+  const z = (rnd() - .5) * 115;
+  if (Math.hypot(x, z + 30) < 22 || Math.hypot(x, z - 35) < 9) continue;
+  const h = 2.5 + rnd() * 9;
+  const q = mk(new T.ConeGeometry(.55 + rnd() * .9, h, 6), 0xf6fbff, 1.04);
+  q.position.set(x, h / 2, z);
+  q.rotation.z = (rnd() - .5) * .35;
+  hmG.add(q);
+}
+for (let i = 0; i < 25; i++) {
+  const x = (rnd() - .5) * 100;
+  const z = (rnd() - .5) * 80;
+  const t = mk(new T.CylinderGeometry(.14, .3, 4.4, 6), 0xe8e4d8);
+  const b = mk(new T.CylinderGeometry(.07, .12, 2.2, 5), 0xe8e4d8);
+  t.position.set(x, 2.2, z);
+  b.position.set(x + .9, 4.0, z);
+  b.rotation.z = .95;
+  hmG.add(t, b);
+}
+// Las Noches
+const dome = mk(new T.SphereGeometry(14, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2), 0xf9f9f6, 1.01);
+dome.position.set(0, 0, -35);
+hmG.add(dome);
+[[-20, -26], [20, -26], [-20, -46], [20, -46]].forEach(p => {
+  const t = mk(new T.CylinderGeometry(2.0, 2.3, 20, 12), 0xf9f9f6, 1.03);
+  t.position.set(p[0], 10, p[1]);
+  hmG.add(t);
+});
+const moon = new T.Mesh(new T.TorusGeometry(14, 3.0, 12, 48, Math.PI * 1.15), new T.MeshBasicMaterial({ color:0xfff6cf, fog:false }));
+moon.position.set(-45, 60, -100);
+moon.rotation.z = 1.15;
+hmG.add(moon);
+const starPos = new Float32Array(1200);
+for (let i = 0; i < 400; i++) {
+  const a = Math.random() * 6.28, e = Math.random() * 1.2 + .15, r = 140;
+  starPos[i * 3] = Math.cos(a) * Math.cos(e) * r;
+  starPos[i * 3 + 1] = Math.sin(e) * r;
+  starPos[i * 3 + 2] = Math.sin(a) * Math.cos(e) * r;
+}
+const starGeo = new T.BufferGeometry();
+starGeo.setAttribute("position", new T.BufferAttribute(starPos, 3));
+hmG.add(new T.Points(starGeo, new T.PointsMaterial({ color:0xffffff, size:1.9, sizeAttenuation:false, fog:false })));
+
+/* ========== PLAYER ========== */
+let CH = null, sel = ROSTER[0], KAT = null, zone = "town", view3 = false, mapOpen = false;
+try {
+  const v = JSON.parse(localStorage.getItem("sr_ch_r") || "null");
+  const r = v && ROSTER.find(x => x.id === v.id);
+  if (r) sel = r;
+} catch(e){}
+
+const P = person2(0xf0cfa8, 0x2b3a55, 0xe8590c, 1, 0);
+scene.add(P);
+
+const piv = new T.Group();
+piv.position.set(.42, 1.3, .5);
+P.add(piv);
+
+function buildKatana() {
+  if (KAT) piv.remove(KAT);
+  const g = new T.Group();
+  const ph = (c, s = 100) => new T.MeshPhongMaterial({ color:c, specular:0xffffff, shininess:s });
+  const gold = ph(0xd4af37, 70);
+
+  const sh = new T.Shape();
+  sh.moveTo(0, -.038);
+  sh.quadraticCurveTo(.65, -.032, 1.22, .05);
+  sh.lineTo(1.12, .068);
+  sh.quadraticCurveTo(.65, .055, 0, .038);
+  sh.lineTo(0, -.038);
+  const bg = new T.ExtrudeGeometry(sh, { depth:.024, bevelEnabled:false });
+  bg.translate(0, 0, -.012);
+  bg.rotateY(-Math.PI / 2);
+  const bl = new T.Mesh(bg, ph(0xdfe4ea, 180));
+  g.add(bl);
+
+  const ha = new T.Mesh(new T.BoxGeometry(.03, .012, 1.05), ph(0xffffff, 220));
+  ha.position.set(0, -.022, .6);
+  g.add(ha);
+
+  const hb = new T.Mesh(new T.BoxGeometry(.038, .085, .07), gold);
+  hb.position.z = .03;
+  g.add(hb);
+
+  const ts = new T.Mesh(new T.CylinderGeometry(.11, .11, .016, 20), ph(0x1c1c1c, 40));
+  ts.rotation.x = Math.PI / 2;
+  ts.position.z = -.02;
+  const rim = new T.Mesh(new T.TorusGeometry(.11, .009, 6, 24), gold);
+  rim.position.z = -.02;
+  g.add(ts, rim);
+
+  const cv = document.createElement("canvas");
+  cv.width = cv.height = 64;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#" + new T.Color(CH.col).multiplyScalar(.32).getHexString();
+  ctx.fillRect(0, 0, 64, 64);
+  ctx.strokeStyle = "#e9e4d6";
+  ctx.lineWidth = 3;
+  for (let i = -64; i < 128; i += 14) {
+    ctx.beginPath();
+    ctx.moveTo(i, 0); ctx.lineTo(i + 64, 64);
+    ctx.moveTo(i + 64, 0); ctx.lineTo(i, 64);
+    ctx.stroke();
+  }
+  const tx = new T.CanvasTexture(cv);
+  tx.wrapS = tx.wrapT = T.RepeatWrapping;
+  tx.repeat.set(2, 3.2);
+  const tk = new T.Mesh(new T.CylinderGeometry(.032, .034, .38, 10), new T.MeshPhongMaterial({ map:tx }));
+  tk.rotation.x = Math.PI / 2;
+  tk.position.z = -.22;
+  g.add(tk);
+
+  const ka = new T.Mesh(new T.SphereGeometry(.04, 10, 8), gold);
+  ka.position.z = -.42;
+  g.add(ka);
+
+  // Aura
+  const au = new T.Mesh(new T.CylinderGeometry(.1, .05, 1.5, 14, 1, true),
+    new T.MeshBasicMaterial({ color:CH.col, transparent:true, opacity:.4, side:T.DoubleSide }));
+  au.rotation.x = Math.PI / 2;
+  au.position.z = .7;
+  au.visible = false;
+  g.add(au);
+
+  const bau = new T.Mesh(new T.CylinderGeometry(.22, .1, 2.6, 16, 1, true),
+    new T.MeshBasicMaterial({ color:CH.col, transparent:true, opacity:.3, side:T.DoubleSide }));
+  bau.rotation.x = Math.PI / 2;
+  bau.position.z = 1.0;
+  bau.visible = false;
+  g.add(bau);
+
+  g.scale.setScalar(1.2);
+  KAT = g;
+  g.bl = bl;
+  g.au = au;
+  g.bau = bau;
+  piv.add(g);
+}
+
+function rebuildP() {
+  [...P.children].forEach(c => { if (c !== piv) P.remove(c); });
+  const q = person2(0xf0cfa8, CH.human, CH.hair, 1, CH.style, CH.legs);
+  [...q.children].forEach(c => P.add(c));
+  P.userData = q.userData;
+}
+
+/* ========== FX & ENTITIES ========== */
+const pluses = [], hollows = [], eproj = [], proj = [], F = [];
+let boss = null;
+let fa = 0, atkT = 0, cd = 0, combo = 0, comboT = 0, shCd = 0, iF = 0, shake = 0, konT = 0, dlgT = 0, msgT = 0, ambT = 0, spawnT = 3;
+
+function fx(g, c, life, p, o = {}) {
+  const m = new T.Mesh(g, new T.MeshBasicMaterial({ color:c, transparent:true, side:T.DoubleSide }));
+  m.position.copy(p);
+  if (o.rx !== undefined) m.rotation.x = o.rx;
+  if (o.rz !== undefined) m.rotation.z = o.rz;
+  scene.add(m);
+  F.push({ m, life, max:life, v:o.v, grow:o.grow || 0 });
+  return m;
+}
+function burst(p, c, n = 8) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * 6.28;
+    fx(new T.SphereGeometry(.14, 6, 5), c, .55, p.clone().setY(p.y + 1), {
+      v: new T.Vector3(Math.cos(a) * 4.5, 2 + Math.random() * 3.5, Math.sin(a) * 4.5)
+    });
+  }
+}
+
+function spawnPlus() {
+  const p = person2(0xffffff, 0xbfe3ff, 0xffffff, .82, Math.floor(Math.random() * 3));
+  p.position.set((Math.random() - .5) * 90, 0, (Math.random() - .5) * 80);
+  if (p.position.distanceTo(P.position) < 12) p.position.x += 20;
+  p.userData.t = 0;
+  p.userData.d = new T.Vector3();
+  townG.add(p);
+  pluses.push(p);
+}
+
+function spawnHollow() {
+  if (zone === "seireitei") return;
+  const scale = zone === "hueco" ? 1.45 : 1.28;
+  const h = person2(0x151515, 0x1a1a1a, 0x151515, scale, 0);
+  const mask = mk(new T.SphereGeometry(.3, 12, 10), 0xffffff);
+  mask.position.set(0, 1.72, .22);
+  mask.scale.set(1, 1.15, .65);
+  h.add(mask);
+  const a = Math.random() * 6.28;
+  h.position.set(P.position.x + Math.cos(a) * 28, 0, P.position.z + Math.sin(a) * 28);
+  h.position.clampScalar(-55, 55);
+  h.position.y = 0;
+  const hp = zone === "hueco" ? 85 : 40;
+  h.userData = { hp, max:hp, cd:1.05 };
+  ZG[zone].add(h);
+  hollows.push(h);
+}
+
+function spawnBoss() {
+  if (S.realm !== "town" || zone !== "town") return;
+  const h = person2(0x151515, 0x222222, 0x151515, 8.0, 0);
+  const mask = mk(new T.SphereGeometry(.3, 12, 10), 0xffffff);
+  mask.position.set(0, 1.72, .22);
+  mask.scale.set(1, 1.15, .65);
+  h.add(mask);
+  h.position.set(P.position.x > 0 ? -35 : 35, 0, -25);
+  h.userData = { hp:550, max:550, cd:2.6, state:"idle", t:0, aim:new T.Vector3() };
+  townG.add(h);
+  boss = h;
+  S.bossAlive = true;
+  banner("Menos Grande breach!");
+  sfx("boom");
+}
+
+function banner(t) {
+  const e = $("msg");
+  e.textContent = t;
+  e.style.opacity = 1;
+  msgT = 2.6;
+}
+function say(n, t) {
+  $("dlg").innerHTML = "<b>" + n + "</b>" + t;
+  $("dlg").style.display = "block";
+  dlgT = 5.2;
+}
+function gainXp(x) {
+  S.xp += x;
+  while (S.xp >= S.lvl * 45) {
+    S.xp -= S.lvl * 45;
+    S.lvl++;
+    S.atk += 2.5;
+    S.maxhp += 14;
+    S.hp = S.maxhp;
+    sfx("up");
+    banner("Level " + S.lvl);
+  }
+  save();
+}
+function hurt(d) {
+  if (iF > 0 || S.dead) return;
+  S.hp -= d;
+  iF = .55;
+  shake = .4;
+  sfx("hit");
+  burst(P.position, 0xe8590c, 6);
+  if (S.hp <= 0) die();
+}
+function die() {
+  S.dead = true;
+  banner("Your spirit fades…");
+  setTimeout(() => {
+    S.dead = false;
+    S.hp = S.maxhp;
+    S.rp = S.maxrp;
+    S.bankai = false;
+    S.shikai = false;
+    S.fullbring = false;
+    setForm(false);
+    hollows.splice(0).forEach(h => h.parent && h.parent.remove(h));
+    setRealm("clinic");
+  }, 1900);
+}
+function dmg(e, d) {
+  if (CH && CH.t === "Power") d *= 1.35;
+  if (S.bankai) d *= 1.75;
+  else if (S.shikai) d *= 1.35;
+  if (S.fullbring) d *= 1.25;
+  const u = e.userData;
+  u.hp -= d;
+  sfx("hit");
+  burst(e.position, 0xffffff, 6);
+  const v = e.position.clone().sub(P.position).setY(0).normalize();
+  if (e !== boss) e.position.addScaledVector(v, 1.15);
+  if (u.hp <= 0) {
+    burst(e.position, 0x000000, 18);
+    if (e.parent) e.parent.remove(e);
+    if (e === boss) {
+      boss = null;
+      S.bossAlive = false;
+      S.bossDead = true;
+      banner("Menos Grande defeated!");
+      gainXp(220);
+      S.bankaiMeter = Math.min(100, S.bankaiMeter + 45);
+      S.fullMeter = Math.min(100, S.fullMeter + 30);
+    } else {
+      hollows.splice(hollows.indexOf(e), 1);
+      gainXp(16);
+      S.bankaiMeter = Math.min(100, S.bankaiMeter + 9);
+      S.fullMeter = Math.min(100, S.fullMeter + 5);
+    }
+  }
+}
+function inFront(e, r) {
+  const v = e.position.clone().sub(P.position).setY(0);
+  const d = v.length();
+  return d < r && (d < 1.2 || v.normalize().dot(new T.Vector3(Math.sin(fa), 0, Math.cos(fa))) > -.25);
+}
+
+/* ========== ACTIONS ========== */
+function attack() {
+  if (atkT > 0 || cd > 0 || S.dead) return;
+  comboT = .95;
+  combo = (combo + 1) % 3;
+  const big = combo === 0;
+  const mult = (big ? 1.8 : 1) * (S.shin ? 1 : .5) * (S.bankai ? 2.3 : S.shikai ? 1.8 : 1) * (S.fullbring ? 1.3 : 1);
+  atkT = .26;
+  cd = .26;
+  sfx("slash");
+  const f = new T.Vector3(Math.sin(fa), 0, Math.cos(fa));
+  fx(new T.RingGeometry(.9, big ? 3.6 : 2.6, 18, 1, 0, Math.PI * .85),
+    S.bankai ? CH.col : (S.shin ? 0xffffff : 0xcccccc), .24,
+    P.position.clone().addScaledVector(f, 1.25).setY(1.15),
+    { rx:-Math.PI/2, rz:fa - Math.PI/2 - .4*Math.PI, grow:2.3 });
+  [...hollows, ...(boss ? [boss] : [])].forEach(e => {
+    if (inFront(e, e === boss ? 7.5 : 3.8)) dmg(e, S.atk * mult);
+  });
+}
+
+function shunpo() {
+  if (shCd > 0 || S.rp < 5 || S.dead) return;
+  const mx = (K.KeyD ? 1 : 0) - (K.KeyA ? 1 : 0);
+  const mz = (K.KeyS ? 1 : 0) - (K.KeyW ? 1 : 0);
+  const l = Math.hypot(mx, mz);
+  const d = l ? new T.Vector3(mx / l, 0, mz / l) : new T.Vector3(Math.sin(fa), 0, Math.cos(fa));
+  for (let i = 0; i < 8; i++) {
+    fx(new T.CylinderGeometry(.38, .42, 1.9, 8), 0x000000, .38 + i * .04,
+      P.position.clone().addScaledVector(d, i * 1.0).setY(.95), {});
+  }
+  P.position.addScaledVector(d, 7.0);
+  S.rp -= 5;
+  shCd = CH && CH.t === "Speed" ? .32 : .65;
+  iF = .3;
+  sfx("shun");
+}
+
+function setForm(s) {
+  S.shin = s;
+  if (!s) { S.shikai = false; S.bankai = false; S.fullbring = false; }
+  const U = P.userData;
+  const c = s ? 0x0d0d0f : CH.human;
+  const lc = s ? 0x1a1a1d : CH.legs;
+  const f = (l, x) => l.children[0].material.color.set(x);
+  U.b.material.color.set(c);
+  f(U.limbs.la, c); f(U.limbs.ra, c);
+  f(U.limbs.ll, lc); f(U.limbs.rl, lc);
+  piv.visible = s;
+  applyShikai();
+}
+
+function applyShikai() {
+  if (!KAT) return;
+  const m = KAT.bl.material;
+  m.emissive.set(S.bankai || S.shikai ? CH.col : 0);
+  m.emissiveIntensity = S.bankai ? 1.4 : S.shikai ? .9 : 0;
+  KAT.scale.set(1, 1, S.bankai ? 1.7 : S.shikai ? 1.35 : 1.15);
+  KAT.au.visible = S.shikai && !S.bankai;
+  KAT.bau.visible = S.bankai;
+}
+
+function shikai() {
+  if (!S.shin || S.dead) return;
+  if (S.shikai) {
+    S.shikai = false;
+    S.bankai = false;
+    applyShikai();
+    return;
+  }
+  if (S.rp < 38) { banner("Not enough Reiatsu"); return; }
+  S.shikai = true;
+  applyShikai();
+  sfx("get");
+  banner(CH.cmd);
+  fx(new T.RingGeometry(.6, 2.6, 28), CH.col, .75, P.position.clone().setY(.12), { rx:-Math.PI/2, grow:5.5 });
+}
+
+function bankai() {
+  if (!S.shin || S.dead) return;
+  if (S.bankai) {
+    S.bankai = false;
+    applyShikai();
+    return;
+  }
+  if (!S.shikai) { banner("Release Shikai first"); return; }
+  if (S.bankaiMeter < 65) { banner("Bankai meter low (" + Math.floor(S.bankaiMeter) + "/65)"); return; }
+  if (S.rp < 50) { banner("Not enough Reiatsu"); return; }
+  S.bankai = true;
+  S.rp -= 28;
+  S.bankaiMeter = Math.max(0, S.bankaiMeter - 45);
+  applyShikai();
+  sfx("bankai");
+  banner(CH.bankai);
+  // Massive release FX  for (let i = 0; i < 4; i++) {
+    fx(new T.RingGeometry(1.2 + i * 1.2, 5 + i * 2.2, 36), CH.col, 1.1 + i * .18,
+      P.position.clone().setY(.15), { rx:-Math.PI/2, grow:7 });
+  }
+  burst(P.position, CH.col, 24);
+  shake = .85;
+  // Character-specific Bankai boost
+  if (CH.t === "Power") S.atk += 4;
+  if (CH.t === "Speed") shCd = 0;
+  if (CH.t === "Kido") S.rp = Math.min(S.maxrp, S.rp + 25);
+}
+
+function fullbring() {
+  if (S.dead) return;
+  if (S.fullbring) {
+    S.fullbring = false;
+    banner("Fullbring released");
+    return;
+  }
+  if (S.fullMeter < 50) { banner("Fullbring meter low (" + Math.floor(S.fullMeter) + "/50)"); return; }
+  if (S.rp < 25) { banner("Not enough Reiatsu"); return; }
+  S.fullbring = true;
+  S.rp -= 20;
+  S.fullMeter = Math.max(0, S.fullMeter - 40);
+  sfx("full");
+  banner(CH.full || "Fullbring Activate!");
+  fx(new T.RingGeometry(.8, 3.2, 28), 0x22c55e, .9, P.position.clone().setY(.12), { rx:-Math.PI/2, grow:5 });
+  burst(P.position, 0x22c55e, 14);
+}
+
+function getsuga() {
+  if ((!S.shikai && !S.bankai && !S.fullbring) || S.rp < 16 || cd > 0 || S.dead) return;
+  S.rp -= S.bankai ? 26 : (S.fullbring ? 20 : 16);
+  cd = .35;
+  atkT = .24;
+  sfx(CH.t === "Kido" || CH.id === "ren" ? "get" : "bow");
+  const g = new T.Group();
+  let m;
+  if (CH.t === "Kido" || CH.id === "rei") {
+    m = mk(new T.TorusGeometry(S.bankai ? 1.8 : 1.2, S.bankai ? .25 : .16, 8, 24, Math.PI), 0xffffff, 1.2);
+    m.material.color.set(0x88ccff);
+  } else if (CH.t === "Speed") {
+    m = mk(new T.ConeGeometry(.4, 2.2, 8), CH.col, 1.1);
+  } else {
+    m = mk(new T.TorusGeometry(S.bankai ? 1.7 : 1.15, S.bankai ? .24 : .15, 8, 24, Math.PI), 0xffffff, 1.2);
+    m.material.color.set(CH.col);
+  }
+  m.rotation.y = Math.PI / 2;
+  m.scale.setScalar(S.bankai ? 2.3 : (S.fullbring ? 1.8 : 1.5));
+  g.add(m);
+  g.position.copy(P.position).setY(1.3);
+  g.rotation.y = fa;
+  g.userData = {
+    v: new T.Vector3(Math.sin(fa), 0, Math.cos(fa)).multiplyScalar(S.bankai ? 32 : 24),
+    life: S.bankai ? 2.3 : 1.6,
+    hit: new Set(),
+    dmgMult: S.bankai ? 8.5 : (S.fullbring ? 6.5 : 5.2)
+  };
+  scene.add(g);
+  proj.push(g);
+}
+
+function konso() {
+  if (!S.shin || S.dead || konT > 0) return;
+  if (S.realm === "town" && zone !== "town") { banner("No lost souls here"); return; }
+  let n = null, bd = 3.5;
+  pluses.forEach(p => {
+    const d = p.position.distanceTo(P.position);
+    if (d < bd) { bd = d; n = p; }
+  });
+  if (!n) { banner("No Plus in range"); return; }
+  konT = .5;
+  sfx("konso");
+  pluses.splice(pluses.indexOf(n), 1);
+  fx(new T.RingGeometry(.55, 1.5, 28), 0xffffff, .9, n.position.clone().setY(.12), { rx:-Math.PI/2, grow:3 });
+  fx(new T.CylinderGeometry(.55, .55, 16, 14, 1, true), 0xcfe9ff, .9, n.position.clone().setY(8), {});
+  if (n.parent) n.parent.remove(n);
+  S.purified++;
+  gainXp(14);
+  S.rp = Math.min(S.maxrp, S.rp + 20);
+  if (CH && CH.t === "Support") S.hp = Math.min(S.maxhp, S.hp + 28);
+  banner("Konsō · " + S.purified + "/5");
+  S.bankaiMeter = Math.min(100, S.bankaiMeter + 7);
+  S.fullMeter = Math.min(100, S.fullMeter + 4);
+}
+
+function inter() {
+  if (S.dead) return null;
+  const pp = P.position;
+  if (S.realm === "clinic") {
+    for (const k in NM) {
+      if (pp.distanceTo(NPC[k].position) < 2.7)
+        return { l: "Talk to " + NM[k], f: () => talk(k) };
+    }
+    for (const id in friendNPC) {
+      if (pp.distanceTo(friendNPC[id].position) < 2.5)
+        return { l: "Talk to " + FRIENDS[id].name, f: () => talkFriend(id) };
+    }
+    if (pp.distanceTo(cdoor.position) < 3.2)
+      return { l: "Go outside", f: () => setRealm("town", "town") };
+  } else if (zone === "town") {
+    if (pp.distanceTo(tdoor.position) < 3.2)
+      return { l: "Enter the clinic", f: () => setRealm("clinic") };
+    if (pp.distanceTo(new T.Vector3(schoolX, 0, schoolZ + 8)) < 8)
+      return { l: "Karakura High School", f: () => say("School", "The place where everything started. Classes are in session.") };
+    if (pp.distanceTo(new T.Vector3(uraX, 0, uraZ + 3)) < 5)
+      return { l: "Enter Urahara Shop", f: () => say("Urahara", "Welcome~ Need candy? Or perhaps a gigai? The underground training ground is closed for now.") };
+    if (pp.distanceTo(new T.Vector3(oriX, 0, oriZ)) < 4)
+      return { l: "Orihime's house", f: () => say("Orihime", "Come in anytime! I made rice balls.") };
+    if (pp.distanceTo(new T.Vector3(chadX, 0, chadZ)) < 4)
+      return { l: "Chad's house", f: () => say("Chad", "If you need muscle, just call.") };
+    if (pp.distanceTo(new T.Vector3(uryX, 0, uryZ)) < 4)
+      return { l: "Uryū's house", f: () => say("Uryū", "My grandfather's research is still here. Be careful with the Quincy tools.") };
+  } else if (zone === "seireitei") {
+    for (const id in captainNPC) {
+      const c = captainNPC[id];
+      if (pp.distanceTo(c.position) < 3.2)
+        return { l: "Talk to " + c.userData.name + " (" + c.userData.div + ")", f: () => talkCaptain(id) };
+    }
+  }
+  return null;
+}
+
+function talk(k) {
+  S.talk[k] = 1;
+  save();
+  if (k === "yuzu") {
+    if (ambT > 0) say("Yuzu", "You already ate! Be careful out there.");
+    else {
