@@ -2228,7 +2228,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 
       <div class="input-area cascade" style="--i:10">
         <div class="zynx-composer-tools" aria-label="Writing tools">
-          <label class="zynx-style-picker"><span>Style</span><select id="zynxLiveStyle" aria-label="Assistant response style"><option value="warm">Friendly</option><option value="professional">Professional</option><option value="technical">Technical</option><option value="playful">Witty</option><option value="poetic">Creative</option></select></label>
+          <label class="zynx-style-picker"><span>Style</span><select id="zynxLiveStyle" aria-label="Assistant response style"><option value="friendly">Friendly</option><option value="formal">Formal</option><option value="technical">Technical</option><option value="sarcastic">Sarcastic</option><option value="casual">Casual</option></select></label>
           <button type="button" class="zynx-quick-action" data-zynx-quick="Explain this in one clear sentence.">1-sentence</button>
           <button type="button" class="zynx-quick-action" data-zynx-quick="Give me a practical example to make this easier to understand.">Example</button>
           <button type="button" class="zynx-quick-action" id="zynxAddNote">＋ Note</button>
@@ -2379,10 +2379,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
       <div>
         <span class="text-sm text-slate-300 mb-2 block">Response style</span>
         <div class="grid grid-cols-2 gap-2" id="styleGroup">
-          <button class="opt on" data-value="warm">Warm</button>
-          <button class="opt" data-value="professional">Professional</button>
-          <button class="opt" data-value="playful">Playful</button>
-          <button class="opt" data-value="poetic">Poetic</button>
+          <button class="opt on" data-value="friendly">Friendly</button>
+          <button class="opt" data-value="formal">Formal</button>
+          <button class="opt" data-value="technical">Technical</button>
+          <button class="opt" data-value="sarcastic">Sarcastic</button>
+          <button class="opt" data-value="casual">Casual</button>
         </div>
       </div>
       <button id="saveSettings" class="primary">Save preferences</button>
@@ -5589,7 +5590,7 @@ html[data-zynx-ux-theme="light"] .zynx-turn-dot{background:#fff!important;color:
  const toast=m=>{const t=$('#toast');if(t){t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}};
  // Persist a real server-side response style using the existing settings API.
  const style=$('#zynxLiveStyle');
- const styleMap={warm:'warm',professional:'professional',technical:'professional',playful:'playful',poetic:'poetic'};
+ const styleMap={friendly:'friendly',formal:'formal',technical:'technical',sarcastic:'sarcastic',casual:'casual'};
  async function loadStyle(){
    const token=readStore('zynx_token'); if(!token)return;
    try{const r=await fetch('/api/settings',{headers:{Authorization:'Bearer '+token}});if(!r.ok)return;const d=await r.json();const v=Object.keys(styleMap).find(k=>styleMap[k]===d.response_style)||'warm';style.value=v;}catch{}
