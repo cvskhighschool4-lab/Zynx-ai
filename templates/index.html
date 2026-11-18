@@ -3526,7 +3526,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
   $('#toggleSidebar').addEventListener('click', toggleSidebar);
   $('#closeSidebar').addEventListener('click', closeSidebarMobile);
   el.overlay.addEventListener('click', closeSidebarMobile);
-  $('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
+  $$('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
   document.querySelector('.zynx-conversation-starters')?.addEventListener('click', (event) => {
     const button = event.target.closest('[data-starter]');
     if (!button) return;
