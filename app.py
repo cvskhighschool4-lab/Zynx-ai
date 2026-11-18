@@ -433,6 +433,17 @@ def game_corner():
     return response
 
 
+@app.route("/game-corner/<game_file>")
+def game_corner_game(game_file):
+    allowed_games = {"soul-reaper-karakura.html", "shinobi-world.html"}
+    if game_file not in allowed_games:
+        return "Game not found.", 404
+    game_root = os.path.join(BASE_DIR, "static", "game-corner")
+    response = send_from_directory(game_root, game_file)
+    response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 # Only harmless frontend assets are ever served - never app.py, the database, or dotfiles.
 ASSET_EXTS = {
     ".css", ".js", ".mjs", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
