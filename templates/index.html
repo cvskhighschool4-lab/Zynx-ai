@@ -5150,37 +5150,38 @@ input::placeholder,textarea::placeholder,.field::placeholder{color:#9385aa!impor
 
 <script id="zynx-pwa-registration">
 (() => {
-  const installButton = document.getElementById('zynx-install-app');
+  const buttons = ['zynx-install-app','zynx-install-welcome'].map(id => document.getElementById(id)).filter(Boolean);
   let installPrompt = null;
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
-    }, { once: true });
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js', {scope:'/'}).catch(() => {}), {once:true});
   }
-  window.addEventListener('beforeinstallprompt', (event) => {
+  const notify = message => {
+    const toast = document.getElementById('toast');
+    if (toast) { toast.textContent = message; toast.classList.add('show'); }
+    else window.alert(message);
+  };
+  const sync = () => buttons.forEach(button => { button.hidden = !installPrompt; });
+  window.addEventListener('beforeinstallprompt', event => {
     event.preventDefault();
     installPrompt = event;
-    if (installButton) installButton.hidden = false;
+    sync();
   });
-  installButton?.addEventListener('click', async () => {
+  buttons.forEach(button => button.addEventListener('click', async () => {
     if (!installPrompt) {
-      if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-        const msg = 'To install: tap Share, then Add to Home Screen.';
-        const toast = document.getElementById('toast');
-        if (toast) { toast.textContent = msg; toast.classList.add('show'); }
-        else window.alert(msg);
-      }
+      notify(/iphone|ipad|ipod/i.test(navigator.userAgent)
+        ? 'To install: tap Share, then Add to Home Screen.'
+        : 'To install, open your browser menu and choose Install app or Add to Home screen.');
       return;
     }
     installPrompt.prompt();
     await installPrompt.userChoice.catch(() => null);
     installPrompt = null;
-    installButton.hidden = true;
-  });
+    sync();
+  }));
   window.addEventListener('appinstalled', () => {
-    if (installButton) installButton.hidden = true;
-    const toast = document.getElementById('toast');
-    if (toast) { toast.textContent = 'Zynx AI installed successfully'; toast.classList.add('show'); }
+    installPrompt = null;
+    sync();
+    notify('Zynx AI installed successfully.');
   });
 })();
 </script>
