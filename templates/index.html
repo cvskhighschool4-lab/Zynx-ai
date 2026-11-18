@@ -2424,6 +2424,52 @@ h1,h2,h3,h4,h5,h6,.dream-current-title,.dream-model-pill,.zynx-sidebar-brand,.zy
 }
 @media(prefers-reduced-motion:reduce){#app .bubble{scroll-behavior:auto!important}}
 </style>
+
+<style id="zynx-minimal-interface">
+/* Minimal mode: keep the conversation, history, settings, voice and Game Corner. */
+#sidebar .zynx-tool-link,
+#sidebar #personalizationBtn,
+#sidebar #zynx-chat-filter,
+#sidebar .zynx-sidebar-search,
+#zynxThemeToggle,
+#zyriconConfig,
+#zyriconExport,
+#zynx-install-app,
+.zynx-turn-timeline,
+.zynx-composer-tools,
+.zynx-code-preview,
+#welcome .zynx-working-features,
+#welcome .zynx-feature-showcase,
+#welcome .zynx-expanded-feature-experience,
+#settings #zynxPromptPreferences,
+#settings #zynx-personal-theme-controls,
+#settings .dream-personalization,
+#settings .dream-visual-controls,
+#settings .dream-effects-controls,
+#settings .dream-motion-controls,
+#settings .dream-theme-controls,
+#settings .zynx-theme-gallery,
+#settings .zynx-theme-customizer {
+  display:none!important;
+}
+/* A single calm settings surface; language remains available. */
+#settings .flex-1.overflow-y-auto {padding:20px!important}
+#settings #zynxLanguageSection {display:block!important;margin:0!important}
+#settings #zynxLanguageSection~* {display:none!important}
+#settings .settings-extra,
+#settings [data-advanced-setting],
+#settings .advanced-settings {display:none!important}
+/* Remove decorative motion and excess visual layers. */
+.dream-motes,.particles,.cloud,.fx {display:none!important}
+#app {gap:8px!important;padding:8px!important}
+.sidebar,.chat-shell {border-radius:14px!important;box-shadow:none!important}
+.messages {padding-top:20px!important}
+.thread {max-width:760px!important}
+.bubble.bot {box-shadow:none!important}
+.input-area {padding-bottom:12px!important}
+@media(max-width:768px){#app{padding:0!important}.sidebar{border-radius:0 14px 14px 0!important}}
+</style>
+
 </head>
 <body>
 
