@@ -3067,7 +3067,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
   const PREMIUM_THEMES = new Set(['default','aurora','obsidian','emerald','sapphire']);
   function applyPremiumTheme(name, persist = true) {
     const theme = PREMIUM_THEMES.has(name) ? name : 'default';
-    if (theme === 'default') delete document.documentElement.dataset.zynxSkin;
+    document.documentElement.dataset.zynxSkin = theme;
     else document.documentElement.dataset.zynxSkin = theme;
     if (persist) store.set(PREMIUM_THEME_KEY, theme);
     $('#premiumThemes [data-premium-theme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.premiumTheme === theme)));
