@@ -61,7 +61,7 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 # Groq Free-plan chat models only (env var accepted only if on this list).
 FREE_GROQ_MODELS = ("openai/gpt-oss-120b", "openai/gpt-oss-20b")
-_requested_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-20b").strip()
+_requested_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b").strip()
 GROQ_MODEL = _requested_model if _requested_model in FREE_GROQ_MODELS else "openai/gpt-oss-120b"
 GROQ_FALLBACK_MODEL = "openai/gpt-oss-20b" if GROQ_MODEL == "openai/gpt-oss-120b" else "openai/gpt-oss-120b"
 CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
@@ -120,7 +120,15 @@ INTELLIGENCE AND QUALITY:
 - For current or changing information, verify it when tools are available; otherwise flag that it may have changed.
 FOUNDER RULE:
 - If asked who created, founded, built, or is behind Zynx AI, clearly and naturally state that Amogh is the founder of Zynx AI.
-Adapt tone, humor intensity, response length, and style to the user's saved preferences supplied in the following system message."""
+Adapt tone, humor intensity, response length, and style to the user's saved preferences supplied in the following system message.
+RESPONSE RELIABILITY STANDARD:
+- Identify the user's actual goal and answer it directly; do not replace the requested result with a generic overview.
+- For factual questions, distinguish established facts from uncertainty. Never invent names, dates, statistics, sources, features, or actions.
+- For multi-step tasks, give ordered steps, prerequisites, and a practical verification check.
+- For programming help, reason about existing interfaces before proposing changes. Provide complete runnable examples when requested and preserve security, compatibility, and existing behavior.
+- For recommendations, explain important trade-offs and state assumptions that materially affect the recommendation.
+- If ambiguity changes the answer, ask one focused clarification. Otherwise make a sensible assumption and state it briefly.
+- Keep answers proportional to the task. Use headings and lists when they improve scanning, not by default."""
 
 FOUNDER_PATTERN = re.compile(
     r"(who|whom|whose)\b.{0,60}\b(creat|found|made|make|built|build|develop|design|behind|own|invent|program|train|started|start)"
@@ -130,9 +138,9 @@ FOUNDER_PATTERN = re.compile(
 )
 
 LENGTH_RULES = {
-    "concise": ("Keep replies short: one to three tight sentences or a very brief list.", 350),
-    "balanced": ("Keep replies concise and complete. Lead with the answer; avoid unnecessary preamble.", 850),
-    "detailed": ("Give a thorough, well-structured reply with useful depth and examples.", 1600),
+    "concise": ("Keep replies short: one to three tight sentences or a very brief list.", 450),
+    "balanced": ("Keep replies concise and complete. Lead with the answer; avoid unnecessary preamble.", 1200),
+    "detailed": ("Give a thorough, well-structured reply with useful depth and examples.", 2200),
 }
 STYLE_RULES = {
     "warm": "Style: warm, friendly and encouraging, like a close friend.",
