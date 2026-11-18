@@ -143,10 +143,16 @@ LENGTH_RULES = {
     "detailed": ("Give a thorough, well-structured reply with useful depth and examples.", 2200),
 }
 STYLE_RULES = {
-    "warm": "Style: warm, friendly and encouraging, like a close friend.",
+    "friendly": "Style: friendly, approachable and encouraging while remaining clear and respectful.",
+    "formal": "Style: formal, polished and courteous, with precise wording and no unnecessary slang.",
+    "technical": "Style: technically rigorous, use correct domain terminology, explain assumptions and provide precise steps.",
+    "sarcastic": "Style: witty and lightly sarcastic when appropriate, never insulting, hostile or distracting.",
+    "casual": "Style: relaxed, conversational and concise, using natural everyday language.",
+    # Backward compatibility for previously saved preferences.
+    "warm": "Style: warm, friendly and encouraging.",
     "professional": "Style: polished, precise and professional, with minimal jokes.",
-    "playful": "Style: quick-witted, energetic, clever and lightly sarcastic when appropriate; never mean-spirited.",
-    "poetic": "Style: lyrical and evocative, with gentle imagery, while staying clear and accurate.",
+    "playful": "Style: quick-witted and energetic; never mean-spirited.",
+    "poetic": "Style: lyrical and evocative while staying clear and accurate.",
 }
 DEFAULT_SETTINGS = {
     "theme_intensity": 0.7,
