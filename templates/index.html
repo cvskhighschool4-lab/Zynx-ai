@@ -2622,6 +2622,41 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
 .zynx-conversation-starters{width:min(760px,100%);margin:9px auto 0;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}.zynx-conversation-starters>span{font-size:10px;color:#a1a1aa;margin-right:3px}.zynx-conversation-starters button{font:500 11px/1.2 inherit;color:#e4e4e7;background:#191b20;border:1px solid #393b42;border-radius:999px;padding:7px 10px;cursor:pointer;transition:background .16s,border-color .16s}.zynx-conversation-starters button:hover{background:#30333a;border-color:#747985}
 @media(max-width:600px){.zynx-conversation-starters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}.zynx-conversation-starters button{white-space:nowrap}}
 </style>
+<style id="zynx-landing-rebuild">
+#welcome{display:block!important;overflow-y:auto!important;padding:0!important;background:#07080a!important}
+#welcome .zynx-welcome-main{position:relative;z-index:2;min-height:100svh;width:min(1320px,100%);margin:0 auto;padding:clamp(24px,4vw,56px);display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:clamp(28px,7vw,100px);align-items:center}
+#welcome .hero{display:flex!important;min-height:560px!important;padding:12px 0!important;justify-content:space-between!important}
+#welcome .orb-wrap{position:absolute!important;inset:4% -10% auto 26%!important;height:46%!important;opacity:.38!important;pointer-events:none!important}
+#welcome .hero-bottom{max-width:590px!important;margin-top:auto!important;padding:0 0 18px!important}
+#welcome .headline{font-size:clamp(42px,6.3vw,82px)!important;line-height:.99!important;letter-spacing:-.065em!important}
+#welcome .headline .w:nth-child(even){font-family:Georgia,serif!important;font-weight:500!important;font-style:italic!important;color:#c6c7ce!important}
+#welcome .hero-sub{max-width:390px!important;font-size:14px!important;line-height:1.8!important;color:#a1a1aa!important}
+#welcome .auth-card{width:100%!important;max-width:440px!important;margin:0 auto!important;background:rgba(17,18,22,.9)!important;border:1px solid #34363c!important;border-radius:22px!important;box-shadow:0 28px 90px #0009!important}
+#welcome .auth-inner{padding:clamp(22px,3vw,34px)!important}
+#welcome .auth-title{font-size:28px!important;letter-spacing:-.045em!important}
+#welcome .auth-card .field{border-radius:10px!important;background:#101216!important;border-color:#3b3e46!important}
+#welcome .auth-card .auth-btn{background:#e5e7eb!important;color:#111318!important;box-shadow:none!important;border-radius:10px!important}
+#welcome .zynx-welcome-install{display:block;width:100%;margin-top:10px;padding:11px 14px;border:1px solid #3b3e46;border-radius:10px;background:#17191e;color:#e4e4e7;font-size:13px;font-weight:600;cursor:pointer}
+#welcome .zynx-feature-showcase{position:relative!important;z-index:2!important;width:min(1180px,calc(100% - 48px))!important;max-width:1180px!important;margin:0 auto!important;padding:72px 0 84px!important;border-top:1px solid #27292e!important}
+#welcome .zynx-showcase-heading{text-align:center!important;margin:0 auto 34px!important;max-width:700px!important}
+#welcome .zynx-showcase-heading h2{font-size:clamp(34px,5vw,56px)!important;line-height:1.04!important;letter-spacing:-.055em!important}
+#welcome .zynx-showcase-heading h2 span{display:block;font-family:Georgia,serif!important;font-weight:500!important;font-style:italic!important}
+#welcome .zynx-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+#welcome .zynx-feature-card{display:flex!important;min-height:0!important;padding:0!important;border:1px solid #292c32!important;border-radius:16px!important;overflow:hidden!important;background:#101216!important;transition:transform .22s,border-color .22s!important}
+#welcome .zynx-feature-card:hover{transform:translateY(-3px)!important;border-color:#656a75!important}
+#welcome .zynx-feature-art{display:block!important;height:170px!important}
+#welcome .zynx-feature-card .feature-kicker,#welcome .zynx-feature-card h3,#welcome .zynx-feature-card p{margin-left:18px!important;margin-right:18px!important}
+#welcome .zynx-feature-card .feature-kicker{margin-top:16px!important;color:#a1a1aa!important}
+#welcome .zynx-feature-card h3{font-size:19px!important;color:#f4f4f5!important}
+#welcome .zynx-feature-card p{margin-bottom:18px!important;color:#a1a1aa!important;font-size:13px!important;line-height:1.7!important}
+#welcome .space-layer{position:fixed!important;inset:0!important;z-index:0!important;pointer-events:none!important}
+#welcome .space-layer:after{content:"";position:absolute;width:52vw;height:52vw;min-width:360px;min-height:360px;right:-20vw;top:-24vw;border:1px solid #ffffff12;border-radius:50%;box-shadow:0 0 0 28px #ffffff04,0 0 0 70px #ffffff03;animation:zynx-slow-orbit 34s linear infinite}
+@keyframes zynx-slow-orbit{to{transform:rotate(360deg)}}
+.zynx-sources-toggle{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid #3b3d45;border-radius:999px;color:#b8bbc4;font-size:11px;cursor:pointer}.zynx-sources-toggle input{accent-color:#e5e7eb;width:13px;height:13px}.zynx-sources-toggle:has(input:checked){background:#e5e7eb;color:#111318;border-color:#e5e7eb}
+@media(max-width:900px){#welcome .zynx-welcome-main{grid-template-columns:minmax(0,1fr) minmax(330px,400px);gap:24px;padding:26px}}
+@media(max-width:720px){#welcome .zynx-welcome-main{min-height:auto;grid-template-columns:1fr;padding:26px 18px 46px;gap:24px}#welcome .hero{display:none!important}#welcome .auth-card{max-width:480px!important}#welcome .zynx-feature-showcase{width:calc(100% - 36px)!important;padding:48px 0 60px!important}#welcome .zynx-feature-grid{grid-template-columns:1fr!important;gap:12px!important}#welcome .zynx-feature-art{height:150px!important}#welcome .zynx-showcase-heading{text-align:left!important}#welcome .zynx-showcase-heading h2{font-size:36px!important}}
+@media(prefers-reduced-motion:reduce){#welcome .space-layer:after{animation:none!important}}
+</style>
 </head>
 <body>
 
@@ -2736,8 +2771,8 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
       <div class="messages" id="messages" aria-live="polite">
         <div class="empty dream-empty" id="empty">
           <div class="dream-orb-wrap"><img class="dream-emblem" alt="Pink and cyan Zynx emblem" src="data:image/webp;base64,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"></div>
-          <h2>A clearer space to think.</h2>
-          <p>A calm, focused workspace for questions, ideas and ambitious projects.</p>
+          <h2 id="zynx-daily-headline">A clearer space to think.</h2>
+          <p id="zynx-daily-subtitle">A calm, focused workspace for questions, ideas and ambitious projects.</p>
           <div class="dream-quick-prompts">
             <button class="chip" data-prompt="Help me generate a detailed, original image concept and a polished prompt for it."><span>✦</span> Create image <b>↗</b></button>
             <button class="chip" data-prompt="Help me brainstorm an original idea. Give me several strong directions and develop the best one."><span>✧</span> Brainstorm <b>✳</b></button>
@@ -2762,7 +2797,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
       </div>
 
       <div class="input-area cascade" style="--i:10">
-        <div class="zynx-composer-tools" aria-label="Writing tools">
+        <div class="zynx-composer-tools" aria-label="Writing tools"><label class="zynx-sources-toggle"><input id="zynxSourcesToggle" type="checkbox"><span>⌕</span> Web sources</label>
           <label class="zynx-style-picker"><span>Style</span><select id="zynxLiveStyle" aria-label="Assistant response style"><option value="friendly">Friendly</option><option value="formal">Formal</option><option value="technical">Technical</option><option value="sarcastic">Sarcastic</option><option value="casual">Casual</option></select></label>
           <button type="button" class="zynx-quick-action" data-zynx-quick="Explain this in one clear sentence.">1-sentence</button>
           <button type="button" class="zynx-quick-action" data-zynx-quick="Give me a practical example to make this easier to understand.">Example</button>
@@ -2938,6 +2973,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
       <p id="greetSub"></p>
     </div>
 
+    <div class="zynx-welcome-main">
     <div class="hero" aria-hidden="true">
       <div class="hero-top"><i class="dot"></i>ZYNX SYSTEMS · ONLINE</div>
       <div class="orb-wrap">
@@ -3006,9 +3042,10 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
           </div>
         </form>
         <div class="divider stag" style="--i:6"><span>or</span></div>
-        <button type="button" class="ghost stag" id="guestBtn" style="--i:7">Continue as guest</button>
+        <button type="button" class="ghost stag" id="guestBtn" style="--i:7">Continue as guest</button><button type="button" class="zynx-welcome-install" id="zynx-install-welcome">↓ Install Zynx AI app</button>
         <p class="text-center text-[11px] text-slate-500 mt-4 stag" style="--i:8">Your guest chats come with you when you sign in.</p>
       </div>
+    </div>
     </div>
     <section class="zynx-feature-showcase" aria-label="Zynx AI capabilities">
       <div class="zynx-showcase-heading">
@@ -3633,7 +3670,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
     try {
       response = await fetch(`/api/chats/${chatId}/messages/stream`, {
         method: 'POST', headers,
-        body: JSON.stringify({ content, language: (window.ZYNX_LANGUAGE && window.ZYNX_LANGUAGE.get()) || 'auto' }),
+        body: JSON.stringify({ content, language: (window.ZYNX_LANGUAGE && window.ZYNX_LANGUAGE.get()) || 'auto', use_sources: !!document.getElementById('zynxSourcesToggle')?.checked }),
         signal: controller.signal
       });
     } catch (error) {
@@ -6252,6 +6289,7 @@ html[data-zynx-ux-theme="light"] .zynx-turn-dot{background:#fff!important;color:
  }));
 })();
 </script>
+<script id="zynx-welcome-copy">(()=>{const lines=[["Ideas deserve room to grow.","Explore a question, shape a plan, or turn a first thought into something real."],["Think clearly. Build boldly.","A workspace for curiosity, careful research, creative work and code."],["Start with a question.","Bring a challenge, a half-formed idea or a project you want to make progress on."],["Make your next idea useful.","Learn something new, test an approach and keep moving with Zynx."],["A little curiosity goes a long way.","Brainstorm, study, research and build in one focused space."]];const item=lines[Math.floor(Math.random()*lines.length)];const h=document.getElementById("zynx-daily-headline"),p=document.getElementById("zynx-daily-subtitle");if(h)h.textContent=item[0];if(p)p.textContent=item[1];})();</script>
 </body>
 </html>
 
