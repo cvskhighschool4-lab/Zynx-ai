@@ -2614,6 +2614,14 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
 @media(max-width:700px){#settings .zynx-theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#settings .zynx-theme-card{padding:8px!important}}
 </style>
 
+<style id="zynx-chat-input-and-emblem-fix">
+.dream-orb-wrap{width:94px!important;height:94px!important;margin-bottom:18px!important}.dream-emblem{display:block;width:90px;height:90px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 20px rgba(20,100,255,.34));animation:zynx-emblem-float 5s ease-in-out infinite}@keyframes zynx-emblem-float{50%{transform:translateY(-5px)}}
+#app .input-glass{position:relative!important;z-index:4!important;background:#24262b!important;border:1px solid #50525a!important}
+#app .input-glass textarea,#app #input{display:block!important;position:relative!important;z-index:5!important;color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:#fff!important;opacity:1!important;visibility:visible!important;background:transparent!important;font-size:16px!important;line-height:1.55!important;min-height:30px!important;user-select:text!important;-webkit-user-select:text!important}
+#app #input::placeholder{color:#c3c5cc!important;-webkit-text-fill-color:#c3c5cc!important;opacity:1!important}#app .input-glass:focus-within{border-color:#b8c2d6!important;box-shadow:0 0 0 3px rgba(180,195,220,.12),0 14px 38px #0007!important}
+.zynx-conversation-starters{width:min(760px,100%);margin:9px auto 0;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}.zynx-conversation-starters>span{font-size:10px;color:#a1a1aa;margin-right:3px}.zynx-conversation-starters button{font:500 11px/1.2 inherit;color:#e4e4e7;background:#191b20;border:1px solid #393b42;border-radius:999px;padding:7px 10px;cursor:pointer;transition:background .16s,border-color .16s}.zynx-conversation-starters button:hover{background:#30333a;border-color:#747985}
+@media(max-width:600px){.zynx-conversation-starters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}.zynx-conversation-starters button{white-space:nowrap}}
+</style>
 </head>
 <body>
 
@@ -2727,7 +2735,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
       <nav class="zynx-turn-timeline" id="zynxTurnTimeline" aria-label="Conversation timeline" hidden><span class="zynx-timeline-label">IN THIS CHAT</span><div class="zynx-timeline-track" id="zynxTimelineTrack"></div></nav>
       <div class="messages" id="messages" aria-live="polite">
         <div class="empty dream-empty" id="empty">
-          <div class="dream-orb-wrap"><div class="dream-orb"><span></span><i></i></div></div>
+          <div class="dream-orb-wrap"><img class="dream-emblem" alt="Pink and cyan Zynx emblem" src="data:image/webp;base64,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"></div>
           <h2>A clearer space to think.</h2>
           <p>A calm, focused workspace for questions, ideas and ambitious projects.</p>
           <div class="dream-quick-prompts">
@@ -2775,6 +2783,7 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
+        <div class="zynx-conversation-starters" aria-label="Conversation starters"><span>Try asking</span><button type="button" data-starter="Help me plan a project from idea to working prototype.">Build a project</button><button type="button" data-starter="Explain a difficult topic with a simple example.">Explain a topic</button><button type="button" data-starter="Help me brainstorm three creative ideas and develop the strongest one.">Brainstorm ideas</button><button type="button" data-starter="Help me write and debug code step by step.">Write code</button></div>
         <p class="text-center text-[11px] text-slate-500 mt-2">Zynx can make mistakes. Created by Sushanth Naik.</p>
       </div>
     </main>
@@ -3068,7 +3077,6 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
   function applyPremiumTheme(name, persist = true) {
     const theme = PREMIUM_THEMES.has(name) ? name : 'default';
     document.documentElement.dataset.zynxSkin = theme;
-    else document.documentElement.dataset.zynxSkin = theme;
     if (persist) store.set(PREMIUM_THEME_KEY, theme);
     $('#premiumThemes [data-premium-theme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.premiumTheme === theme)));
   }
@@ -3518,7 +3526,15 @@ html[data-zynx-skin="sapphire"] #app .zynx-sidebar-link,html[data-zynx-skin="sap
   $('#toggleSidebar').addEventListener('click', toggleSidebar);
   $('#closeSidebar').addEventListener('click', closeSidebarMobile);
   el.overlay.addEventListener('click', closeSidebarMobile);
-  $$('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
+  $('.chip').forEach((c) => c.addEventListener('click', () => sendMessage(c.dataset.prompt)));
+  document.querySelector('.zynx-conversation-starters')?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-starter]');
+    if (!button) return;
+    el.input.value = button.dataset.starter || '';
+    resize();
+    el.input.focus();
+    el.input.setSelectionRange(el.input.value.length, el.input.value.length);
+  });
 
   const openSettings = () => { el.settings.classList.add('open'); closeSidebarMobile(); };
   $('#settingsBtn').addEventListener('click', openSettings);
