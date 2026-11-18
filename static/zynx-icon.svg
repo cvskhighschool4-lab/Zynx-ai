@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">Zynx AI</title><desc id="desc">A luminous geometric Z inside a faceted prism.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171c31"/><stop offset="1" stop-color="#080c16"/></linearGradient>
+ <linearGradient id="edge" x1="70" y1="40" x2="440" y2="470" gradientUnits="userSpaceOnUse"><stop stop-color="#f4fbff"/><stop offset=".42" stop-color="#a9c7ff"/><stop offset=".76" stop-color="#9b8cff"/><stop offset="1" stop-color="#65d8d0"/></linearGradient>
+ <linearGradient id="face" x1="130" y1="120" x2="380" y2="390" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".5" stop-color="#c8baff"/><stop offset="1" stop-color="#7c83e8"/></linearGradient>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="15" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="512" height="512" rx="116" fill="url(#bg)"/>
+<rect x="2" y="2" width="508" height="508" rx="114" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="4"/>
+<path d="M256 55 433 157v207L256 457 79 364V157L256 55Z" fill="#aab9ff" fill-opacity=".045" stroke="url(#edge)" stroke-width="13" stroke-linejoin="round" filter="url(#glow)"/>
+<path d="M160 174h192L160 338h192" fill="none" stroke="url(#face)" stroke-width="43" stroke-linecap="square" stroke-linejoin="bevel"/>
+<path d="m374 82 13 34 34 13-34 13-13 34-13-34-34-13 34-13 13-34Z" fill="#e8f7ff"/>
+<path d="M105 227v92l63 38" fill="none" stroke="#8fe4df" stroke-width="10" stroke-linecap="round" opacity=".85"/>
+</svg>
