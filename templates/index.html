@@ -2255,6 +2255,74 @@ html[data-zynx-ux-theme="dark"] .zynx-turn-timeline{background:#171e19!important
 html[data-zynx-ux-theme="dark"] #settings{background:#1c251f!important;color:#edf2ec!important}
 html[data-zynx-ux-theme="dark"] #settings .text-slate-100{color:#edf2ec!important}
 </style>
+
+<style id="zynx-personal-theme-styles">
+/* Personal palette: lavender is reserved for background surfaces; UI chrome stays neutral. */
+:root{
+ --zx-personal-page:#eeeaff;--zx-personal-chat:#08090c;--zx-personal-typing:#85858d;
+ --zx-personal-sidebar:#050607;--zx-personal-sidebar-hover:#3b3d42;
+}
+html body{background:var(--zx-personal-page)!important;color:#17181b!important}
+html .dream-bg{background:var(--zx-personal-page)!important;opacity:1!important;filter:none!important}
+html .cloud,html .particles,html .dream-motes{opacity:.08!important}
+html #app{background:transparent!important}
+html #app .sidebar,html #app .sidebar.zynx-clean-sidebar{
+ background:var(--zx-personal-sidebar)!important;color:#f4f4f5!important;
+ border:1px solid rgba(255,255,255,.08)!important;box-shadow:0 12px 34px rgba(0,0,0,.18)!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+ transition:background .2s ease!important;
+}
+html #app .sidebar:hover{background:var(--zx-personal-sidebar-hover)!important}
+html #app .sidebar .zynx-sidebar-link,html #app .sidebar .chat-item{color:#ededf0!important}
+html #app .sidebar .zynx-sidebar-link:hover,html #app .sidebar .chat-item:hover{background:rgba(255,255,255,.12)!important;color:#fff!important}
+html #app .chat-shell,html #app .chat-shell #messages,html #app .chat-shell .messages{
+ background:var(--zx-personal-chat)!important;color:#f2f2f3!important;
+}
+html #app .chat-shell .bubble.bot{background:#151619!important;color:#f1f1f2!important;border:1px solid #292b30!important}
+html #app .chat-shell .bubble.user{background:#24262b!important;color:#fff!important;border:1px solid #393b42!important}
+html #app .input-area{background:transparent!important}
+html #app .input-glass{
+ background:var(--zx-personal-typing)!important;border:1px solid #a4a4aa!important;
+ box-shadow:0 8px 26px rgba(0,0,0,.14)!important;
+}
+html #app .input-glass textarea{color:#111216!important}
+html #app .input-glass textarea::placeholder{color:#33343a!important}
+html #app .input-glass:focus-within{border-color:#d8d2f5!important;box-shadow:0 0 0 3px rgba(238,234,255,.22)!important}
+html #app .btn-send{background:#202126!important;color:#fff!important;box-shadow:none!important}
+html #app .btn-send:hover:not(:disabled){background:#383a40!important}
+html #app .chat-shell .dream-topbar{background:#101115!important;color:#f4f4f5!important;border-bottom:1px solid #292b30!important}
+html #app .dream-current-title,html #app .dream-model-pill{color:#f1f1f2!important}
+html #settings{background:#17181d!important;color:#f2f2f3!important;border-left:1px solid #33353b!important}
+html #settings .text-slate-100{color:#f2f2f3!important}
+html #settings .field,html #settings select,html #settings textarea{background:#25262c!important;color:#f4f4f5!important;border-color:#41434b!important}
+html #settings .opt{color:#e4e4e7!important;border-color:#41434b!important}
+html #settings .opt.on{background:#ded8f5!important;color:#202027!important;border-color:#ded8f5!important}
+.zynx-theme-color-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.zynx-theme-color-grid label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;border:1px solid rgba(255,255,255,.12);border-radius:11px;background:rgba(255,255,255,.045);color:#e5e5e9;font-size:11px}
+.zynx-theme-color-grid input[type=color]{width:34px;height:28px;padding:2px;border:1px solid #555;border-radius:7px;background:#222;cursor:pointer}
+@media(max-width:768px){
+ html #app{padding:0!important;gap:0!important}
+ html #app .sidebar{background:var(--zx-personal-sidebar)!important}
+ html #app .sidebar.open:hover{background:var(--zx-personal-sidebar-hover)!important}
+}
+</style>
+<style id="zynx-real-feature-images-game-placement">
+  #welcome .zynx-working-features .zynx-feature-art{height:132px!important;display:block!important;padding:0!important;background:#10131d!important}
+  #welcome .zynx-working-features .zynx-feature-art img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;opacity:.82!important;filter:saturate(.86) contrast(1.06)!important;transition:transform .65s cubic-bezier(.2,.7,.2,1),opacity .3s!important}
+  #welcome .zynx-working-features .zynx-feature-card:hover .zynx-feature-art img{transform:scale(1.07)!important;opacity:1!important}
+  #welcome .zynx-working-features .zynx-feature-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,13,.12),rgba(5,7,13,.04)),linear-gradient(0deg,rgba(5,7,13,.72),transparent 72%);pointer-events:none}
+  #welcome .zynx-working-features .zynx-feature-art span{position:absolute!important;left:17px!important;bottom:12px!important;z-index:2!important;font-size:25px!important;color:#fff!important;text-shadow:0 2px 16px rgba(0,0,0,.65)!important}
+  #welcome .zynx-working-features .zynx-feature-art i{position:absolute!important;right:15px!important;bottom:15px!important;z-index:2!important;color:#fff!important;text-shadow:0 1px 8px #000!important}
+  #sidebar #gameCornerBtn{display:none!important}
+  .zw-rail-controls [data-zact="game"]{position:relative;display:flex;align-items:center;gap:10px;text-align:left;padding:0 11px!important;color:#eee9ff!important;background:linear-gradient(110deg,rgba(139,92,246,.17),rgba(255,255,255,.045))!important;border:1px solid rgba(196,181,253,.19)!important;-webkit-backdrop-filter:blur(24px) saturate(160%)!important;backdrop-filter:blur(24px) saturate(160%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 7px 20px rgba(0,0,0,.12)!important}
+  .zw-rail-controls [data-zact="game"]:hover{background:linear-gradient(110deg,rgba(139,92,246,.25),rgba(255,255,255,.075))!important;border-color:rgba(196,181,253,.36)!important;color:#fff!important}
+  .zw-rail-controls [data-zact="game"] .zw-glyph{color:#c4b5fd!important}
+  .zw-game-pill{margin-left:auto;padding:3px 7px;border-radius:99px;background:rgba(167,139,250,.16);border:1px solid rgba(196,181,253,.2);color:#ddd0ff;font-size:8px;font-weight:700;letter-spacing:.1em}
+  .zw-rail-controls{background:linear-gradient(145deg,rgba(12,14,22,.4),rgba(12,14,22,.2));border:1px solid rgba(255,255,255,.075);border-radius:13px;padding:9px;margin:0 10px 12px!important;-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%)}
+  .zw-rail-controls button{width:100%;background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.045)!important;color:#d7d8e0!important}
+  .zw-rail-controls button:hover{background:rgba(255,255,255,.075)!important;border-color:rgba(255,255,255,.11)!important}
+  @media(max-width:700px){#welcome .zynx-working-features .zynx-feature-art{height:145px!important}}
+</style>
 </head>
 <body>
 
@@ -2492,6 +2560,23 @@ html[data-zynx-ux-theme="dark"] #settings .text-slate-100{color:#edf2ec!importan
           </button>
 
         </div>
+      </section>
+      <section class="zynx-personal-theme" id="zynx-personal-theme-controls" aria-label="Personalized theme">
+        <div class="mb-3"><p class="text-sm font-semibold text-slate-100">Personalized theme</p><p class="text-xs text-slate-400 mt-1">Make your own colour setup. Your choices stay saved on this device.</p></div>
+        <label class="block text-xs text-slate-300 mb-2" for="zynxThemeName">Theme name</label>
+        <input id="zynxThemeName" class="field mb-3" maxlength="24" value="My Lavender" placeholder="Name your theme">
+        <div class="zynx-theme-color-grid">
+          <label>Page background <input id="zynxColorPage" type="color" value="#eeeaff"></label>
+          <label>Chat surface <input id="zynxColorChat" type="color" value="#08090c"></label>
+          <label>Typing box <input id="zynxColorTyping" type="color" value="#85858d"></label>
+          <label>Sidebar <input id="zynxColorSidebar" type="color" value="#050607"></label>
+          <label>Sidebar hover <input id="zynxColorHover" type="color" value="#3b3d42"></label>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-3">
+          <button type="button" class="opt on" id="zynxSavePersonalTheme">Save theme</button>
+          <button type="button" class="opt" id="zynxResetPersonalTheme">Reset colours</button>
+        </div>
+        <p class="text-xs text-slate-500 mt-2" id="zynxPersonalThemeStatus" aria-live="polite">Default: lavender backgrounds, black chat and sidebar, grey composer.</p>
       </section>
       <section class="dream-personalization space-y-4" aria-label="Dream interface personalization">
         <div><p class="text-sm font-semibold text-slate-100">Dream atmosphere</p><p class="text-xs text-slate-400 mt-1">Tune the interface to your preferred level of haze and light.</p></div>
@@ -5838,6 +5923,43 @@ html[data-zynx-ux-theme="light"] .zynx-turn-dot{background:#fff!important;color:
  });
 }catch(e){console.warn('Zynx interface enhancement skipped',e)}})();
 </script>
+
+<script id="zynx-personal-theme-script">
+(()=> {
+ const $=id=>document.getElementById(id);
+ const ids={page:'zynxColorPage',chat:'zynxColorChat',typing:'zynxColorTyping',sidebar:'zynxColorSidebar',hover:'zynxColorHover'};
+ const defaults={page:'#eeeaff',chat:'#08090c',typing:'#85858d',sidebar:'#050607',hover:'#3b3d42'};
+ const key='zynx_personal_theme_v1';
+ const set=(theme)=>{
+  const root=document.documentElement;
+  Object.entries(ids).forEach(([name,id])=>{
+   const value=/^#[0-9a-f]{6}$/i.test(theme[name]||'')?theme[name]:defaults[name];
+   root.style.setProperty('--zx-personal-'+(name==='page'?'page':name==='chat'?'chat':name==='typing'?'typing':name==='sidebar'?'sidebar':'sidebar-hover'),value);
+   const control=$(id);if(control)control.value=value;
+  });
+  if($('zynxThemeName'))$('zynxThemeName').value=String(theme.name||'My Lavender').slice(0,24);
+ };
+ const read=()=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch{return null}};
+ const saved=read();set(saved||{...defaults,name:'My Lavender'});
+ $('zynxSavePersonalTheme')?.addEventListener('click',()=>{
+  const theme={name:$('zynxThemeName')?.value.trim()||'My Theme'};
+  Object.entries(ids).forEach(([name,id])=>theme[name]=$(id)?.value||defaults[name]);
+  try{localStorage.setItem(key,JSON.stringify(theme));set(theme);const status=$('zynxPersonalThemeStatus');if(status)status.textContent='“'+theme.name+'” saved on this device.';}
+  catch{const status=$('zynxPersonalThemeStatus');if(status)status.textContent='Could not save this theme in browser storage.';}
+ });
+ $('zynxResetPersonalTheme')?.addEventListener('click',()=>{
+  try{localStorage.removeItem(key)}catch{}
+  set({...defaults,name:'My Lavender'});
+  const status=$('zynxPersonalThemeStatus');if(status)status.textContent='Default palette restored.';
+ });
+ Object.values(ids).forEach(id=>$(id)?.addEventListener('input',()=>{
+  const theme={name:$('zynxThemeName')?.value||'My Theme'};
+  Object.entries(ids).forEach(([name,control])=>theme[name]=$(control)?.value||defaults[name]);
+  set(theme);
+  // Preview only; persist only when Save theme is pressed.
+ }));
+})();
+</script>
 </body>
 </html>
 
@@ -5845,20 +5967,4 @@ html[data-zynx-ux-theme="light"] .zynx-turn-dot{background:#fff!important;color:
 
 
 
-<style id="zynx-real-feature-images-game-placement">
-  #welcome .zynx-working-features .zynx-feature-art{height:132px!important;display:block!important;padding:0!important;background:#10131d!important}
-  #welcome .zynx-working-features .zynx-feature-art img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;opacity:.82!important;filter:saturate(.86) contrast(1.06)!important;transition:transform .65s cubic-bezier(.2,.7,.2,1),opacity .3s!important}
-  #welcome .zynx-working-features .zynx-feature-card:hover .zynx-feature-art img{transform:scale(1.07)!important;opacity:1!important}
-  #welcome .zynx-working-features .zynx-feature-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,13,.12),rgba(5,7,13,.04)),linear-gradient(0deg,rgba(5,7,13,.72),transparent 72%);pointer-events:none}
-  #welcome .zynx-working-features .zynx-feature-art span{position:absolute!important;left:17px!important;bottom:12px!important;z-index:2!important;font-size:25px!important;color:#fff!important;text-shadow:0 2px 16px rgba(0,0,0,.65)!important}
-  #welcome .zynx-working-features .zynx-feature-art i{position:absolute!important;right:15px!important;bottom:15px!important;z-index:2!important;color:#fff!important;text-shadow:0 1px 8px #000!important}
-  #sidebar #gameCornerBtn{display:none!important}
-  .zw-rail-controls [data-zact="game"]{position:relative;display:flex;align-items:center;gap:10px;text-align:left;padding:0 11px!important;color:#eee9ff!important;background:linear-gradient(110deg,rgba(139,92,246,.17),rgba(255,255,255,.045))!important;border:1px solid rgba(196,181,253,.19)!important;-webkit-backdrop-filter:blur(24px) saturate(160%)!important;backdrop-filter:blur(24px) saturate(160%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 7px 20px rgba(0,0,0,.12)!important}
-  .zw-rail-controls [data-zact="game"]:hover{background:linear-gradient(110deg,rgba(139,92,246,.25),rgba(255,255,255,.075))!important;border-color:rgba(196,181,253,.36)!important;color:#fff!important}
-  .zw-rail-controls [data-zact="game"] .zw-glyph{color:#c4b5fd!important}
-  .zw-game-pill{margin-left:auto;padding:3px 7px;border-radius:99px;background:rgba(167,139,250,.16);border:1px solid rgba(196,181,253,.2);color:#ddd0ff;font-size:8px;font-weight:700;letter-spacing:.1em}
-  .zw-rail-controls{background:linear-gradient(145deg,rgba(12,14,22,.4),rgba(12,14,22,.2));border:1px solid rgba(255,255,255,.075);border-radius:13px;padding:9px;margin:0 10px 12px!important;-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%)}
-  .zw-rail-controls button{width:100%;background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.045)!important;color:#d7d8e0!important}
-  .zw-rail-controls button:hover{background:rgba(255,255,255,.075)!important;border-color:rgba(255,255,255,.11)!important}
-  @media(max-width:700px){#welcome .zynx-working-features .zynx-feature-art{height:145px!important}}
-</style>
+
